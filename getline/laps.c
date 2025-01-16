@@ -93,9 +93,9 @@ void race_state(int *id, size_t size) {
         current = current->next;
     }
 
-    qsort(sorted_cars, car_count, sizeof(Car *), compare_cars);
+    compare_cars(sorted_cars, car_count, sizeof(Car *), compare_cars);
 
-    puts("Race state:\n");
+    printf("Race state:\n");
     for (size_t i = 0; i < car_count; ++i) {
         printf("Car %d [%d laps]\n", sorted_cars[i]->id, sorted_cars[i]->laps);
     }
