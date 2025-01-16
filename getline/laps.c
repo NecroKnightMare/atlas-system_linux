@@ -81,7 +81,7 @@ void race_state(int *id, size_t size) {
     }
 
 	if (initial) {
-		car->laps--;
+		Car->laps--;
 	}
 
     // sorted array of cars by id
