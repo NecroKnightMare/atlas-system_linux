@@ -40,13 +40,19 @@ void free_all_cars() {
     head = NULL;
 }
 
-// compare cars
-int compare_cars(const void *a, const void *b) {
-    Car *car_a = *(Car **)a;
-    Car *car_b = *(Car **)b;
-    return car_a->id - car_b->id;
+void bubble_sort(Car **cars, size_t count) {
+	int swapped;
+	do {
+		swapped = 0;
+		for (size_t i = 0; i < count - 1; ++i) {
+			if (cars[i]->id > cars[i + 1]->id) {
+				Car *temp = cars[i];
+				cars[i] = cars[i + 1];
+				cars[i + 1] = temp; swapped = 1;
+			}
+		}
+	} while (swapped); 
 }
-
 // free cars if value is 0
 void race_state(int *id, size_t size) {
     if (size == 0) {
@@ -93,7 +99,7 @@ void race_state(int *id, size_t size) {
         current = current->next;
     }
 
-    compare_cars(sorted_cars, car_count, sizeof(Car *), compare_cars);
+	bubble_sort(sorted_cars, car_count, sizeof(Car *), compare_cars);
 
     printf("Race state:\n");
     for (size_t i = 0; i < car_count; ++i) {
