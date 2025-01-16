@@ -99,7 +99,7 @@ void race_state(int *id, size_t size) {
         current = current->next;
     }
 
-	bubble_sort(sorted_cars, car_count, sizeof(Car *), compare_cars);
+	bubble_sort(sorted_cars, car_count);
 
     printf("Race state:\n");
     for (size_t i = 0; i < car_count; ++i) {
