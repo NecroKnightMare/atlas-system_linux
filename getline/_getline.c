@@ -21,25 +21,25 @@ char *_getline(const int fd) {
 				return NULL;
 			}
 		}
-	}
-	size_t start = buff_position;
-	while (buff_position < buff_length && buffer[buff_position] != '\n') {
-		buff_position++;
-	}
-	size_t piece = buff_position - start;
-	char *new_line = (char *)realloc(line, line_lgth + piece + 1);
-	if (!new_line) {
-		free(line);
-		return NULL;
-	}
-	line = new_line;
-	memcpy(line + line_lgth, buffer + start, piece);
-	line_lgth += piece;
+		size_t start = buff_position;
+		while (buff_position < buff_length && buffer[buff_position] != '\n') {
+			buff_position++;
+		}
+	
+		size_t piece = buff_position - start;
+		char *new_line = (char *)realloc(line, line_lgth + piece + 1);
+		if (!new_line) {
+			free(line);
+			return NULL;
+		}
+		line = new_line;
+		memcpy(line + line_lgth, buffer + start, piece);
+		line_lgth += piece;
 
-	if (buff_position < buff_length && buffer[buff_position] == '\n') {
-		buff_position++;
-		break;
-	}
+		if (buff_position < buff_length && buffer[buff_position] == '\n') {
+			buff_position++;
+			break;
+		}
 	}
 	if (line) {
 		line[line_lgth] = '\0';
