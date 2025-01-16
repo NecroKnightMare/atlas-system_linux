@@ -54,11 +54,11 @@ void bubble_sort(Car **cars, size_t count) {
 	} while (swapped); 
 }
 // free cars if value is 0
-void race_state(int *id, size_t size) {
-    if (size == 0) {
-        free_all_cars();
-        return;
-    }
+// void race_state(int *id, size_t size) {
+//     if (size == 0) {
+//         free_all_cars();
+//         return;
+//     }
 
     // Update new cars
     Car **new_cars = (Car **)malloc(size * sizeof(Car *));
