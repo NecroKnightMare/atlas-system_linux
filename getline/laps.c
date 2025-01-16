@@ -1,5 +1,4 @@
 #include "laps.h"
-#include <stdbool.h>
 
 // Head of LL
 static Car *head = NULL;
@@ -96,7 +95,7 @@ void race_state(int *id, size_t size) {
 
     qsort(sorted_cars, car_count, sizeof(Car *), compare_cars);
 
-    printf("Race state:\n");
+    puts("Race state:\n");
     for (size_t i = 0; i < car_count; ++i) {
         printf("Car %d [%d laps]\n", sorted_cars[i]->id, sorted_cars[i]->laps);
     }
