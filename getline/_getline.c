@@ -17,8 +17,6 @@ char *_getline(const int fd) {
 			buff_position = 0;
 			if (buff_length == 0) {
 				break;
-			} else if (buff_length < 0) {
-				return NULL;
 			}
 		}
 		size_t start = buff_position;
