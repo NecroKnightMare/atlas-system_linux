@@ -1,5 +1,6 @@
 #include "_getline.h"
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -38,6 +39,7 @@ char *_getline(const int fd) {
 	if (buff_position < buff_length && buffer[buff_position] == '\n') {
 		buff_position++;
 		break;
+	}
 	}
 	if (line) {
 		line[line_lgth] = '\0';
