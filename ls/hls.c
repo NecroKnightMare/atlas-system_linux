@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+* Description: ls program to list contents of curr
+* dir without listing hidden files */
 /** 
 * main: lists contents in hls dir
 * void: no arguments
