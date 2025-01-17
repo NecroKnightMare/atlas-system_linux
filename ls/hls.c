@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/**
-* Description: ls program to list contents of curr
-* dir without listing hidden files */
 /** 
 * main: lists contents in hls dir
-* void: no arguments
-* return: files/ 0
+* 
+* ls program to list contents of curr
+* dir without listing hidden files
+*
+* Return: 0 if opened, 1 if not
 **/
 
 int main(void)
