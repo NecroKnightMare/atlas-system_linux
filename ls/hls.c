@@ -1,7 +1,9 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
-/** main: return files in hls dir
+
+/** 
+* main: lists contents in hls dir
 * void: no arguments
 * return: files/ 0
 **/
