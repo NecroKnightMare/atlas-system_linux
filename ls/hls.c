@@ -6,7 +6,7 @@ int main(void)
     DIR *dir;
     struct dirent *entry;
     /* Open the current directory */
-    dir = opendir(".");
+    dir = opendir("");
     if (dir == NULL)
     {
         perror("opendir");
