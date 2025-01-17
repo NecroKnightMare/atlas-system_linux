@@ -1,12 +1,9 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
-/**
-* Description: program to show contents of hls without hidden files
-*/
 
-/** 
-* main: lists contents in hls dir
+/**
+* main- lists contents in hls dir
 * 
 * ls program to list contents of curr
 * dir without listing hidden files
