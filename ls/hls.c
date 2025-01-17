@@ -37,9 +37,9 @@ int main(int argc, char *argv[])
         return (0);
         } else {
             for (int i = 1; i < argc; i++) {
-                dir = opendir(argv[1]);
+                dir = opendir(argv[0]);
                 if (dir == NULL) {
-                    fprintf(stderr, "%s: ", argv[0]);
+                    fprintf(stderr, "%s ", argv[1]);
                     perror(argv[i]);
                     continue;
                 }
