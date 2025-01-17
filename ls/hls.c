@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <stdlib.h>
 
 /**
 * main- pass filename arguments to program
@@ -14,17 +15,16 @@
 
 int main(int argc, char *argv[])
 {
+    DIR *dir;
+    struct dirent *entry;
+
     if (argc == 1) {
-        char *path = '.';
-        // DIR *dir;
-        /* Open the current directory */
         dir = opendir(".");
         if (dir == NULL) {
             perror("opendir");
             exit(1);
         }
         /* Read directory entries  added cond for hidden files to not show*/
-        struct dirent *entry;
         while ((entry = readdir(dir)) != NULL)
         {
             if (entry->d_name[0] != '.') {
@@ -36,30 +36,21 @@ int main(int argc, char *argv[])
         closedir(dir);
         return (0);
         } else {
-        fprintf(stderr, "%s: %s\n", argv[0], stderror(errno));
-        return 1;
-        } else {
             for (int i = 1; i < argc; i++) {
-                dir = opendir(path);
+                dir = opendir(argv[1]);
                 if (dir == NULL) {
-                    perror("opendir");
-                    exit(1);
+                    fprintf(stderr, "%s: %s\n", argv[0], strerror(errno));
+                    continue;
                 }
-                /* Read directory entries  added cond for hidden files to not show*/
-                struct dirent *entry;
-                while ((entry = readdir(dir)) != NULL)
-                {
+                while ((entry = readdir(dir)) != NULL) {
                     if (entry->d_name[0] != '.') {
-                        printf("%s  ", entry->d_name);
+                        printf("%s ", entry->d_name);
                     }
                 }
                 printf("\n");
                 /* Close the directory */
                 closedir(dir);
-                return (0);
-                } else {
-                    fprintf(stderr, "%s: %s\n", argv[0], stderror(errno));
-                    return 1;
-                }
             }
-    }
+        }
+    return 0;
+}
