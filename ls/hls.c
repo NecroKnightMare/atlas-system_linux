@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
         /* Read directory entries  added cond for hidden files to not show*/
         while ((entry = readdir(dir)) != NULL)
         {
-            if (entry->d_name[0] != '.') {
+            if (entry->d_name[1] != '.') {
             printf("%s  ", entry->d_name);
             }
         }
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
                     continue;
                 }
                 while ((entry = readdir(dir)) != NULL) {
-                    if (entry->d_name[0] != '.') {
+                    if (entry->d_name[1] != '.') {
                         printf("%s ", entry->d_name);
                     }
                 }
