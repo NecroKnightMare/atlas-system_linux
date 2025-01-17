@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 /**
-* Description: program to show contents of hls without hidden files */
+* Description: program to show contents of hls without hidden files
+*/
 
 /** 
 * main: lists contents in hls dir
