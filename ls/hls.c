@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
             for (int i = 1; i < argc; i++) {
                 dir = opendir(argv[1]);
                 if (dir == NULL) {
-                    fprintf(stderr, "%s: %s\n", argv[0], strerror(errno));
+                    fprintf(stderr, "%s: ", argv[0]);
+                    perror(argv[i]);
                     continue;
                 }
                 while ((entry = readdir(dir)) != NULL) {
