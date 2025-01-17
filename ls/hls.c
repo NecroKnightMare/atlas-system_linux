@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
                     continue;
                 }
                 while ((entry = readdir(dir)) != NULL) {
-                    if (entry->d_name[1] != '.') {
+                    if (entry->d_name[0] != '.') {
                         printf("%s ", entry->d_name);
                     }
                 }
