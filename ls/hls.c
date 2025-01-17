@@ -1,6 +1,11 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
+/** main: return files in hls dir
+* void: no arguments
+* return: files/ 0
+**/
+
 int main(void)
 {
     DIR *dir;
