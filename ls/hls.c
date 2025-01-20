@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
             for (int i = 1; i < argc; i++) {
                 dir = opendir(argv[0]);
                 if (dir == NULL) {
-                    fprintf(stderr, "%s ", argv[1]);
+                    fprintf(stderr, "%s ", argv[i]);
                     perror(argv[i]);
                     continue;
                 }
