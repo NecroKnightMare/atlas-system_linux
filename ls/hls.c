@@ -47,12 +47,12 @@ int main(int argc, char *argv[])
                     if (entry->d_name[0] != '.') {
                         printf("%s ", entry->d_name);
                     }
+                    printf("\n");
+                    /* Close the directory */
+                    closedir(dir);
+                } else {
+                    fprintf(stderr, "%s: %s: Not a directory\n", argv[0], argv[i]);
                 }
-                printf("\n");
-                /* Close the directory */
-                closedir(dir);
-            } else {
-                fprintf(stderr, "%s: %s: Not a directory\n", argv[0], argv[i]);
             }
         }
     return 0;
