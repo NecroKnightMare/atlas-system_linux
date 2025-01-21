@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
             for (int i = 1; i < argc; i++) {
                 dir = opendir(argv[0]);
                 if (dir == NULL) {
-                    fprintf(stderr, "%s ", argv[i]);
+                    fprintf(stderr, "%s ", argv[0);
                     perror(argv[i]);
                     continue;
                 }
@@ -51,6 +51,8 @@ int main(int argc, char *argv[])
                 printf("\n");
                 /* Close the directory */
                 closedir(dir);
+            } else {
+                fprintf(stderr, "%s: %s: Not a directory\n", argv[0], argv[i]);
             }
         }
     return 0;
