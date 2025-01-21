@@ -3,6 +3,9 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 /**
 * main- pass filename arguments to program
@@ -17,6 +20,7 @@ int main(int argc, char *argv[])
 {
     DIR *dir;
     struct dirent *entry;
+    struct stat sb;
 
     if (argc == 1) {
         dir = opendir(".");
@@ -28,15 +32,15 @@ int main(int argc, char *argv[])
         while ((entry = readdir(dir)) != NULL)
         {
             if (entry->d_name[0] != '.') {
-            printf("%s  ", entry->d_name);
+                printf("%s  ", entry->d_name);
+                }
             }
-        }
-        printf("\n");
-        /* Close the directory */
-        closedir(dir);
-        return (0);
+            printf("\n");
+            /* Close the directory */
+            closedir(dir);
         } else {
-            for (int i = 1; i < argc; i++) {
+        for (int i = 1; i < argc; i++) {
+            if (lstat(argv[i], &sb) == 0 && S_ISDIR(sb.st_mode)) {
                 dir = opendir(argv[0]);
                 if (dir == NULL) {
                     fprintf(stderr, "%s ", argv[0]);
@@ -47,13 +51,14 @@ int main(int argc, char *argv[])
                     if (entry->d_name[0] != '.') {
                         printf("%s ", entry->d_name);
                     }
-                    printf("\n");
-                    /* Close the directory */
-                    closedir(dir);
-                } else {
-                    fprintf(stderr, "%s: %s: Not a directory\n", argv[0], argv[i]);
                 }
+                printf("\n");
+                /* Close the directory */
+                closedir(dir);
+            } else {
+                fprintf(stderr, "%s: %s: Not a directory\n", argv[0], argv[i]);
             }
         }
+    }
     return 0;
 }
