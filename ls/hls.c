@@ -61,7 +61,7 @@ int main(int argc, const char *argv[])
                 /* Close the directory */
                 closedir(dir);
             } else {
-                fprintf(stderr, "%s: %s: Not a directory\n", argv[0], argv[i]);
+                sprintf(stderr, "%s: %s: Not a directory\n", argv[0], argv[i]);
             }
         }
     }
