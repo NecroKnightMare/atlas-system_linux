@@ -47,7 +47,7 @@ int open_directory(const char *directory, DIR **dir) {
 }
 
 void read_directory_entries(DIR *dir) {
-    struct dirent*entry;
+    struct dirent *entry;
     while ((entry = readdir(dir)) != NULL) {
         if (entry->d_name[0] != '.') {
             printf("%s ", entry->d_name);
