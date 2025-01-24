@@ -18,7 +18,7 @@ int main(int argc, const char *argv[]) {
                     }
                     print_directory_contents(argv[i]);
                 } else if (S_ISREG(sb.st_mode)) {
-                    fprintf(stderr, "%s: %s: Not a directory\n",  argv[0], argv[i]);
+                    fprintf(stderr, "%s",  argv[0]);
                 }
             } else {
                 perror(argv[i]);
