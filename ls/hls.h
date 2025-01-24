@@ -2,6 +2,7 @@
 #define HLS_H
 
 #include <dirent.h>
+#include <sys/stat.h>
 
 void print_directory_contents(const char *directory);
 int open_directory(const char *directory, DIR **dir);
