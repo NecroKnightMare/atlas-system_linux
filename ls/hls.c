@@ -10,14 +10,18 @@ int main(int argc, const char *argv[]) {
     if (argc == 1) {
         print_directory_contents(".");
     } else {
-        for (int i = 1; i < argc; i++){
-            if (lstat(argv[i], &sb) == 0 && S_ISDIR(sb.st_mode)) {
-                if (argc > 2) {
-                    printf("%s:\n", argv[i]);
+        for (int i = 1; i < argc; i++) {
+            if (lstat(argv[i], &sb) == 0) {
+                if (S_ISDIR(sb.st_mode)) {
+                    if (argc > 2) {
+                        printf("%s:\n", argv[i]);
+                    }
+                    print_directory_contents(argv[i]);
+                } else if (S_ISREG(sb.st_mode)) {
+                    fprintf(stderr, "%s: %s: Not a directory\n",  argv[0], argv[i]);
                 }
-                print_directory_contents(argv[i]);
             } else {
-                fprintf(stderr, "%s: %s: Not a directory\n",  argv[0], argv[i]);
+                perror(argv[i]);
             }
         }
     }
