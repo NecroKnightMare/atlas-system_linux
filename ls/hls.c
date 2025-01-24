@@ -14,7 +14,7 @@ int main(int argc, const char *argv[]) {
             if (lstat(argv[i], &sb) == 0) {
                 if (S_ISDIR(sb.st_mode)) {
                     if (argc > 2) {
-                        printf("%s:\n", argv[i]);
+                        //printf("%s:\n", argv[i]);
                     }
                     print_directory_contents(argv[i]);
                 } else if (S_ISREG(sb.st_mode)) {
