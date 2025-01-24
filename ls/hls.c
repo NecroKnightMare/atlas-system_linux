@@ -1,69 +1,53 @@
-#include <dirent.h>
 #include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <stdlib.h>
-#include <sys/types.h>
+#include <dirent.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <errno.h>
+#include "hls.h"
 
-/**
-* main- pass filename arguments to program
-* 
-* ls program to list contents of curr
-* dir without listing hidden files
-*
-* Return: 0 if opened, 1 if not
-**/
-
-void _hls (const char *argv[])
-{
-
-    
-}
-int main(int argc, const char *argv[])
-{
-    DIR *dir;
-    struct dirent *entry;
+int main(int argc, const char *argv[]) {
     struct stat sb;
+    char error_message[256];
 
     if (argc == 1) {
-        dir = opendir(".");
-        if (dir == NULL) {
-            perror("opendir");
-            exit(1);
-        }
-        /* Read directory entries  added cond for hidden files to not show*/
-        while ((entry = readdir(dir)) != NULL)
-        {
-            if (entry->d_name[0] != '.') {
-                printf("%s  ", entry->d_name);
-                }
-            }
-            printf("\n");
-            /* Close the directory */
-            closedir(dir);
-        } else {
-        for (int i = 1; i < argc; i++) {
+        print_directory_contents(".");
+    } else {
+        for (int i = 1; i < argc; i++){
             if (lstat(argv[i], &sb) == 0 && S_ISDIR(sb.st_mode)) {
-                dir = opendir(argv[0]);
-                if (dir == NULL) {
-                    fprintf(stderr, "%s ", argv[0]);
-                    perror(argv[i]);
-                    continue;
-                }
-                while ((entry = readdir(dir)) != NULL) {
-                    if (entry->d_name[0] != '.') {
-                        printf("%s ", entry->d_name);
-                    }
-                }
-                printf("\n");
-                /* Close the directory */
-                closedir(dir);
+                printf("%s:\n", argv[i]);
+                print_directory_contents(argv[i]);
             } else {
-                sprintf(stderr, "%s: %s: Not a directory\n", argv[0], argv[i]);
+                sprintf(error_message, "%s: %s: Not a directory\n",  argv[0], argv[i]);
+                fprintf(stderr, "%s", error_message);
             }
         }
     }
     return 0;
+}
+
+void print_directory_contents(const char *directory) {
+    DIR *dir;
+
+    if (open_directory(directory, &dir) == 0){
+        read_directory_entries(dir);
+        closedir(dir);
+    }
+}
+
+int open_directory(const char *directory, DIR **dir) {
+    *dir = opendir(directory);
+    if (*dir == NULL) {
+        perror("opendir");
+        return -1;
+    }
+    return 0;
+}
+
+void read_directory_entries(DIR *dir) {
+    struct dirent*entry;
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_name[0] != '.') {
+            printf("%s ", entry->d_name);
+        }
+    }
+    printf("\n");
 }

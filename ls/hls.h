@@ -1,15 +1,10 @@
-#ifndef _HLS_H
-#define _HLS_H
+#ifndef HLS_H
+#define HLS_H
 
 #include <dirent.h>
-#include <limits.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 
-typedef
+void print_directory_contents(const char *directory);
+int open_directory(const char *directory, DIR **dir);
+void read_directory_entries(DIR *dir);
 
-void _hls (const char *argv[]);
-
-
-
-#endif _HLS_H
+#endif // HLS_H
