@@ -6,7 +6,6 @@
 
 int main(int argc, const char *argv[]) {
     struct stat sb;
-    char error_message[256];
 
     if (argc == 1) {
         print_directory_contents(".");
@@ -16,8 +15,7 @@ int main(int argc, const char *argv[]) {
                 printf("%s:\n", argv[i]);
                 print_directory_contents(argv[i]);
             } else {
-                sprintf(error_message, "%s: %s: Not a directory\n",  argv[0], argv[i]);
-                fprintf(stderr, "%s", error_message);
+                fprintf(stderr, "%s: %s: Not a directory\n",  argv[0], argv[i]);
             }
         }
     }
