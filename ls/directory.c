@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <dirent.h>
-#include "hls.c"
+#include "hls.h"
 
 void print_directory_contents(const char *directory) {
     DIR *dir;

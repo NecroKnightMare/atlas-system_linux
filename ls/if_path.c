@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <string.h>
+#include "hls.h"
+
 void if_path(const char *path, const char *program) {
     struct stat sb;
     if (lstat(path, &sb) == 0) {
