@@ -19,7 +19,8 @@ int main(int argc, const char *argv[]) {
             if (lstat(argv[i], &sb) == 0) {
                 // Print the directory name only if there are multiple arguments
                 // or if it is a directory
-                print_directory_contents(path);
+                //added
+                print_directory_contents(argv[i]);
                 if (argc > 2 ||  (argc == 2 && S_ISDIR(sb.st_mode))) {
                     printf("%s:\n", argv[i]);
                 }
