@@ -11,7 +11,7 @@ void print_err(const char *program, const char *path, const char *error_mess) {
 
 int main(int argc, const char *argv[]) {
     struct stat sb;
-    
+
     if (argc == 1) {
         print_directory_contents(".");
     } else {
@@ -19,7 +19,7 @@ int main(int argc, const char *argv[]) {
             if (lstat(argv[i], &sb) == 0) {
                 // Print the directory name only if there are multiple arguments
                 // or if it is a directory
-                if (argc > 2 || S_ISDIR(sb.st_mode)) {
+                if (argc > 2 ||  (argc == 2 &&S_ISDIR(sb.st_mode))) {
                     printf("%s:\n", argv[i]);
                 }
                 if_path(argv[i], argv[0]);
