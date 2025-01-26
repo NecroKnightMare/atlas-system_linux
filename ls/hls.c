@@ -2,56 +2,36 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <string.h>
 #include "hls.h"
 
-int main(int argc, const char *argv[]) {
-    struct stat sb;
+void print_err(const char *program, const char *path, const char *error_mess) {
+    fprintf(stderr, "%s: cannot access '%s': %s\n", program, path, error_mess);
+}
 
+void if_path(const char *path, const char *program) {
+    struct stat sb;
+    if (lstat(argv[i], &sb) == 0) {
+        if (S_ISDIR(sb.st_mode)) {
+            printf("%s\n", path);
+            print_directory_contents(path);
+        } else if (S_ISREG(sb.st_mode)) {
+            printf("%s\n", path);
+        } else {
+            print_err(program, path, "Not a regular file or dir");
+        }
+    } else {
+        print_err(program, path, strerror(errno));
+    }
+}
+
+int main(int argc, const char *argv[]) {
     if (argc == 1) {
         print_directory_contents(".");
     } else {
         for (int i = 1; i < argc; i++) {
-            if (lstat(argv[i], &sb) == 0) {
-                if (S_ISDIR(sb.st_mode)) {
-                    if (argc > 2) {
-                        //printf("%s:\n", argv[i]);
-                    }
-                    print_directory_contents(argv[i]);
-                } else if (S_ISREG(sb.st_mode)) {
-                    fprintf(stderr, "%s",  argv[0]);
-                }
-            } else {
-                perror(argv[i]);
-            }
+            if_path(argv[i], argv[0]);
         }
     }
     return 0;
-}
-
-void print_directory_contents(const char *directory) {
-    DIR *dir;
-
-    if (open_directory(directory, &dir) == 0){
-        read_directory_entries(dir);
-        closedir(dir);
-    }
-}
-
-int open_directory(const char *directory, DIR **dir) {
-    *dir = opendir(directory);
-    if (*dir == NULL) {
-        perror("opendir");
-        return -1;
-    }
-    return 0;
-}
-
-void read_directory_entries(DIR *dir) {
-    struct dirent *entry;
-    while ((entry = readdir(dir)) != NULL) {
-        if (entry->d_name[0] != '.') {
-            printf("%s ", entry->d_name);
-        }
-    }
-    printf("\n");
 }
