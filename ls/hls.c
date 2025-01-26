@@ -11,7 +11,7 @@ void print_err(const char *program, const char *path, const char *error_mess) {
 
 void if_path(const char *path, const char *program) {
     struct stat sb;
-    if (lstat(argv[i], &sb) == 0) {
+    if (lstat(path, &sb) == 0) {
         if (S_ISDIR(sb.st_mode)) {
             printf("%s\n", path);
             print_directory_contents(path);
