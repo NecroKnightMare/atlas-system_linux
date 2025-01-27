@@ -13,30 +13,28 @@ void print_err(const char *program, const char *path, const char *error_mess) {
     fprintf(stderr, "%s: cannot access %s: %s\n", program, path, error_mess);
 }
 
-int main(int argc, char * const argv[]) {
+int main(int argc, char *argv[]) {
     struct stat sb;
-    int opt;
+    int start = 1;
     int long_format;
 
-    while ((opt = getopt(argc, argv, "l")) != -1) {
-        switch (opt) {
-            case 'l':
-                long_format = 1;
-                break;
-            default:
-                fprintf(stderr, "%s \n", argv[0]);
-                return 1;
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-l") == 0) {
+            long_format = 1;
+            start++;
+        } else {
+            break;
         }
     }
 
-    if (optind == argc) {
+    if (start == argc) {
         if (lstat(".", &sb) == 0 && S_ISDIR(sb.st_mode)) {
             print_directory_contents(".", long_format);
         } else {
             print_err(argv[0], ".", strerror(errno));
         }
     } else {
-        for (int i = optind; i < argc; i++) {
+        for (int i = start; i < argc; i++) {
             if (lstat(argv[i], &sb) == 0) {
                 if (argc == optind + 1) {
                     print_directory_contents(argv[i], long_format);
