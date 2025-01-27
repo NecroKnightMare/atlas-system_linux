@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     int long_format;
 
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-l") == 0) {
+        if (argv[i][0] == '-' && argv[i][1] == 'l' && argv[i][2] == '\0') {
             long_format = 1;
             start++;
         } else {
