@@ -6,7 +6,7 @@
 #include "hls.h"
 
 void print_err(const char *program, const char *path, const char *error_mess) {
-    fprintf(stderr, "%s: cannot open directory %s: %s\n", program, path, error_mess);
+    fprintf(stderr, "%s: cannot access %s: %s\n", program, path, error_mess);
 }
 
 int main(int argc, const char *argv[]) {
