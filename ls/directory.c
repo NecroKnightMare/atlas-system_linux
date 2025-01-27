@@ -14,7 +14,7 @@ void print_directory_contents(const char *directory) {
 int open_directory(const char *directory, DIR **dir) {
     *dir = opendir(directory);
     if (*dir == NULL) {
-        perror("./hls_01: cannot open directory test: ");
+        perror("./hls_01: cannot open directory test");
         return -1;
     }
     return 0;
