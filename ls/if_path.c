@@ -14,9 +14,9 @@ void if_path(const char *path, const char *program) {
         } else if (S_ISREG(sb.st_mode)) {
             printf("%s\n", path);
         } else {
-            print_err(program, path, strerror(errno));
+            print_err(program, path);
         }
     } else {
-        print_err(program, path, strerror(errno));
+        print_err(program, path);
     }
 }

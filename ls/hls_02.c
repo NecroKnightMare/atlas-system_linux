@@ -9,8 +9,22 @@
 #include <string.h>
 #include "hls.h"
 
-void print_err(const char *program, const char *path, const char *error_mess) {
-    fprintf(stderr, "%s: cannot access %s: %s\n", program, path, error_mess);
+void print_err(const char *program, const char *path) {
+    fprintf(stderr, "%s: cannot access %s: \n", program, path);
+    switch (errno) {
+        case EACCES:
+            fprintf(stderr, "\n");
+            break;
+        case ENOENT:
+            fprintf(stderr, "\n");
+            break;
+        case ENOTDIR:
+            fprintf(stderr, "\n");
+            break;
+        default:
+            fprintf(stderr, "\n");
+            break;
+    }
 }
 
 int main(int argc, char *argv[]) {
@@ -31,7 +45,7 @@ int main(int argc, char *argv[]) {
         if (lstat(".", &sb) == 0 && S_ISDIR(sb.st_mode)) {
             print_directory_contents(".", long_format);
         } else {
-            print_err(argv[0], ".", strerror(errno));
+            print_err(argv[0], ".");
         }
     } else {
         for (int i = start; i < argc; i++) {
@@ -48,7 +62,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
             } else {
-                print_err(argv[0], argv[i], strerror(errno));
+                print_err(argv[0], argv[i]);
             }
         }
     }

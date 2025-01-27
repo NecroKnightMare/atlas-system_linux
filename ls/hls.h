@@ -17,7 +17,7 @@ typedef struct {
 void print_directory_contents(const char *directory, int long_format);
 int open_directory(const char *directory, DIR **dir);
 void read_directory_entries(DIR *dir, const char *directory, int long_format);
-void print_err(const char *program, const char *path, const char *error_mess);
+void print_err(const char *program, const char *path);
 void if_path(const char *path, const char *program);
 void longlistfmt_print(longlistfmt_t *longlist);
 int longlistfmt_init(longlistfmt_t *longlist,
