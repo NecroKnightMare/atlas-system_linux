@@ -13,7 +13,7 @@ int main(int argc, const char *argv[]) {
     struct stat sb;
 
     if (argc == 1) {
-        print_directory_contents(".");
+        print_directory_contents("");
     } else {
         for (int i = 1; i < argc; i++) {
             if (lstat(argv[i], &sb) == 0) {
@@ -21,7 +21,7 @@ int main(int argc, const char *argv[]) {
                 // or if it is a directory
                 //added but still wrong. need seperate conditions
                 // print_directory_contents(argv[i]);
-                if (argc > 2 ||  (argc == 2 && S_ISDIR(sb.st_mode))) {
+                if (argc > 2 ) { // ||  (argc == 2 && S_ISDIR(sb.st_mode))) {
                     printf("%s:\n", argv[i]);
                 }
                 if_path(argv[i], argv[0]);
