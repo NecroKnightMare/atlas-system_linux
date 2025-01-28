@@ -199,8 +199,10 @@ int main(int argc, const char *argv[])
 				}
 				else
 				{
+                    if (argv[i][0] != '.') {
 					print_file_info(argv[i]);
-				}
+				    }
+                }
 			}
 			else
 			{
@@ -211,7 +213,7 @@ int main(int argc, const char *argv[])
 	return (0);
 }
 
-// task 2 script that keeps cakking fputs
+// task 2 script that keeps pulling fputs
 // #include <stdio.h>
 // #include <limits.h>
 // #include <unistd.h>
