@@ -168,51 +168,56 @@ int main(int argc, const char *argv[])
 	}
 
 	if (argc == 1 || (argc == 2 && option_one))
-	{
+    {
 		print_directory_contents(".", option_one);
 	}
-	else
-	{
+    else
+    {
 		for (int i = 1; i < argc; i++)
-		{
-			/* Skip -1 option */
-			if (argv[i][0] == '-' && argv[i][1] == '1' && argv[i][2] == '\0')
-			{
-				continue;
-			}
+        {
+		    /* Skip -1 option */
+            if (argv[i][0] == '-' && argv[i][1] == '1' && argv[i][2] == '\0')
+            {
+                continue;
+            }
 
-			if (lstat(argv[i], &sb) == 0)
-			{
-				if (S_ISDIR(sb.st_mode))
-				{
-					/* Print directory name if multiple directories */
-					if (dir_count > 1)
-					{
-						printf("%s:\n", argv[i]);
-					}
-					print_directory_contents(argv[i], option_one);
-					/* Print newline between directories */
-					if (dir_count > 1 && i < argc - 1)
-					{
-						printf("\n");
-					}
-				}
-				else
-				{
-                    if (argv[i][0] != '.') {
-					print_file_info(argv[i]);
-				    }
+            if (lstat(argv[i], &sb) == 0 && !S_ISDIR(sb.st_mode))
+            {
+                if (argv[i][0] != '.')
+                {
+				/* Print directory name if multiple directories */
+                    print_file_info(argv[i]);
+			    }
+            }
+        }
+        for (int i = 1; i < argc; i++)
+        {
+			if (argv[i][0] == '-' && argv[i][1] == '1' && argv[i][2] == '\0')
+            {
+                continue;
+            }
+
+            if (lstat(argv[i], &sb) == 0)
+            {
+                if (S_ISDIR(sb.st_mode))
+                {
+                    if (dir_count > 1)
+                    {
+                        printf("%s: \n", argv[i]);
+                    }
+                    print_directory_contents(argv[i], option_one);
+                    if (dir_count > 1 && i < argc -1)
+                    {
+                        printf("\n");
+                    }
                 }
-			}
-			else
-			{
-				print_err(argv[0], argv[i]);
-			}
-		}
-	}
+            } else {
+                print_err(argv[0], argv[i]);
+		    }
+	    }
+    }
 	return (0);
 }
-
 // task 2 script that keeps pulling fputs
 // #include <stdio.h>
 // #include <limits.h>
