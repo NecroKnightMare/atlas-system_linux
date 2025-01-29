@@ -6,7 +6,7 @@
 
 int scan_sort(const struct dirent **a, const struct dirent **b)
 {
-    return strcmp((*a)->d_name, (*b)->d_name);
+    return strcasecmp((*a)->d_name, (*b)->d_name);
 }
 
 int quick_sort(const void *a, const void *b) {
