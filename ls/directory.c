@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <string.h>
+#include <stdlib.h>
 #include "hls.h"
 
 /* Prints the contents of a directory. */
@@ -8,17 +9,27 @@ void print_directory_contents(const char *path, int option_one, int hidden)
 {
 	DIR *dir;
 	struct dirent *entry;
+	struct dirent **sort_name;
+	int n;
 
 	if ((dir = opendir(path)) == NULL)
 	{
-		print_err("./hls_02", path);
+		print_err("./hls_03", path);
 		return;
 	}
-	while ((entry = readdir(dir)) != NULL)
+	n = scandir(path, &sort_name, NULL, alphasort);
+    if (n < 0) {
+        perror("scandir");
+        return;
+    }
+
+    for (int i = 0; i < n; i++)
 	{
-			//  Now prints hidden files 
+        entry = sort_name[i];
+
 		if (entry->d_name[0] == '.' && !hidden)
 		{
+			free(entry);
 			continue;
 		}
 			/* Skip hidden files when -1 is used */
@@ -46,7 +57,7 @@ int open_directory(const char *directory, DIR **dir)
 	*dir = opendir(directory);
 	if (*dir == NULL)
 	{
-		perror("./hls_01: cannot open directory");
+		perror("./hls_03: cannot open directory");
 		return -1;
 	}
 	return 0;
