@@ -199,7 +199,10 @@ int main(int argc, const char *argv[])
 				}
 				else
 				{
-					print_file_info(argv[i]);
+						if (argv[i][0] != '.')
+					{
+						print_file_info(argv[i]);
+					}
 				}
 			}
 			else
