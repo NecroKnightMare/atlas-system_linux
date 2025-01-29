@@ -206,28 +206,34 @@ int main(int argc, const char *argv[])
             continue;
         }
 
-        if (lstat(argv[i], &sb) == 0)
-        {
-            if (S_ISDIR(sb.st_mode))
-            {
-                if (dir_count > 1 || file_count > 0)
-                {
-                    printf("%s:\n", argv[i]);
-                }
-                print_directory_contents(argv[i]);
-                if (i < argc - 1)
-                {
-                    printf("\n");
-                }
-            }
-        }
-        else
-        {
-            print_err(argv[0], argv[i]);
-        }
-    }
-
-    return 0;
+			if (lstat(argv[i], &sb) == 0)
+			{
+				if (S_ISDIR(sb.st_mode))
+				{
+					/* Print directory name if multiple directories */
+					if (dir_count > 1)
+					{
+						printf("%s:\n", argv[i]);
+					}
+					print_directory_contents(argv[i], option_one);
+					/* Print newline between directories */
+					if (dir_count > 1 && i < argc - 1)
+					{
+						printf("\n");
+					}
+				}
+				else
+				{
+					print_file_info(argv[i]);
+				}
+			}
+			else
+			{
+				print_err(argv[0], argv[i]);
+			}
+		}
+	}
+	return (0);
 }
 
 // task 2 script that keeps cakking fputs
