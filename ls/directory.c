@@ -62,11 +62,11 @@ void print_directory_contents(const char *path, int option_one, int hidden)
         free(entry);
     }
     
-    qsort(sort_name, n, sizeof(struct dirent*), quick_sort);
-    for (int i = 0; i < n; i++)
-    {
-        printf("%s\n", sort_name[i]->d_name);
-    }
+    // qsort(sort_name, n, sizeof(struct dirent*), quick_sort);
+    // for (int i = 0; i < n; i++)
+    // {
+    //     printf("%s\n", sort_name[i]->d_name);
+    // }
     
     free(sort_name);
     closedir(dir);
