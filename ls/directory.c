@@ -43,11 +43,14 @@ void print_directory_contents(const char *path, int option_one, int hidden)
             if (lstat(entry_path, &sb) == -1)
 				{
                 print_err("./hls_02", entry_path);
+				free(entry);
                 continue;
             }
             print_long_format(&sb, entry->d_name);
         }
+		free(entry);
 	}
+	free(sort_name);
 	closedir(dir);
 }
 
