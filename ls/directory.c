@@ -4,7 +4,7 @@
 #include "hls.h"
 
 /* Prints the contents of a directory. */
-void print_directory_contents(const char *path, int option_one)
+void print_directory_contents(const char *path, int option_one, int hidden)
 {
 	DIR *dir;
 	struct dirent *entry;
@@ -16,8 +16,8 @@ void print_directory_contents(const char *path, int option_one)
 	}
 	while ((entry = readdir(dir)) != NULL)
 	{
-			/* Skip "." and ".." entries */
-		if (entry->d_name[0] == '.')
+			//  Now prints hidden files 
+		if (entry->d_name[0] == '.' && !hidden)
 		{
 			continue;
 		}
