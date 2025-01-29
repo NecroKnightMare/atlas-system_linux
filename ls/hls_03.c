@@ -189,6 +189,12 @@ int main(int argc, const char *argv[])
             printf("\n");
         }
 	}
+
+    for (int i = 0; i < dir_count; i++)
+    {
+        if_path(dirs[i], argv[0], hidden);
+    }
+    
     free(files);
     free(dirs);
 	return (0);
