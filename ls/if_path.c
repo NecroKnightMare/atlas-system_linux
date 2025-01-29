@@ -18,7 +18,10 @@ void if_path(const char *path, const char *program, int hidden)
 		}
 		else if (S_ISREG(sb.st_mode))
 		{
-			printf("%s\n", path);
+			if (hidden || path[0] != '.')
+			{
+				printf("%s\n", path);
+			}
 		}
 		else
 		{

@@ -4,6 +4,18 @@
 #include <stdlib.h>
 #include "hls.h"
 
+int scan_sort(const struct dirent **a, const struct dirent **b) {
+    
+    return strcmp((*a)->d_name, (*b)->d_name);
+}
+
+int quick_sort(const void *a, const void *b) {
+    const struct dirent *dir_a = *(const struct dirent **)a;
+    const struct dirent *dir_b = *(const struct dirent **)b;
+
+    // Add your comparison logic here
+    return strcmp(dir_a->d_name, dir_b->d_name);
+}
 /* Prints the contents of a directory. */
 void print_directory_contents(const char *path, int option_one, int hidden)
 {
@@ -17,41 +29,47 @@ void print_directory_contents(const char *path, int option_one, int hidden)
 		print_err("./hls_03", path);
 		return;
 	}
-	n = scandir(path, &sort_name, NULL, alphasort);
+    n = scandir(path, &sort_name, NULL, scan_sort);
     if (n < 0) {
         perror("scandir");
         return;
     }
 
     for (int i = 0; i < n; i++)
-	{
+    {
         entry = sort_name[i];
 
-		if (entry->d_name[0] == '.' && !hidden)
-		{
-			free(entry);
-			continue;
-		}
-			/* Skip hidden files when -1 is used */
-		if (option_one)
-		{
+        if (!hidden && entry->d_name[0] == '.' && entry->d_name[1] != '\0')
+        {
+            free(entry);
+            continue;
+        }
+        
+        if (option_one || !hidden)
+        {
             printf("%s\n", entry->d_name);
-	
-		} else {
+        } else
+        {
             struct stat sb;
             const char *entry_path = path_join(path, entry->d_name);
             if (lstat(entry_path, &sb) == -1)
-				{
+            {
                 print_err("./hls_02", entry_path);
-				free(entry);
-                continue;
             }
             print_long_format(&sb, entry->d_name);
         }
-		free(entry);
-	}
-	free(sort_name);
-	closedir(dir);
+        
+        free(entry);
+    }
+    
+    qsort(sort_name, n, sizeof(struct dirent*), quick_sort);
+    for (int i = 0; i < n; i++)
+    {
+        printf("%s\n", sort_name[i]->d_name);
+    }
+    
+    free(sort_name);
+    closedir(dir);
 }
 
 /* Opens a directory. */
