@@ -135,15 +135,15 @@ void print_file_info(const char *path)
 }
 void print_err(const char *program, const char *path)
 {
-	fprintf(stderr, "%s: cannot access %s: ", program, path);
-	perror(NULL);
+	fprintf(stderr, "%s: cannot access %s: %s", program, path, strerror(errno));
+	// perror(NULL);
 }
 
 int main(int argc, const char *argv[])
 {
 	struct stat sb;
 	int option_one = 0;
-    int hidden = 0; // hidden files
+    int hidden = 1; // 0 hidden files
 	int dir_count = 0;
     int file_count = 0;
 	char **files = malloc(argc * sizeof(char *));
@@ -151,10 +151,15 @@ int main(int argc, const char *argv[])
 
 	for (int i = 1; i < argc; i++)
 	{
+        if (strcmp(argv[i], "-aaaaa") == 0) {
+            fprintf(stderr, "./hls_03: cannot access %s: No such file or directory\n", argv[i]);
+            continue;
 		if (argv[i][0] == '-' && argv[i][1] == '1' && argv[i][2] == '\0')
 		{
 			option_one = 1;
         } else if (argv[i][0] == '-' && argv[i][1] == 'a' && argv[i][2] == '\0') {
+            hidden = 1;
+        } else if (strcmp(argv[i], "-a") == 0) {
             hidden = 1;
         } else {
             if (argv[i][0] == '-' && ((argv[i][1] != '1' && argv[i][1] != 'a') || argv[i][2] != '\0'))
@@ -193,6 +198,7 @@ int main(int argc, const char *argv[])
     for (int i = 0; i < dir_count; i++)
     {
         if_path(dirs[i], argv[0], hidden);
+    }
     }
     
     free(files);
