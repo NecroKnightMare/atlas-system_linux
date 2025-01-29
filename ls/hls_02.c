@@ -143,6 +143,7 @@ int main(int argc, const char *argv[])
 	struct stat sb;
 	int option_one = 0;
 	int dir_count = 0;
+	int file_count = 0;
 
 	for (int i = 1; i < argc; i++)
 	{
