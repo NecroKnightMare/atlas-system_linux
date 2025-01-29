@@ -4,40 +4,48 @@
 #include "hls.h"
 
 /* Prints the contents of a directory. */
-void print_directory_contents(const char *path, int option_one)
+void print_directory_contents(const char *path)
 {
-	DIR *dir;
+	DIR *dir = opendir(path);
 	struct dirent *entry;
 
-	if ((dir = opendir(path)) == NULL)
+	if (dir == NULL)
 	{
 		print_err("./hls_02", path);
 		return;
 	}
-	while ((entry = readdir(dir)) != NULL)
-	{
+		while ((entry = readdir(dir)) != NULL)
+		{
 			/* Skip "." and ".." entries */
-		if (entry->d_name[0] == '.')
-		{
-			continue;
-		}
-			/* Skip hidden files when -1 is used */
-		if (option_one)
-		{
-            printf("%s\n", entry->d_name);
-	
-		} else {
-            struct stat sb;
-            const char *entry_path = path_join(path, entry->d_name);
-            // -1 and "hls" changed
-			if (lstat(entry_path, &sb) == 0)
+			if (entry->d_name[0] == '.')
+			{
+				struct stat sb;
+				const char *entry_path = path_join(path, entry->d_name);
+				if (lstat(entry_path, &sb) == 0)
 				{
-                print_err("hls", entry_path);
-                continue;
-            }
-            print_long_format(&sb, entry->d_name);
-        }
-	}
+					print_long_format(&sb, entry->d_name);
+
+		// 	continue;
+		// }
+		// 	/* Skip hidden files when -1 is used */
+		// if (option_one)
+		// {
+        //     printf("%s\n", entry->d_name);
+	
+				} 
+				else 
+				{
+				// struct stat sb;
+            // const char *entry_path = path_join(path, entry->d_name);
+            // // -1 and "hls" changed
+			// if (lstat(entry_path, &sb) == 0)
+			// 	{
+                	print_err("hls", entry_path);
+            //     continue;
+            	}
+            // print_long_format(&sb, entry->d_name);
+        	}
+		}
 	closedir(dir);
 }
 

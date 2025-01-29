@@ -141,98 +141,93 @@ void print_err(const char *program, const char *path)
 int main(int argc, const char *argv[])
 {
 	struct stat sb;
-	int option_one = 0;
+	// int option_one = 0;
 	int dir_count = 0;
 	int file_count = 0;
 
 	for (int i = 1; i < argc; i++)
 	{
-	// 	if (argv[i][0] == '-' && argv[i][1] == '1' && argv[i][2] == '\0')
-	// 	{
-	// 		option_one = 1;
-	// 	}
-	// 	else
-	// 	{
-	// 		/* Skip invalid options (like -11111) */
-	// 		if (argv[i][0] == '-' && (argv[i][1] != '1' || argv[i][2] != '\0'))
-	// 		{
-	// 			print_err(argv[0], argv[i]);
-	// 			dir_count--;
-	// 		}
-
-	// 		/* Count ALL non-option arguments as directories */
-	// 		if (argv[i][0] != '-')
-	// 		{
-	// 			dir_count++;
-	// 		}
-	// 	}
-	// }
-
-			if (argc == 1 || (argc == 2 && option_one))
-			{
-				print_directory_contents(".", option_one);
-				if (argv[i][0] == '-' && argv[i][1] == '1' && argv[i][2] == '\0')
-				{
-				if (S_ISDIR(sb.st_mode))
-                {
-                    dir_count++;
-                }
-                else
-                {
-                    file_count++;
-				}
-			}
-            else
-            {
-                print_err(argv[0], argv[i]);
-			}
-		}
-		else
+		if (argv[i][0] == '-' && argv[i][1] == '1' && argv[i][2] == '\0')
 		{
-			print_err(argv[0], argv[i]);
+			continue;
 		}
-	}
-		for (int i = 1; i < argc; i++)
-        {
-		    /* Skip -1 option */
-            if (argv[i][0] == '-' && argv[i][1] == '1' && argv[i][2] == '\0')
-            {
-                continue;
-            }
-
+		else if (argv[i][0] != '-')
+		{
 			if (lstat(argv[i], &sb) == 0)
 			{
 				if (S_ISDIR(sb.st_mode))
 				{
-					/* Print directory name if multiple directories */
-					if (dir_count > 1 || file_count > 0)
-					{
-						printf("%s:\n", argv[i]);
-					}
-					print_directory_contents(argv[i], option_one);
-					/* Print newline between directories */
-				// 	if (dir_count > 1 && i < argc - 1)
-				// 	{
-				// 		printf("\n");
-				// 	}
-				// }
-				// else
-				// {
-					if (i < argc -1 )
-					// if (argv[i][0] != '.')
-				{
-					printf("\n");
-					// print_file_info(argv[i]);
+					dir_count++;
 				}
-			}	
+				else
+				{
+					file_count++;
+				}
+			}
+			else
+			{
+				print_err(argv[0], argv[1]);
+			}
 		}
 		else
 		{
 			print_err(argv[0], argv[i]);
-// }
 		}
 	}
-	return (0);
+
+	for (int i = 1; i < argc; i++)
+	{
+		if (argv[i][0] == '-' && (argv[i][1] != '1' || argv[i][2] != '\0'))
+		{
+			/* Skip invalid options (like -11111) */
+			continue;
+		}
+
+		if (lstat(argv[i], &sb) == 0)
+		{
+			if (!S_ISDIR(sb.st_mode))
+			{
+				print_file_info(argv[i]);
+			}
+		}
+		else
+		{
+			print_err(argv[0], argv[i]);
+		}
+	}
+	if (file_count> 0 && dir_count > 0)
+	{
+		printf("\n");
+	}
+	for (int i = 1; i < argc; i++)
+    {
+        if (argv[i][0] == '-' && argv[i][1] == '1' && argv[i][2] == '\0')
+        {
+            continue;
+        }
+
+        if (lstat(argv[i], &sb) == 0)
+        {
+            if (S_ISDIR(sb.st_mode))
+            {
+                if (dir_count > 1 || file_count > 0)
+                {
+                    printf("%s:\n", argv[i]);
+                }
+                print_directory_contents(argv[i]);
+                if (i < argc - 1)
+                {
+                    printf("\n");
+                }
+            }
+        }
+        else
+        {
+            print_err(argv[0], argv[i]);
+        }
+    }
+
+    return 0;
 }
 
 // task 2 script that keeps cakking fputs
