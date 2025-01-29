@@ -4,39 +4,37 @@
 #include "hls.h"
 
 /* Prints the contents of a directory. */
-void print_directory_contents(const char *path, int option_one)
+void print_directory_contents(const char *directory, int option_one)
 {
 	DIR *dir;
 	struct dirent *entry;
 
-	if ((dir = opendir(path)) == NULL)
+	if (open_directory(directory, &dir) == 0)
 	{
-        print_err("./hls_02", path);
-        return;
-    }
 		while ((entry = readdir(dir)) != NULL)
 		{
 			/* Skip "." and ".." entries */
-			if (entry->d_name[0] == '.') {
+			if ((entry->d_name[0] == '.' && entry->d_name[1] == '\0') ||
+				(entry->d_name[0] == '.' && entry->d_name[1] == '.' && entry->d_name[2] == '\0'))
+			{
 				continue;
 			}
+
 			/* Skip hidden files when -1 is used */
-			if (option_one) {
-                printf("%s\n", entry->d_name);
-	
-			} else {
-                struct stat sb;
-                const char *entry_path = path_join(path, entry->d_name);
-                if (lstat(entry_path, &sb) == -1) {
-                    print_err("./hls_02", entry_path);
-                    continue;
-                }
-                print_long_format(&sb, entry->d_name);
-            }
+			if (option_one && entry->d_name[0] == '.')
+			{
+				continue;
+			}
+
+			printf("%s\n", entry->d_name); /* Print one entry per line */
 		}
 		closedir(dir);
+	}
+	else
+	{
+		print_err("./hls_02", directory);
+	}
 }
-
 
 /* Opens a directory. */
 int open_directory(const char *directory, DIR **dir)
