@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include "hls.h"
 
-int scan_sort(const struct dirent **a, const struct dirent **b) {
-    
+int scan_sort(const struct dirent **a, const struct dirent **b)
+{
     return strcmp((*a)->d_name, (*b)->d_name);
 }
 
@@ -13,8 +13,8 @@ int quick_sort(const void *a, const void *b) {
     const struct dirent *dir_a = *(const struct dirent **)a;
     const struct dirent *dir_b = *(const struct dirent **)b;
 
-    // Add your comparison logic here
-    return strcmp(dir_a->d_name, dir_b->d_name);
+    // case insensitive
+    return strcasecmp(dir_a->d_name, dir_b->d_name);
 }
 /* Prints the contents of a directory. */
 void print_directory_contents(const char *path, int option_one, int hidden)
