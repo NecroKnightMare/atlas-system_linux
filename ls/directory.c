@@ -29,9 +29,10 @@ void print_directory_contents(const char *path, int option_one)
 		} else {
             struct stat sb;
             const char *entry_path = path_join(path, entry->d_name);
-            if (lstat(entry_path, &sb) == -1)
+            // -1 and "hls" changed
+			if (lstat(entry_path, &sb) == 0)
 				{
-                print_err("./hls_02", entry_path);
+                print_err("hls", entry_path);
                 continue;
             }
             print_long_format(&sb, entry->d_name);
