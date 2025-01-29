@@ -4,7 +4,7 @@
 #include "hls.h"
 
 /* Prints the contents of a directory. */
-void print_directory_contents(const char *path)
+void print_directory_contents(const char *path, int option_one)
 {
 	DIR *dir;
 	struct dirent *entry;
