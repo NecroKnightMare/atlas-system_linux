@@ -1,8 +1,15 @@
-#include <stdio.h>
-#include <dirent.h>
-#include <string.h>
-#include <stdlib.h>
 #include "hls.h"
+#include <dirent.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <limits.h>
+
+int is_hidden_file(const char *filename)
+{
+    return (filename[0] == '.');
+}
 
 int custom_strcmp(const char *str1, const char *str2)
 {
@@ -19,55 +26,81 @@ int scan_sort(const struct dirent **a, const struct dirent **b)
     return custom_strcmp((*a)->d_name, (*b)->d_name);
 }
 
-int quick_sort(const void *a, const void *b) {
-    const struct dirent *dir_a = *(const struct dirent **)a;
-    const struct dirent *dir_b = *(const struct dirent **)b;
+// int quick_sort(const void *a, const void *b) {
+//     const struct dirent *dir_a = *(const struct dirent **)a;
+//     const struct dirent *dir_b = *(const struct dirent **)b;
 
-    // case insensitive
-    return custom_strcmp(dir_a->d_name, dir_b->d_name);
-}
+//     // case insensitive
+//     return custom_strcmp(dir_a->d_name, dir_b->d_name);
+// }
 /* Prints the contents of a directory. */
-void print_directory_contents(const char *path, int hidden, int almost_all) {
+void print_directory_contents(const char *path, int hidden, int almost_all, int print_dir_name, int single_directory, int long_format)
+{
     DIR *dir;
-    struct dirent *entry;
-    struct dirent **sort_name;
+    struct dirent **namelist;
     int n;
 
-    if ((dir = opendir(path)) == NULL) {
-        print_err("./hls_03", path);
+    if ((dir = opendir(path)) == NULL)
+    {
+        perror("opendir");
         return;
     }
 
-    n = scandir(path, &sort_name, NULL, scan_sort);
-    if (n < 0) {
+    n = scandir(path, &namelist, NULL, scan_sort);
+    if (n < 0)
+    {
         perror("scandir");
+        closedir(dir);
         return;
     }
 
-    printf("%s:\n", path);
+    if (print_dir_name)
+    {
+        printf("%s:\n", path);
+    }
 
-    for (int i = 0; i < n; i++) {
-        entry = sort_name[i];
+    for (int i = 0; i < n; i++)
+    {
+        struct dirent *entry = namelist[i];
 
-        // Skip hidden files if hidden flag is not set
-        if (!hidden && entry->d_name[0] == '.') {
+        // Skip "." and ".." if the almost_all flag is set
+        if (almost_all && (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0))
+        {
             free(entry);
             continue;
         }
 
-        // Skip '.' and '..' if almost_all flag is set
-        if (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0)) {
+        // Skip hidden files if single_directory is true and the hidden flag is not set
+        if (single_directory && !hidden && is_hidden_file(entry->d_name))
+        {
             free(entry);
             continue;
         }
 
-        // Print the entry
-        printf("%s\n", entry->d_name);
+        if (long_format)
+        {
+            struct stat sb;
+            char full_path[PATH_MAX];
+            snprintf(full_path, PATH_MAX, "%s/%s", path, entry->d_name);
+
+            if (lstat(full_path, &sb) == -1)
+            {
+                perror("lstat");
+                free(entry);
+                continue;
+            }
+
+            print_long_format(&sb, entry->d_name);
+        }
+        else
+        {
+            printf("%s\n", entry->d_name);
+        }
 
         free(entry);
     }
 
-    free(sort_name);
+    free(namelist);
     closedir(dir);
 }
 
