@@ -64,6 +64,12 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
             printf("%s\n", entry->d_name);
         }
 
+// skips hidden
+        if (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0))
+        {
+             free(entry);
+             continue;
+        }
         free(entry);
     }
 
