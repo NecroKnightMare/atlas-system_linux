@@ -19,33 +19,28 @@ int scan_sort(const struct dirent **a, const struct dirent **b)
     return custom_strcmp((*a)->d_name, (*b)->d_name);
 }
 
-// int quick_sort(const void *a, const void *b) {
-//     const struct dirent *dir_a = *(const struct dirent **)a;
-//     const struct dirent *dir_b = *(const struct dirent **)b;
 
-//     // case insensitive
-//     return custom_strcmp(dir_a->d_name, dir_b->d_name);
-// }
 /* Prints the contents of a directory. */
 void print_directory_contents(const char *path, int hidden, int almost_all, int print_dir_name)
 {
     DIR *dir;
-    struct dirent *entry;
-    struct dirent **sort_name;
+    struct dirent **namelist;
     int n;
 
     if ((dir = opendir(path)) == NULL)
     {
-        print_err("./hls_04", path);
+        perror("opendir");
         return;
     }
 
-    n = scandir(path, &sort_name, NULL, scan_sort);
+    n = scandir(path, &namelist, NULL, scan_sort);
     if (n < 0)
     {
         perror("scandir");
+        closedir(dir);
         return;
     }
+
     if (print_dir_name)
     {
         printf("%s:\n", path);
@@ -53,22 +48,29 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
 
     for (int i = 0; i < n; i++)
     {
-        entry = sort_name[i];
-        // file 3 code
-        // Skip hidden files if hidden flag is not set
-        if ((!hidden && entry->d_name[0] == '.') || 
-            (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0)))
+        struct dirent *entry = namelist[i];
+
+        // Skip "." and ".." if the almost_all flag is set
+        if (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0))
         {
             free(entry);
             continue;
         }
-            printf("%s\n", entry->d_name);
-            free(entry);
-        }
-    free(sort_name);
-    closedir(dir);
-}
 
+        // Print entry names including hidden ones if the hidden flag is set
+        if (hidden || almost_all || entry->d_name[0] != '.')
+        {
+            printf("%s\n", entry->d_name);
+        }
+
+        free(entry);
+    }
+
+    free(namelist);
+    closedir(dir);
+
+}
+// gonna rewrite
 // file 3 code    // Skip '.' and '..' if almost_all flag is set
 //         if (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0)) {
 //             free(entry);
