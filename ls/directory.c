@@ -62,24 +62,19 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
             continue;
         }
 
-        // Print entry names including hidden ones if the hidden flag is set
-        if (hidden || almost_all || entry->d_name[0] != '.')
-        {
-            printf("%s\n", entry->d_name);
-        }
-
-// skips hidden
-        else if (!hidden && is_hidden_file(entry->d_name))
+        // Skip hidden files if the hidden flag is not set
+        if (!hidden && is_hidden_file(entry->d_name))
         {
             free(entry);
             continue;
         }
+
+        printf("%s\n", entry->d_name);
         free(entry);
     }
 
     free(namelist);
     closedir(dir);
-
 }
 // gonna rewrite
 // file 3 code    // Skip '.' and '..' if almost_all flag is set
