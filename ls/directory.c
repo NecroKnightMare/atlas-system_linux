@@ -69,7 +69,7 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
         }
 
 // skips hidden
-        if (!hidden && is_hidden_file(entry->d_name))
+        else if (!hidden && is_hidden_file(entry->d_name))
         {
             free(entry);
             continue;
