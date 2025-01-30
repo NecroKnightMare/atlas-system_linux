@@ -50,28 +50,37 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
 
     for (int i = 0; i < n; i++) {
         entry = sort_name[i];
-
+        // file 3 code
         // Skip hidden files if hidden flag is not set
-        if (!hidden && entry->d_name[0] == '.') {
-            free(entry);
-            continue;
+        // if (!hidden && entry->d_name[0] == '.') {
+        //     free(entry);
+        //     continue;
+        // }
+        if ((!hidden && entry->d_name[0] != '.') || hidden || (almost_all && strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0))
+        {
+            printf("%s\n", entry->d_name);
         }
-
-        // Skip '.' and '..' if almost_all flag is set
-        if (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0)) {
-            free(entry);
-            continue;
-        }
-
-        // Print the entry
-        printf("%s\n", entry->d_name);
-
         free(entry);
     }
-
-    free(sort_name);
+    free(entry);
     closedir(dir);
 }
+
+// file 3 code    // Skip '.' and '..' if almost_all flag is set
+//         if (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0)) {
+//             free(entry);
+//             continue;
+//         }
+
+//         // Print the entry
+//         printf("%s\n", entry->d_name);
+
+//         free(entry);
+//     }
+
+//     free(sort_name);
+//     closedir(dir);
+// }
 
 /* Opens a directory. */
 int open_directory(const char *directory, DIR **dir)
