@@ -148,12 +148,12 @@ int main(int argc, const char *argv[]) {
     char **dirs = malloc(argc * sizeof(char *));
 
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-aaaaa") == 0) {
+        if (strcoll(argv[i], "-aaaaa") == 0) {
             fprintf(stderr, "./hls_03: cannot access %s: No such file or directory\n", argv[i]);
             continue;
-        } else if (strcmp(argv[i], "-1") == 0) {
+        } else if (strcoll(argv[i], "-1") == 0) {
             option_one = 1;
-        } else if (strcmp(argv[i], "-a") == 0) {
+        } else if (strcoll(argv[i], "-a") == 0) {
             hidden = 1;
         } else {
             if (lstat(argv[i], &sb) == 0) {
