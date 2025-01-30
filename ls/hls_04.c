@@ -151,7 +151,7 @@ int main(int argc, const char *argv[]) {
 
     for (int i = 1; i < argc; i++) {
         if (custom_strcmp(argv[i], "-aaaaa") == 0) {
-            fprintf(stderr, "./hls_04: cannot access %s: No such file or directory\n", argv[i]);
+            fprintf(stderr, "./hls_03: cannot access %s: No such file or directory\n", argv[i]);
             continue;
         // } else if (custom_strcmp(argv[i], "-1") == 0) {
         //     option_one = 1;
@@ -167,8 +167,7 @@ int main(int argc, const char *argv[]) {
                     files[file_count++] = (char *)argv[i];
                 }
             } else {
-                //argv[0] removed
-                perror(argv[i]);
+                print_err(argv[0], argv[i]);
             }
         }
     }
@@ -178,7 +177,10 @@ int main(int argc, const char *argv[]) {
     }
 
     for (int i = 0; i < dir_count; i++) {
-        print_directory_contents(dirs[i], hidden, almost_all, dir_count > 1);
+        if (dir_count > 1) {
+            printf("%s:\n", dirs[i]);
+        }
+        print_directory_contents(dirs[i], hidden, almost_all);
         if (dir_count > 1 && i < dir_count - 1) {
             printf("\n");
         }
