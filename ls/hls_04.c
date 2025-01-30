@@ -138,23 +138,27 @@ void print_err(const char *program, const char *path)
 	fprintf(stderr, "%s: cannot access %s: ", program, path);
 	perror(NULL);
 }
+
 int main(int argc, const char *argv[]) {
     struct stat sb;
-    int option_one = 0;
-    int hidden = 0;
+    // int option_one = 0; -l option
+    int hidden = 0; // hidden files
+    int almost_all = 0; //
     int dir_count = 0;
     int file_count = 0;
     char **files = malloc(argc * sizeof(char *));
     char **dirs = malloc(argc * sizeof(char *));
 
     for (int i = 1; i < argc; i++) {
-        if (strcoll(argv[i], "-aaaaa") == 0) {
+        if (custom_strcmp(argv[i], "-aaaaa") == 0) {
             fprintf(stderr, "./hls_03: cannot access %s: No such file or directory\n", argv[i]);
             continue;
-        } else if (strcoll(argv[i], "-1") == 0) {
-            option_one = 1;
-        } else if (strcoll(argv[i], "-a") == 0) {
+        // } else if (custom_strcmp(argv[i], "-1") == 0) {
+        //     option_one = 1;
+        } else if (custom_strcmp(argv[i], "-a") == 0) {
             hidden = 1;
+        } else if (custom_strcmp(argv[i], "-A") == 0) {
+            almost_all = 1;
         } else {
             if (lstat(argv[i], &sb) == 0) {
                 if (S_ISDIR(sb.st_mode)) {
@@ -176,7 +180,7 @@ int main(int argc, const char *argv[]) {
         if (dir_count > 1) {
             printf("%s:\n", dirs[i]);
         }
-        print_directory_contents(dirs[i], option_one, hidden);
+        print_directory_contents(dirs[i], hidden, almost_all);
         if (dir_count > 1 && i < dir_count - 1) {
             printf("\n");
         }
