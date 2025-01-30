@@ -168,7 +168,7 @@ int main(int argc, const char *argv[]) {
                 }
             } else {
                 //argv[0] removed
-                print_err(argv[0], argv[i]);
+                perror(argv[i]);
             }
         }
     }

@@ -27,19 +27,22 @@ int quick_sort(const void *a, const void *b) {
     return custom_strcmp(dir_a->d_name, dir_b->d_name);
 }
 /* Prints the contents of a directory. */
-void print_directory_contents(const char *path, int hidden, int almost_all, int print_dir_name) {
+void print_directory_contents(const char *path, int hidden, int almost_all, int print_dir_name)
+{
     DIR *dir;
     struct dirent *entry;
     struct dirent **sort_name;
     int n;
 
-    if ((dir = opendir(path)) == NULL) {
+    if ((dir = opendir(path)) == NULL)
+    {
         print_err("./hls_04", path);
         return;
     }
 
     n = scandir(path, &sort_name, NULL, scan_sort);
-    if (n < 0) {
+    if (n < 0)
+    {
         perror("scandir");
         return;
     }
@@ -48,22 +51,21 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
         printf("%s:\n", path);
     }
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         entry = sort_name[i];
         // file 3 code
         // Skip hidden files if hidden flag is not set
-        // if (!hidden && entry->d_name[0] == '.') {
-        //     free(entry);
-        //     continue;
-        // }
-        if ((!hidden && entry->d_name[0] != '.') || hidden || (almost_all && strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0))
+        if ((!hidden && entry->d_name[0] == '.') || 
+            (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0)))
         {
-            printf("%s\n", entry->d_name);
+            free(entry);
+            continue;
         }
-        free(entry);
-    }
-    free(entry);
-    closedir(dir);
+            printf("%s\n", entry->d_name);
+            free(entry);
+        }
+    free(sort_name);
 }
 
 // file 3 code    // Skip '.' and '..' if almost_all flag is set
