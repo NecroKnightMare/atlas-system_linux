@@ -149,60 +149,38 @@ int main(int argc, const char *argv[]) {
     char **files = malloc(argc * sizeof(char *));
     char **dirs = malloc(argc * sizeof(char *));
 
-	    for (int i = 1; i < argc; i++)
-    {
-        if (custom_strcmp(argv[i], "-a") == 0)
-        {
+    for (int i = 1; i < argc; i++) {
+        if (custom_strcmp(argv[i], "-aaaaa") == 0) {
+            fprintf(stderr, "./hls_04: cannot access %s: No such file or directory\n", argv[i]);
+            continue;
+        // } else if (custom_strcmp(argv[i], "-1") == 0) {
+        //     option_one = 1;
+        } else if (custom_strcmp(argv[i], "-a") == 0) {
             hidden = 1;
-        }
-        else if (custom_strcmp(argv[i], "-A") == 0)
-        {
+        } else if (custom_strcmp(argv[i], "-A") == 0) {
             almost_all = 1;
-        }
-        else
-        {
-            if (lstat(argv[i], &sb) == 0)
-            {
-                if (S_ISDIR(sb.st_mode))
-                {
+        } else {
+            if (lstat(argv[i], &sb) == 0) {
+                if (S_ISDIR(sb.st_mode)) {
                     dirs[dir_count++] = (char *)argv[i];
-                }
-                else
-                {
+                } else {
                     files[file_count++] = (char *)argv[i];
                 }
-            }
-            else
-            {
+            } else {
+                //argv[0] removed
                 perror(argv[i]);
             }
         }
     }
 
-    // Handling single directory case
-    if (dir_count == 1 && file_count == 0)
-    {
-        print_directory_contents(dirs[0], hidden, almost_all, 0, 1);
+    for (int i = 0; i < file_count; i++) {
+        print_file_info(files[i]);
     }
-    else
-    {
-        // Handling multiple directories or files
-        for (int i = 0; i < file_count; i++)
-        {
-            print_file_info(files[i]);
-        }
 
-        for (int i = 0; i < dir_count; i++)
-        {
-            if (argc > 2)
-            {
-                printf("%s:\n", dirs[i]);
-            }
-            if_path(dirs[i], argv[0], hidden, almost_all, dir_count > 1);
-            if (dir_count > 1 && i < dir_count - 1)
-            {
-                printf("\n");
-            }
+    for (int i = 0; i < dir_count; i++) {
+        print_directory_contents(dirs[i], hidden, almost_all, dir_count > 1);
+        if (dir_count > 1 && i < dir_count - 1) {
+            printf("\n");
         }
     }
 
@@ -210,71 +188,3 @@ int main(int argc, const char *argv[]) {
     free(dirs);
     return 0;
 }
-
-//        for (int i = 1; i < argc; i++)
-//     {
-//         if (custom_strcmp(argv[i], "-a") == 0)
-//         {
-//             hidden = 1;
-//         }
-//         else if (custom_strcmp(argv[i], "-A") == 0)
-//         {
-//             almost_all = 1;
-//         }
-//         else
-//         {
-//             if (lstat(argv[i], &sb) == 0)
-//             {
-//                 if (S_ISDIR(sb.st_mode))
-//                 {
-//                     dirs[dir_count++] = (char *)argv[i];
-//                 }
-//                 else
-//                 {
-//                     files[file_count++] = (char *)argv[i];
-//                 }
-//             }
-//             else
-//             {
-//                 perror(argv[i]);
-//             }
-//         }
-//     }
-
-//     // Handling single directory case
-//     if (dir_count == 1 && file_count == 0)
-//     {
-//         print_directory_contents(dirs[0], hidden, almost_all, 0, 1);
-//     }
-//     else
-//     {
-//         // Handling multiple directories or files
-//         for (int i = 0; i < file_count; i++)
-//         {
-//             print_file_info(files[i]);
-//         }
-
-//         for (int i = 1; i < dir_count; i++)
-//         {
-//             if (lstat(argv[i], &sb) == 0) {
-//                 // Print the directory name only if there are multiple arguments
-//                 // or if it is a directory
-//                 //added but still wrong. need seperate conditions
-//                 // print_directory_contents(argv[i]);
-//                 if (argc > 2 ) { // ||  (argc == 2 && S_ISDIR(sb.st_mode))) {
-//                     printf("%s:\n", argv[i]);
-//                 }
-//                 if_path(argv[i], argv[0]);
-//                 if (argc > 2 && i < argc - 1) {
-//                     printf("\n");
-//                 }
-//             } else {
-//                 print_err(argv[0], argv[i]);
-//             }
-//         }
-//     }
-
-//     free(files);
-//     free(dirs);
-// 	return 0;
-// }

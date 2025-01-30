@@ -4,19 +4,14 @@
 #include <stdlib.h>
 #include "hls.h"
 
-int is_hidden_file(const char *filename)
-{
-    return (filename[0] == '.');
-}
-// using ascii to sort
 int custom_strcmp(const char *str1, const char *str2)
 {
-    while (*str1 && ( (*str1 == *str2) || ((*str1 | 0x20) == (*str2 | 0x20) && (((*str1 >= 'a' && *str1 <= 'z') || (*str1 <= 'Z'))))))
+    while (*str1 && (*str1 == *str2))
     {
         str1++;
         str2++;
     }
-    return ((*str1 | 0x20) - (*str2 | 0x20));
+    return (*(unsigned char *)str1 - *(unsigned char *)str2);
 }
 
 int scan_sort(const struct dirent **a, const struct dirent **b)
@@ -24,28 +19,33 @@ int scan_sort(const struct dirent **a, const struct dirent **b)
     return custom_strcmp((*a)->d_name, (*b)->d_name);
 }
 
+// int quick_sort(const void *a, const void *b) {
+//     const struct dirent *dir_a = *(const struct dirent **)a;
+//     const struct dirent *dir_b = *(const struct dirent **)b;
 
+//     // case insensitive
+//     return custom_strcmp(dir_a->d_name, dir_b->d_name);
+// }
 /* Prints the contents of a directory. */
-void print_directory_contents(const char *path, int hidden, int almost_all, int print_dir_name, int single_directory)
+void print_directory_contents(const char *path, int hidden, int almost_all, int print_dir_name)
 {
     DIR *dir;
-    struct dirent **namelist;
+    struct dirent *entry;
+    struct dirent **sort_name;
     int n;
 
     if ((dir = opendir(path)) == NULL)
     {
-        perror("opendir");
+        print_err("./hls_04", path);
         return;
     }
 
-    n = scandir(path, &namelist, NULL, scan_sort);
+    n = scandir(path, &sort_name, NULL, scan_sort);
     if (n < 0)
     {
         perror("scandir");
-        closedir(dir);
         return;
     }
-
     if (print_dir_name)
     {
         printf("%s:\n", path);
@@ -53,30 +53,22 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
 
     for (int i = 0; i < n; i++)
     {
-        struct dirent *entry = namelist[i];
-
-        // Skip "." and ".." if the almost_all flag is set
-        if (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0))
+        entry = sort_name[i];
+        // file 3 code
+        // Skip hidden files if hidden flag is not set
+        if ((!hidden && entry->d_name[0] == '.') || 
+            (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0)))
         {
             free(entry);
             continue;
         }
-
-        // Skip hidden files if the hidden flag is not set
-        if (single_directory && !hidden && is_hidden_file(entry->d_name))
-        {
+            printf("%s\n", entry->d_name);
             free(entry);
-            continue;
         }
-
-        printf("%s\n", entry->d_name);
-        free(entry);
-    }
-
-    free(namelist);
+    free(sort_name);
     closedir(dir);
 }
-// gonna rewrite
+
 // file 3 code    // Skip '.' and '..' if almost_all flag is set
 //         if (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0)) {
 //             free(entry);
