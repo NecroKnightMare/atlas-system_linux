@@ -27,7 +27,7 @@ int quick_sort(const void *a, const void *b) {
     return custom_strcmp(dir_a->d_name, dir_b->d_name);
 }
 /* Prints the contents of a directory. */
-void print_directory_contents(const char *path, int __attribute__((unused))  hidden, int almost_all, int print_dir_name)
+void print_directory_contents(const char *path, int hidden, int almost_all, int print_dir_name)
 {
     DIR *dir;
     struct dirent *entry;
@@ -56,16 +56,15 @@ void print_directory_contents(const char *path, int __attribute__((unused))  hid
         entry = sort_name[i];
         // file 3 code
         // Skip hidden files if hidden flag is not set
-if (!almost_all || (entry->d_name[0] == '.' && entry->d_name[1] != '\0'))
+        if ((!hidden && entry->d_name[0] == '.') || 
+            (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0)))
         {
+            free(entry);
+            continue;
+        }
             printf("%s\n", entry->d_name);
             free(entry);
         }
-        else
-        {
-            free(entry);
-        }
-    }
     free(sort_name);
     closedir(dir);
 }
