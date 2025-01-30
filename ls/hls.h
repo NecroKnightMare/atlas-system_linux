@@ -41,7 +41,7 @@ const char *path_join(const char *dirpath, const char *entry_name);
 int mode_to_str(char *buf, mode_t mode);
 int longlistfmt_init(longlistfmt_t *longlist, const char *entry_name, struct stat *statbuf);
 void longlistfmt_print(longlistfmt_t *longlist);
-int quick_sort(const void *a, const void *b);
+// int quick_sort(const void *a, const void *b);
 int scan_sort(const struct dirent **a, const struct dirent **b);
 int custom_strcmp(const char *str1, const char *str2);
 
