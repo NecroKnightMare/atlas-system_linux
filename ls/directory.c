@@ -66,6 +66,7 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
             free(entry);
         }
     free(sort_name);
+    closedir(dir);
 }
 
 // file 3 code    // Skip '.' and '..' if almost_all flag is set
