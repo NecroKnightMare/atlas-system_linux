@@ -177,10 +177,7 @@ int main(int argc, const char *argv[]) {
     }
 
     for (int i = 0; i < dir_count; i++) {
-        if (dir_count > 1) {
-            printf("%s:\n", dirs[i]);
-        }
-        print_directory_contents(dirs[i], hidden, almost_all);
+        print_directory_contents(dirs[i], hidden, almost_all, dir_count > 1);
         if (dir_count > 1 && i < dir_count - 1) {
             printf("\n");
         }
