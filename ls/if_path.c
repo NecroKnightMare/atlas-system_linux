@@ -4,10 +4,9 @@
 #include <string.h>
 #include "hls.h"
 
-void if_path(const char *path, const char *program, int hidden)
+void if_path(const char *path, const char *program, int hidden, int almost_all, int print_dir_name)
 {
 	struct stat sb;
-	int print_dir_name = 1;
 
 	if (lstat(path, &sb) == 0)
 	{
@@ -15,7 +14,7 @@ void if_path(const char *path, const char *program, int hidden)
 		{
 			/* this prints dir name */
 			/* printf("%s\n", path); */
-			print_directory_contents(path, hidden, 1, print_dir_name, 1);
+			print_directory_contents(path, hidden, almost_all, print_dir_name, 1);
 		}
 		else if (S_ISREG(sb.st_mode))
 		{

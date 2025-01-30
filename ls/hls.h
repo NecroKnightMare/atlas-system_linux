@@ -34,7 +34,7 @@ int custom_sort(const void *a, const void *b);
 int open_directory(const char *directory, DIR **dir);
 void read_directory_entries(DIR *dir, int option_one);
 void print_err(const char *program, const char *path);
-void if_path(const char *path, const char *program, int hidden);
+void if_path(const char *path, const char *program, int hidden, int almost_all, int print_dir_name);
 void print_long_format(struct stat *sb, const char *name);
 const char *dirent_type_name(unsigned char d_type);
 const char *path_join(const char *dirpath, const char *entry_name);
