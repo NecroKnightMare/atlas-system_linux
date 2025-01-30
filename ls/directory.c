@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include "hls.h"
 
+int is_hidden_file(const char *filename)
+{
+    return (filename[0] == '.');
+}
 // using ascii to sort
 int custom_strcmp(const char *str1, const char *str2)
 {
@@ -65,10 +69,10 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
         }
 
 // skips hidden
-        if (almost_all && (custom_strcmp(entry->d_name, ".") == 0 || custom_strcmp(entry->d_name, "..") == 0))
+        if (!hidden && is_hidden_file(entry->d_name))
         {
-             free(entry);
-             continue;
+            free(entry);
+            continue;
         }
         free(entry);
     }

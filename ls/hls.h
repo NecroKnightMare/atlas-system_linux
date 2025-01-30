@@ -44,6 +44,7 @@ void longlistfmt_print(longlistfmt_t *longlist);
 // int quick_sort(const void *a, const void *b);
 int scan_sort(const struct dirent **a, const struct dirent **b);
 int custom_strcmp(const char *str1, const char *str2);
+int is_hidden_file(const char *filename);
 
 #endif /* HLS_H */
 
