@@ -29,7 +29,7 @@ struct node {
     struct node *next;
 };
 
-void print_directory_contents(const char *directory, int hidden, int almost_all, int print_dir_name);
+void print_directory_contents(const char *directory, int hidden, int almost_all, int print_dir_name, int single_directory);
 int custom_sort(const void *a, const void *b);
 int open_directory(const char *directory, DIR **dir);
 void read_directory_entries(DIR *dir, int option_one);

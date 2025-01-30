@@ -26,7 +26,7 @@ int scan_sort(const struct dirent **a, const struct dirent **b)
 
 
 /* Prints the contents of a directory. */
-void print_directory_contents(const char *path, int hidden, int almost_all, int print_dir_name)
+void print_directory_contents(const char *path, int hidden, int almost_all, int print_dir_name, int single_directory)
 {
     DIR *dir;
     struct dirent **namelist;
@@ -63,7 +63,7 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
         }
 
         // Skip hidden files if the hidden flag is not set
-        if (!hidden && !almost_all && is_hidden_file(entry->d_name))
+        if (single_directory && !hidden && is_hidden_file(entry->d_name))
         {
             free(entry);
             continue;

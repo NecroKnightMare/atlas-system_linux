@@ -15,7 +15,7 @@ void if_path(const char *path, const char *program, int hidden)
 		{
 			/* this prints dir name */
 			/* printf("%s\n", path); */
-			print_directory_contents(path, hidden, 1, print_dir_name);
+			print_directory_contents(path, hidden, 1, print_dir_name, 1);
 		}
 		else if (S_ISREG(sb.st_mode))
 		{

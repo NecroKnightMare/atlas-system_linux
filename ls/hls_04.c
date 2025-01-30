@@ -149,42 +149,64 @@ int main(int argc, const char *argv[]) {
     char **files = malloc(argc * sizeof(char *));
     char **dirs = malloc(argc * sizeof(char *));
 
-    for (int i = 1; i < argc; i++) {
-        if (custom_strcmp(argv[i], "-aaaaa") == 0) {
-            fprintf(stderr, "./hls_04: cannot access %s: No such file or directory\n", argv[i]);
-            continue;
-        // } else if (custom_strcmp(argv[i], "-1") == 0) {
-        //     option_one = 1;
-        } else if (custom_strcmp(argv[i], "-a") == 0) {
+       for (int i = 1; i < argc; i++)
+    {
+        if (custom_strcmp(argv[i], "-a") == 0)
+        {
             hidden = 1;
-        } else if (custom_strcmp(argv[i], "-A") == 0) {
+        }
+        else if (custom_strcmp(argv[i], "-A") == 0)
+        {
             almost_all = 1;
-        } else {
-            if (lstat(argv[i], &sb) == 0) {
-                if (S_ISDIR(sb.st_mode)) {
+        }
+        else
+        {
+            if (lstat(argv[i], &sb) == 0)
+            {
+                if (S_ISDIR(sb.st_mode))
+                {
                     dirs[dir_count++] = (char *)argv[i];
-                } else {
+                }
+                else
+                {
                     files[file_count++] = (char *)argv[i];
                 }
-            } else {
-                //argv[0] removed
+            }
+            else
+            {
                 perror(argv[i]);
             }
         }
     }
 
-    for (int i = 0; i < file_count; i++) {
-        print_file_info(files[i]);
+    // Handling single directory case
+    if (dir_count == 1 && file_count == 0)
+    {
+        print_directory_contents(dirs[0], hidden, almost_all, 0, 1);
     }
+    else
+    {
+        // Handling multiple directories or files
+        for (int i = 0; i < file_count; i++)
+        {
+            print_file_info(files[i]);
+        }
 
-    for (int i = 0; i < dir_count; i++) {
-        print_directory_contents(dirs[i], hidden, almost_all, dir_count > 1);
-        if (dir_count > 1 && i < dir_count - 1) {
-            printf("\n");
+        for (int i = 0; i < dir_count; i++)
+        {
+            if (argc > 2)
+            {
+                printf("%s:\n", dirs[i]);
+            }
+            print_directory_contents(dirs[i], hidden, almost_all, dir_count > 1, 0);
+            if (dir_count > 1 && i < dir_count - 1)
+            {
+                printf("\n");
+            }
         }
     }
 
     free(files);
     free(dirs);
-    return 0;
+	return 0;
 }
