@@ -63,7 +63,7 @@ void print_directory_contents(const char *path, int hidden, int almost_all, int 
         }
 
         // Skip hidden files if the hidden flag is not set
-        if (!hidden && is_hidden_file(entry->d_name))
+        if (!hidden && !almost_all && is_hidden_file(entry->d_name))
         {
             free(entry);
             continue;
