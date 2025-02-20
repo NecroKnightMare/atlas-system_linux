@@ -118,5 +118,11 @@ if __name__ == "__main__":
     try:
         attach(pid)
         find_and_replace_string(pid, "old_string", "new_string")
+    except OSError as e:
+        print(e)
     finally:
-        detach(pid)
+        try:
+            detach(pid)
+        except OSError as e:
+            print(e)
+
