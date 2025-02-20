@@ -19,8 +19,6 @@ Modules:
     sys            The sys module provides access to some variables used or maintained by the interpreter.
     ctypes         The ctypes module provides C compatible data types and allows calling functions in DLLs or shared libraries.
 
-Classes:
-    user_regs_struct: A ctypes Structure that represents the user registers of a process.
 """
 
 import os
@@ -108,13 +106,13 @@ def find_and_replace_string(pid, old_str, new_str):
         mem_file.seek(start)
         heap_data = mem_file.read(end - start)
         
-        offset = heap_data.find(old_str.encode())
+        offset = heap_data.find(search_string.encode())
         if offset == -1:
             print("String not found in heap")
             return
         
         mem_file.seek(start + offset)
-        mem_file.write(new_str.encode() + b'\x00' * (len(old_str) - len(new_str)))
+        mem_file.write(replace_string.encode() + b'\x00' * (len(search_string) - len(replace_string)))
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
