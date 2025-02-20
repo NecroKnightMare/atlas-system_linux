@@ -67,13 +67,19 @@ libc = ctypes.CDLL("libc.so.6")
 
 # pid will thread ID of the corresponding Linux thread
 def attach(pid):
+    print(f"Attaching to PID {pid}")
     if libc.ptrace(PTRACE_ATTACH, pid, None, None) == -1:
-        raise OSError("ptrace attach failed")
+        # raise OSError("ptrace attach failed")
+        sys.exit(1)
     os.waitpid(pid, 0)
+    print("Attached successfully")
 
 def detach(pid):
+    print(f"Detaching from PID {pid}")
     if libc.ptrace(PTRACE_DETACH, pid, None, None) == -1:
-        raise OSError("ptrace detach failed")
+        # raise OSError("ptrace detach failed")
+        sys.exit(1)
+    print("Detached successfully")
 
 def peek_data(pid, addr):
     word = libc.ptrace(PTRACE_PEEKDATA, pid, addr, None)
