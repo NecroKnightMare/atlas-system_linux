@@ -1,5 +1,20 @@
 #!/usr/bin/python3
 
+"""
+replace_string_in_heap.py: A Python script to find and replace a string in the heap memory of a running process using GDB.
+
+Usage:
+    python replace_string_in_heap.py <pid> <old_string> <new_string>
+
+Arguments:
+    <pid>          The process ID of the target process.
+    <old_string>   The string to find in the heap memory of the target process.
+    <new_string>   The string to replace the old string with in the heap memory of the target process.
+
+Example:
+    python replace_string_in_heap.py 1234 "old_string" "new_string"
+"""
+    
 import gdb
 import re
 import sys
