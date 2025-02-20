@@ -88,19 +88,24 @@ def detach(pid):
 #         # raise OSError("ptrace pokedata failed")
 #         sys.exit(1)
 
-def find_and_replace_string(pid, old_str, new_str):
+def find_and_replace_string(pid, search_string, replace_string):
     mem_path = f"/proc/{pid}/mem"
     maps_path = f"/proc/{pid}/maps"
-    
+
+
+    heap_found = False
     with open(maps_path, "r") as maps_file:
         for line in maps_file:
+            print(line.strip())
             if "heap" in line:
                 addr_range = line.split()[0]
                 start, end = [int(x, 16) for x in addr_range.split("-")]
+                heap_found = True
                 break
-            else:
-                print("Error: Heap not found")
-                sys.exit(1)
+
+    if not heap_found:
+        print("Error: Heap not found")
+        sys.exit(1)
     
     with open(mem_path, "rb+") as mem_file:
         mem_file.seek(start)
@@ -108,7 +113,7 @@ def find_and_replace_string(pid, old_str, new_str):
         
         offset = heap_data.find(search_string.encode())
         if offset == -1:
-            print("String not found in heap")
+            print(f"'{search_string}' not found in heap")
             return
         
         mem_file.seek(start + offset)
@@ -116,7 +121,7 @@ def find_and_replace_string(pid, old_str, new_str):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print(f"Usage: {sys.argv[0]} <pid>")
+        print("Usage: read_write_heap.py pid search_string replace_string")
         sys.exit(1)
     
     pid = int(sys.argv[1])
@@ -128,7 +133,7 @@ if __name__ == "__main__":
         sys.exit(1)
     try:
         attach(pid)
-        find_and_replace_string(pid, "old_string", "new_string")
+        find_and_replace_string(pid, search_string, replace_string)
     finally:
         detach(pid)
 
