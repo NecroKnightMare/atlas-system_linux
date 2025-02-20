@@ -26,42 +26,39 @@ Classes:
 import os
 import sys
 import ctypes
-import struct
 
 # ptrace will send a specific tracee using one of these
 PTRACE_ATTACH = 16
 PTRACE_DETACH = 17
-PTRACE_PEEKDATA = 2
-PTRACE_POKEDATA = 5
 
-class user_regs_struct(ctypes.Structure):
-    _fields_ = [("r15", ctypes.c_ulong),
-                ("r14", ctypes.c_ulong),
-                ("r13", ctypes.c_ulong),
-                ("r12", ctypes.c_ulong),
-                ("rbp", ctypes.c_ulong),
-                ("rbx", ctypes.c_ulong),
-                ("r11", ctypes.c_ulong),
-                ("r10", ctypes.c_ulong),
-                ("r9", ctypes.c_ulong),
-                ("r8", ctypes.c_ulong),
-                ("rax", ctypes.c_ulong),
-                ("rcx", ctypes.c_ulong),
-                ("rdx", ctypes.c_ulong),
-                ("rsi", ctypes.c_ulong),
-                ("rdi", ctypes.c_ulong),
-                ("orig_rax", ctypes.c_ulong),
-                ("rip", ctypes.c_ulong),
-                ("cs", ctypes.c_ulong),
-                ("eflags", ctypes.c_ulong),
-                ("rsp", ctypes.c_ulong),
-                ("ss", ctypes.c_ulong),
-                ("fs_base", ctypes.c_ulong),
-                ("gs_base", ctypes.c_ulong),
-                ("ds", ctypes.c_ulong),
-                ("es", ctypes.c_ulong),
-                ("fs", ctypes.c_ulong),
-                ("gs", ctypes.c_ulong)]
+# class user_regs_struct(ctypes.Structure):
+#     _fields_ = [("r15", ctypes.c_ulong),
+#                 ("r14", ctypes.c_ulong),
+#                 ("r13", ctypes.c_ulong),
+#                 ("r12", ctypes.c_ulong),
+#                 ("rbp", ctypes.c_ulong),
+#                 ("rbx", ctypes.c_ulong),
+#                 ("r11", ctypes.c_ulong),
+#                 ("r10", ctypes.c_ulong),
+#                 ("r9", ctypes.c_ulong),
+#                 ("r8", ctypes.c_ulong),
+#                 ("rax", ctypes.c_ulong),
+#                 ("rcx", ctypes.c_ulong),
+#                 ("rdx", ctypes.c_ulong),
+#                 ("rsi", ctypes.c_ulong),
+                # ("rdi", ctypes.c_ulong),
+                # ("orig_rax", ctypes.c_ulong),
+                # ("rip", ctypes.c_ulong),
+                # ("cs", ctypes.c_ulong),
+                # ("eflags", ctypes.c_ulong),
+                # ("rsp", ctypes.c_ulong),
+                # ("ss", ctypes.c_ulong),
+                # ("fs_base", ctypes.c_ulong),
+                # ("gs_base", ctypes.c_ulong),
+                # ("ds", ctypes.c_ulong),
+                # ("es", ctypes.c_ulong),
+                # ("fs", ctypes.c_ulong),
+                # ("gs", ctypes.c_ulong)]
 
 libc = ctypes.CDLL("libc.so.6")
 
@@ -81,15 +78,17 @@ def detach(pid):
         sys.exit(1)
     print("Detached successfully")
 
-def peek_data(pid, addr):
-    word = libc.ptrace(PTRACE_PEEKDATA, pid, addr, None)
-    if word == -1:
-        raise OSError("ptrace peekdata failed")
-    return word
+# def peek_data(pid, addr):
+#     word = libc.ptrace(PTRACE_PEEKDATA, pid, addr, None)
+#     if word == -1:
+#         # raise OSError("ptrace peekdata failed")
+#         sys.exit(1)
+#     return word
 
-def poke_data(pid, addr, data):
-    if libc.ptrace(PTRACE_POKEDATA, pid, addr, data) == -1:
-        raise OSError("ptrace pokedata failed")
+# def poke_data(pid, addr, data):
+#     if libc.ptrace(PTRACE_POKEDATA, pid, addr, data) == -1:
+#         # raise OSError("ptrace pokedata failed")
+#         sys.exit(1)
 
 def find_and_replace_string(pid, old_str, new_str):
     mem_path = f"/proc/{pid}/mem"
@@ -101,6 +100,9 @@ def find_and_replace_string(pid, old_str, new_str):
                 addr_range = line.split()[0]
                 start, end = [int(x, 16) for x in addr_range.split("-")]
                 break
+            else:
+                print("Error: Heap not found")
+                sys.exit(1)
     
     with open(mem_path, "rb+") as mem_file:
         mem_file.seek(start)
@@ -115,20 +117,21 @@ def find_and_replace_string(pid, old_str, new_str):
         mem_file.write(new_str.encode() + b'\x00' * (len(old_str) - len(new_str)))
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 4:
         print(f"Usage: {sys.argv[0]} <pid>")
         sys.exit(1)
     
     pid = int(sys.argv[1])
-    
+    search_string = sys.argv[2]
+    replace_string = sys.argv[3]
+
+    if not search_string.isascii() or not replace_string.isascii():
+        print("Error: Strings must be ascii")
+        sys.exit(1)
     try:
         attach(pid)
         find_and_replace_string(pid, "old_string", "new_string")
-    except OSError as e:
-        print(e)
     finally:
-        try:
-            detach(pid)
-        except OSError as e:
-            print(e)
+        detach(pid)
+
 
