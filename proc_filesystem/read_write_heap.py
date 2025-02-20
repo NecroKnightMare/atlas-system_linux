@@ -54,7 +54,7 @@ def find_and_replace_string(pid, search_string, replace_string):
     heap_found = False
     with open(maps_path, "r") as maps_file:
         for line in maps_file:
-            print(line.strip())
+            # print(line.strip())
             if "heap" in line:
                 addr_range = line.split()[0]
                 start, end = [int(x, 16) for x in addr_range.split("-")]
