@@ -29,64 +29,22 @@ import ctypes
 PTRACE_ATTACH = 16
 PTRACE_DETACH = 17
 
-# class user_regs_struct(ctypes.Structure):
-#     _fields_ = [("r15", ctypes.c_ulong),
-#                 ("r14", ctypes.c_ulong),
-#                 ("r13", ctypes.c_ulong),
-#                 ("r12", ctypes.c_ulong),
-#                 ("rbp", ctypes.c_ulong),
-#                 ("rbx", ctypes.c_ulong),
-#                 ("r11", ctypes.c_ulong),
-#                 ("r10", ctypes.c_ulong),
-#                 ("r9", ctypes.c_ulong),
-#                 ("r8", ctypes.c_ulong),
-#                 ("rax", ctypes.c_ulong),
-#                 ("rcx", ctypes.c_ulong),
-#                 ("rdx", ctypes.c_ulong),
-#                 ("rsi", ctypes.c_ulong),
-                # ("rdi", ctypes.c_ulong),
-                # ("orig_rax", ctypes.c_ulong),
-                # ("rip", ctypes.c_ulong),
-                # ("cs", ctypes.c_ulong),
-                # ("eflags", ctypes.c_ulong),
-                # ("rsp", ctypes.c_ulong),
-                # ("ss", ctypes.c_ulong),
-                # ("fs_base", ctypes.c_ulong),
-                # ("gs_base", ctypes.c_ulong),
-                # ("ds", ctypes.c_ulong),
-                # ("es", ctypes.c_ulong),
-                # ("fs", ctypes.c_ulong),
-                # ("gs", ctypes.c_ulong)]
-
 libc = ctypes.CDLL("libc.so.6")
 
 # pid will thread ID of the corresponding Linux thread
 def attach(pid):
-    print(f"Attaching to PID {pid}")
+    # print(f"Attaching to PID {pid}")
     if libc.ptrace(PTRACE_ATTACH, pid, None, None) == -1:
-        # raise OSError("ptrace attach failed")
         sys.exit(1)
     os.waitpid(pid, 0)
-    print("Attached successfully")
+    # print("Attached successfully")
 
 def detach(pid):
-    print(f"Detaching from PID {pid}")
+    # print(f"Detaching from PID {pid}")
     if libc.ptrace(PTRACE_DETACH, pid, None, None) == -1:
-        # raise OSError("ptrace detach failed")
         sys.exit(1)
-    print("Detached successfully")
+    # print("Detached successfully")
 
-# def peek_data(pid, addr):
-#     word = libc.ptrace(PTRACE_PEEKDATA, pid, addr, None)
-#     if word == -1:
-#         # raise OSError("ptrace peekdata failed")
-#         sys.exit(1)
-#     return word
-
-# def poke_data(pid, addr, data):
-#     if libc.ptrace(PTRACE_POKEDATA, pid, addr, data) == -1:
-#         # raise OSError("ptrace pokedata failed")
-#         sys.exit(1)
 
 def find_and_replace_string(pid, search_string, replace_string):
     mem_path = f"/proc/{pid}/mem"
