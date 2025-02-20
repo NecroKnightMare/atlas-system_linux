@@ -3,8 +3,8 @@
 """
 python
 
-replace_string_in_heap.py: A Python script to find and replace a string in the heap memory
-of a running process using ptrace and ctypes.
+replace_string_in_heap.py: A Python script to find and replace a
+    string in the heap memory of a running process using ptrace and ctypes.
 
 Usage:
     python replace_string_in_heap.py <pid>
@@ -16,12 +16,12 @@ Example:
     python replace_string_in_heap.py 1234
 
 Modules:
-    os             The os module provides a way of using operating system-dependent
-    functionality.
-    sys            The sys module provides access to some variables used or maintained
-    by the interpreter.
-    ctypes         The ctypes module provides C compatible data types and allows calling 
-    functions in DLLs or shared libraries.
+    os      The os module provides a way of using operating
+            system-dependent functionality.
+    sys     The sys module provides access to some variables used or
+            maintained by the interpreter.
+    ctypes  The ctypes module provides C compatible data types
+            and allows calling functions in DLLs or shared libraries.
 
 """
 
