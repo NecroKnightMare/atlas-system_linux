@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
-python
 """
+python
+
 replace_string_in_heap.py: A Python script to find and replace a string in the heap memory of a running process using ptrace and ctypes.
 
 Usage:
