@@ -58,3 +58,28 @@ void print_elf_header(const char *filename) {
     printf("  Number of section headers:         %d\n", header->e_shnum);
     printf("  Section header string table index: %d\n", header->e_shstrndx);
 }|
+
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+        print_error("Usage: ./0-hreadelf elf_filename");
+
+    int fd = open(argv[1], O_RDONLY);
+    if (fd == -1)
+        print_error("Error: Can't open file");
+
+    Elf64_Ehdr header;
+    if (read(fd, &header, sizeof(header)) != sizeof(header))
+        print_error("Error: Can't read file");
+
+    if (header.e_ident[EI_MAG0] != ELFMAG0 || 
+        header.e_ident[EI_MAG1] != ELFMAG1 || 
+        header.e_ident[EI_MAG2] != ELFMAG2 || 
+        header.e_ident[EI_MAG3] != ELFMAG3)
+        print_error("Error: Not an ELF file");
+
+    print_elf_header(&header);
+
+    close(fd);
+    return 0;
+}
