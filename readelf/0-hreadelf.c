@@ -78,8 +78,8 @@ void print_elf_header(const char *filename) {
         case ELFOSABI_OPENBSD: printf("  OS/ABI:                            UNIX - OpenBSD\n"); break;
         case ELFOSABI_ARM: printf("  OS/ABI:                            ARM\n"); break;
         case ELFOSABI_STANDALONE: printf("  OS/ABI:                            Standalone (embedded)\n"); break;
-        default:                                snprintf(unknown, sizeof(unknown), "<unknown: %x>", osabi);
-        return unknown;
+        default: printf("  OS/ABI:                            <unknown: %x>\n", header.e_ident[EI_OSABI]);
+    }
 
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
 
