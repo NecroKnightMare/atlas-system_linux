@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
 void print_elf_header(const char *filename) {
     int fd;
-    Elf64_Ehdr header;
+    Elf32_Ehdr header;
 
     fd = open(filename, O_RDONLY);
     if (fd < 0) {
@@ -58,14 +58,36 @@ void print_elf_header(const char *filename) {
            header.e_ident[EI_DATA] == ELFDATA2MSB ? "2's complement, big endian" : "Invalid data encoding");
 
     printf("  Version:                           %d (current)\n", header.e_ident[EI_VERSION]);
-    printf("  OS/ABI:                            %s\n", header.e_ident[EI_OSABI]);
+
+    switch(header.e_ident[EI_OSABI]) {
+        case ELFOSABI_SYSV: printf("  OS/ABI:                            UNIX - System V\n"); break;
+        case ELFOSABI_HPUX: printf("  OS/ABI:                            UNIX - HP-UX\n"); break;
+        case ELFOSABI_NETBSD: printf("  OS/ABI:                            UNIX - NetBSD\n"); break;
+        case ELFOSABI_LINUX: printf("  OS/ABI:                            UNIX - Linux\n"); break;
+        case ELFOSABI_SOLARIS: printf("  OS/ABI:                            UNIX - Solaris\n"); break;
+        default: printf("  OS/ABI:                            <unknown: %u>\n", header.e_ident[EI_OSABI]);
+    }
+
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
-    printf("  Type:                              %s\n", header.e_type);
-    printf("  Machine:                           %s\n", header.e_machine);
+
+    switch(header.e_type) {
+        case ET_NONE: printf("  Type:                              No file type\n"); break;
+        case ET_REL: printf("  Type:                              Relocatable file\n"); break;
+        case ET_EXEC: printf("  Type:                              Executable file\n"); break;
+        case ET_DYN: printf("  Type:                              Shared object file\n"); break;
+        case ET_CORE: printf("  Type:                              Core file\n"); break;
+        default: printf("  Type:                              <unknown: %u>\n", header.e_type);
+    }
+
+    switch(header.e_machine) {
+        case EM_386: printf("  Machine:                           Intel 80386\n"); break;
+        default: printf("  Machine:                           <unknown: %u>\n", header.e_machine);
+    }
+
     printf("  Version:                           0x%x\n", header.e_version);
-    printf("  Entry point address:               0x%lx\n", header.e_entry);
-    printf("  Start of program headers:          %ld (bytes into file)\n", header.e_phoff);
-    printf("  Start of section headers:          %ld (bytes into file)\n", header.e_shoff);
+    printf("  Entry point address:               0x%x\n", header.e_entry);
+    printf("  Start of program headers:          %d (bytes into file)\n", header.e_phoff);
+    printf("  Start of section headers:          %d (bytes into file)\n", header.e_shoff);
     printf("  Flags:                             0x%x\n", header.e_flags);
     printf("  Size of this header:               %d (bytes)\n", header.e_ehsize);
     printf("  Size of program headers:           %d (bytes)\n", header.e_phentsize);
