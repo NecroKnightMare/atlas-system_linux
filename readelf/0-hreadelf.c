@@ -67,6 +67,14 @@ void print_elf_header(const char *filename) {
         case ELFOSABI_NETBSD: printf("  OS/ABI:                            UNIX - NetBSD\n"); break;
         case ELFOSABI_LINUX: printf("  OS/ABI:                            UNIX - Linux\n"); break;
         case ELFOSABI_SOLARIS: printf("  OS/ABI:                            UNIX - Solaris\n"); break;
+        case ELFOSABI_AIX: printf("  OS/ABI:                            UNIX - AIX\n"); break;
+        case ELFOSABI_IRIX: printf("  OS/ABI:                            UNIX - IRIX\n"); break;
+        case ELFOSABI_FREEBSD: printf("  OS/ABI:                            UNIX - FreeBSD\n"); break;
+        case ELFOSABI_TRU64: printf("  OS/ABI:                            UNIX - TRU64\n"); break;
+        case ELFOSABI_MODESTO: printf("  OS/ABI:                            Novell - Modesto\n"); break;
+        case ELFOSABI_OPENBSD: printf("  OS/ABI:                            UNIX - OpenBSD\n"); break;
+        case ELFOSABI_ARM: printf("  OS/ABI:                            ARM\n"); break;
+        case ELFOSABI_STANDALONE: printf("  OS/ABI:                            Standalone (embedded)\n"); break;
         default: printf("  OS/ABI:                            <unknown: %u>\n", header.e_ident[EI_OSABI]);
     }
 
