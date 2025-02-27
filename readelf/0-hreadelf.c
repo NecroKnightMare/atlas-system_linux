@@ -34,8 +34,6 @@ void print_elf_header(const char *filename) {
 
     close(fd);
 
-    // Debugging print statement for OS/ABI in hex and base 10
-    printf("Debug: OS/ABI value (hex): 0x%x, (decimal): %d\n", header.e_ident[EI_OSABI], header.e_ident[EI_OSABI]);
 
     // Validate ELF magic
     if (header.e_ident[EI_MAG0] != ELFMAG0 ||
