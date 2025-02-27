@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <elf.h>
 
-void print_elf_header(const char *filename);
 
 int main(int argc, char **argv) {
     if (argc != 2) {
