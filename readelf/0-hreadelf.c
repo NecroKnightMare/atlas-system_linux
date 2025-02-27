@@ -1,3 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <elf.h>
+
+void print_elf_header(const char *filename);
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s elf_filename\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    print_elf_header(argv[1]);
+    return 0;
+}
+
 void print_elf_header(const char *filename) {
     int fd;
     Elf32_Ehdr header;
@@ -22,12 +40,6 @@ void print_elf_header(const char *filename) {
         header.e_ident[EI_MAG2] != ELFMAG2 ||
         header.e_ident[EI_MAG3] != ELFMAG3) {
         fprintf(stderr, "Not an ELF file\n");
-        exit(EXIT_FAILURE);
-    }
-
-    // Validate header size
-    if (header.e_ehsize != sizeof(Elf32_Ehdr)) {
-        fprintf(stderr, "Invalid ELF header size\n");
         exit(EXIT_FAILURE);
     }
 
@@ -73,6 +85,8 @@ void print_elf_header(const char *filename) {
     // Machine type handling
     switch(header.e_machine) {
         case EM_386: printf("  Machine:                           Intel 80386\n"); break;
+        case EM_X86_64: printf("  Machine:                           Advanced Micro Devices X86-64\n"); break;
+        case EM_SPARC: printf("  Machine:                           Sparc\n"); break;
         default: printf("  Machine:                           <unknown: %u>\n", header.e_machine);
     }
 
