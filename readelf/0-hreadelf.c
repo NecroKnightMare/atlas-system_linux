@@ -4,17 +4,6 @@
 #include <unistd.h>
 #include <elf.h>
 
-
-int main(int argc, char **argv) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s elf_filename\n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
-
-    print_elf_header(argv[1]);
-    return 0;
-}
-
 void print_elf_header(const char *filename) {
     int fd;
     Elf32_Ehdr header;
@@ -32,6 +21,9 @@ void print_elf_header(const char *filename) {
     }
 
     close(fd);
+
+    // Debugging print statement for OS/ABI in hex and base 10
+    printf("Debug: OS/ABI value (hex): 0x%x, (decimal): %d\n", header.e_ident[EI_OSABI], header.e_ident[EI_OSABI]);
 
     // Validate ELF magic
     if (header.e_ident[EI_MAG0] != ELFMAG0 ||
@@ -66,7 +58,8 @@ void print_elf_header(const char *filename) {
         case ELFOSABI_NETBSD: printf("  OS/ABI:                            UNIX - NetBSD\n"); break;
         case ELFOSABI_LINUX: printf("  OS/ABI:                            UNIX - Linux\n"); break;
         case ELFOSABI_SOLARIS: printf("  OS/ABI:                            UNIX - Solaris\n"); break;
-        default: printf("  OS/ABI:                            <unknown: %u>\n", header.e_ident[EI_OSABI]);
+        case 0x53: printf("  OS/ABI:                            Sortix\n"); break;
+        default: printf("  OS/ABI:                            <unknown: %x>\n", header.e_ident[EI_OSABI]);
     }
 
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
@@ -78,7 +71,7 @@ void print_elf_header(const char *filename) {
         case ET_EXEC: printf("  Type:                              EXEC (Executable file)\n"); break;
         case ET_DYN: printf("  Type:                              Shared object file\n"); break;
         case ET_CORE: printf("  Type:                              Core file\n"); break;
-        default: printf("  Type:                              <unknown: %u>\n", header.e_type);
+        default: printf("  Type:                              <unknown: %x>\n", header.e_type);
     }
 
     // Machine type handling
@@ -86,7 +79,7 @@ void print_elf_header(const char *filename) {
         case EM_386: printf("  Machine:                           Intel 80386\n"); break;
         case EM_X86_64: printf("  Machine:                           Advanced Micro Devices X86-64\n"); break;
         case EM_SPARC: printf("  Machine:                           Sparc\n"); break;
-        default: printf("  Machine:                           <unknown: %u>\n", header.e_machine);
+        default: printf("  Machine:                           <unknown: %x>\n", header.e_machine);
     }
 
     printf("  Version:                           0x%x\n", header.e_version);
@@ -101,3 +94,4 @@ void print_elf_header(const char *filename) {
     printf("  Number of section headers:         %d\n", header.e_shnum);
     printf("  Section header string table index: %d\n", header.e_shstrndx);
 }
+
