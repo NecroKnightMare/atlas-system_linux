@@ -34,7 +34,6 @@ void print_elf_header(const char *filename) {
 
     close(fd);
 
-
     // Validate ELF magic
     if (header.e_ident[EI_MAG0] != ELFMAG0 ||
         header.e_ident[EI_MAG1] != ELFMAG1 ||
@@ -76,31 +75,4 @@ void print_elf_header(const char *filename) {
 
     // File type handling
     switch(header.e_type) {
-        case ET_NONE: printf("  Type:                              No file type\n"); break;
-        case ET_REL: printf("  Type:                              Relocatable file\n"); break;
-        case ET_EXEC: printf("  Type:                              EXEC (Executable file)\n"); break;
-        case ET_DYN: printf("  Type:                              Shared object file\n"); break;
-        case ET_CORE: printf("  Type:                              Core file\n"); break;
-        default: printf("  Type:                              <unknown: %x>\n", header.e_type);
-    }
-
-    // Machine type handling
-    switch(header.e_machine) {
-        case EM_386: printf("  Machine:                           Intel 80386\n"); break;
-        case EM_X86_64: printf("  Machine:                           Advanced Micro Devices X86-64\n"); break;
-        case EM_SPARC: printf("  Machine:                           Sparc\n"); break;
-        default: printf("  Machine:                           <unknown: %x>\n", header.e_machine);
-    }
-
-    printf("  Version:                           0x%x\n", header.e_version);
-    printf("  Entry point address:               0x%lx\n", (unsigned long)header.e_entry);
-    printf("  Start of program headers:          %d (bytes into file)\n", header.e_phoff);
-    printf("  Start of section headers:          %d (bytes into file)\n", header.e_shoff);
-    printf("  Flags:                             0x%x\n", header.e_flags);
-    printf("  Size of this header:               %d (bytes)\n", header.e_ehsize);
-    printf("  Size of program headers:           %d (bytes)\n", header.e_phentsize);
-    printf("  Number of program headers:         %d\n", header.e_phnum);
-    printf("  Size of section headers:           %d (bytes)\n", header.e_shentsize);
-    printf("  Number of section headers:         %d\n", header.e_shnum);
-    printf("  Section header string table index: %d\n", header.e_shstrndx);
-}
+        case ET_NONE
