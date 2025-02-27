@@ -50,7 +50,7 @@ void print_elf_header(const char *filename) {
         case ELFOSABI_LINUX: printf("  OS/ABI:                            UNIX - Linux\n"); break;
         case ELFOSABI_SOLARIS: printf("  OS/ABI:                            UNIX - Solaris\n"); break;
         case 0x53: printf("  OS/ABI:                            Sortix\n"); break;
-        default: printf("  OS/ABI:                            <unknown: %x>\n", header.e_ident[EI_OSABI]);
+        default: printf("  OS/ABI:                            <unknown: %d>\n", header.e_ident[EI_OSABI]);
     }
 
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
