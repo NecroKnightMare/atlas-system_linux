@@ -31,7 +31,10 @@ void print_elf_header(const char *filename) {
         close(fd);
         exit(EXIT_FAILURE);
     }
-
+    
+    // using to debug
+    printf("EI_OSABI: %x\n", header.e_ident[EI_OSABI]); 
+    
     close(fd);
 
     // Validate ELF magic
@@ -75,8 +78,8 @@ void print_elf_header(const char *filename) {
         case ELFOSABI_OPENBSD: printf("  OS/ABI:                            UNIX - OpenBSD\n"); break;
         case ELFOSABI_ARM: printf("  OS/ABI:                            ARM\n"); break;
         case ELFOSABI_STANDALONE: printf("  OS/ABI:                            Standalone (embedded)\n"); break;
-        default: printf("  OS/ABI:                            <unknown: %lx>\n", header.e_ident[EI_OSABI]);
-    }
+        default:                                snprintf(unknown, sizeof(unknown), "<unknown: %x>", osabi);
+        return unknown;
 
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
 
