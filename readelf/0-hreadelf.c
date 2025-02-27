@@ -1,21 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <elf.h>
-#include <fcntl.h>
-#include <unistd.h>
-
-void print_elf_header(const char *filename);
-
-int main(int argc, char **argv) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s elf_filename\n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
-
-    print_elf_header(argv[1]);
-    return 0;
-}
-
 void print_elf_header(const char *filename) {
     int fd;
     Elf32_Ehdr header;
@@ -34,6 +16,7 @@ void print_elf_header(const char *filename) {
 
     close(fd);
 
+    // Validate ELF magic
     if (header.e_ident[EI_MAG0] != ELFMAG0 ||
         header.e_ident[EI_MAG1] != ELFMAG1 ||
         header.e_ident[EI_MAG2] != ELFMAG2 ||
@@ -42,6 +25,7 @@ void print_elf_header(const char *filename) {
         exit(EXIT_FAILURE);
     }
 
+    // Validate header size
     if (header.e_ehsize != sizeof(Elf32_Ehdr)) {
         fprintf(stderr, "Invalid ELF header size\n");
         exit(EXIT_FAILURE);
@@ -64,6 +48,7 @@ void print_elf_header(const char *filename) {
 
     printf("  Version:                           %d (current)\n", header.e_ident[EI_VERSION]);
 
+    // OS/ABI handling
     switch(header.e_ident[EI_OSABI]) {
         case ELFOSABI_SYSV: printf("  OS/ABI:                            UNIX - System V\n"); break;
         case ELFOSABI_HPUX: printf("  OS/ABI:                            UNIX - HP-UX\n"); break;
@@ -75,15 +60,17 @@ void print_elf_header(const char *filename) {
 
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
 
+    // File type handling
     switch(header.e_type) {
         case ET_NONE: printf("  Type:                              No file type\n"); break;
         case ET_REL: printf("  Type:                              Relocatable file\n"); break;
-        case ET_EXEC: printf("  Type:                              Executable file\n"); break;
+        case ET_EXEC: printf("  Type:                              EXEC (Executable file)\n"); break;
         case ET_DYN: printf("  Type:                              Shared object file\n"); break;
         case ET_CORE: printf("  Type:                              Core file\n"); break;
         default: printf("  Type:                              <unknown: %u>\n", header.e_type);
     }
 
+    // Machine type handling
     switch(header.e_machine) {
         case EM_386: printf("  Machine:                           Intel 80386\n"); break;
         default: printf("  Machine:                           <unknown: %u>\n", header.e_machine);
