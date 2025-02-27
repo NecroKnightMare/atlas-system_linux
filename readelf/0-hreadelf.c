@@ -1,3 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <elf.h>
+
+void print_elf_header(const char *filename);
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s elf_filename\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    print_elf_header(argv[1]);
+    return 0;
+}
+
 void print_elf_header(const char *filename) {
     int fd;
     Elf32_Ehdr header;
