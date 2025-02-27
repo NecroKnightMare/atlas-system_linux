@@ -67,16 +67,7 @@ void print_elf_header(const char *filename) {
         case ELFOSABI_NETBSD: printf("  OS/ABI:                            UNIX - NetBSD\n"); break;
         case ELFOSABI_LINUX: printf("  OS/ABI:                            UNIX - Linux\n"); break;
         case ELFOSABI_SOLARIS: printf("  OS/ABI:                            UNIX - Solaris\n"); break;
-        case ELFOSABI_AIX: printf("  OS/ABI:                            UNIX - AIX\n"); break;
-        case ELFOSABI_IRIX: printf("  OS/ABI:                            UNIX - IRIX\n"); break;
-        case ELFOSABI_FREEBSD: printf("  OS/ABI:                            UNIX - FreeBSD\n"); break;
-        case ELFOSABI_TRU64: printf("  OS/ABI:                            UNIX - TRU64\n"); break;
-        case ELFOSABI_MODESTO: printf("  OS/ABI:                            Novell - Modesto\n"); break;
-        case ELFOSABI_OPENBSD: printf("  OS/ABI:                            UNIX - OpenBSD\n"); break;
-        case ELFOSABI_ARM: printf("  OS/ABI:                            ARM\n"); break;
-        case ELFOSABI_STANDALONE: printf("  OS/ABI:                            Standalone (embedded)\n"); break;
-        case 0x53: printf("  OS/ABI:                            Sortix\n"); break;
-        default: printf("  OS/ABI:                            <unknown: %x>\n", header.e_ident[EI_OSABI]);
+        default: printf("  OS/ABI:                            <unknown: %u>\n", header.e_ident[EI_OSABI]);
     }
 
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
@@ -89,7 +80,6 @@ void print_elf_header(const char *filename) {
         case ET_DYN: printf("  Type:                              Shared object file\n"); break;
         case ET_CORE: printf("  Type:                              Core file\n"); break;
         default: printf("  Type:                              <unknown: %u>\n", header.e_type);
-        default: printf("  Type:                              <unknown: %x>\n", header.e_type);
     }
 
     // Machine type handling
@@ -98,7 +88,6 @@ void print_elf_header(const char *filename) {
         case EM_X86_64: printf("  Machine:                           Advanced Micro Devices X86-64\n"); break;
         case EM_SPARC: printf("  Machine:                           Sparc\n"); break;
         default: printf("  Machine:                           <unknown: %u>\n", header.e_machine);
-        default: printf("  Machine:                           <unknown: %x>\n", header.e_machine);
     }
 
     printf("  Version:                           0x%x\n", header.e_version);
