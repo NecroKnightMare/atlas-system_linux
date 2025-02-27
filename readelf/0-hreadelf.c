@@ -42,6 +42,11 @@ void print_elf_header(const char *filename) {
         exit(EXIT_FAILURE);
     }
 
+    if (header.e_ehsize != sizeof(Elf32_Ehdr)) {
+        fprintf(stderr, "Invalid ELF header size\n");
+        exit(EXIT_FAILURE);
+    }
+
     printf("ELF Header:\n");
     printf("  Magic:   ");
     for (int i = 0; i < EI_NIDENT; i++) {
@@ -64,7 +69,7 @@ void print_elf_header(const char *filename) {
         case ELFOSABI_HPUX: printf("  OS/ABI:                            UNIX - HP-UX\n"); break;
         case ELFOSABI_NETBSD: printf("  OS/ABI:                            UNIX - NetBSD\n"); break;
         case ELFOSABI_LINUX: printf("  OS/ABI:                            UNIX - Linux\n"); break;
-        case ELFOSABI_SOLARIS: printf("  OS/ABI:                            UNIX - Solaris\n"); continue;
+        case ELFOSABI_SOLARIS: printf("  OS/ABI:                            UNIX - Solaris\n"); break;
         default: printf("  OS/ABI:                            <unknown: %u>\n", header.e_ident[EI_OSABI]);
     }
 
@@ -85,7 +90,7 @@ void print_elf_header(const char *filename) {
     }
 
     printf("  Version:                           0x%x\n", header.e_version);
-    printf("  Entry point address:               0x%x\n", header.e_entry);
+    printf("  Entry point address:               0x%lx\n", (unsigned long)header.e_entry);
     printf("  Start of program headers:          %d (bytes into file)\n", header.e_phoff);
     printf("  Start of section headers:          %d (bytes into file)\n", header.e_shoff);
     printf("  Flags:                             0x%x\n", header.e_flags);
