@@ -58,11 +58,11 @@ void print_elf_header(const char *filename) {
            header.e_ident[EI_DATA] == ELFDATA2MSB ? "2's complement, big endian" : "Invalid data encoding");
 
     printf("  Version:                           %d (current)\n", header.e_ident[EI_VERSION]);
-    printf("  OS/ABI:                            %d\n", header.e_ident[EI_OSABI]);
+    printf("  OS/ABI:                            %s\n", header.e_ident[EI_OSABI]);
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
-    printf("  Type:                              %d\n", header.e_type);
-    printf("  Machine:                           %d\n", header.e_machine);
-    printf("  Version:                           %d\n", header.e_version);
+    printf("  Type:                              %s\n", header.e_type);
+    printf("  Machine:                           %s\n", header.e_machine);
+    printf("  Version:                           0x%x\n", header.e_version);
     printf("  Entry point address:               0x%lx\n", header.e_entry);
     printf("  Start of program headers:          %ld (bytes into file)\n", header.e_phoff);
     printf("  Start of section headers:          %ld (bytes into file)\n", header.e_shoff);
