@@ -4,6 +4,18 @@
 #include <unistd.h>
 #include <elf.h>
 
+void print_elf_header(const char *filename);
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s elf_filename\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    print_elf_header(argv[1]);
+    return 0;
+}
+
 void print_elf_header(const char *filename) {
     int fd;
     Elf32_Ehdr header;
@@ -94,4 +106,3 @@ void print_elf_header(const char *filename) {
     printf("  Number of section headers:         %d\n", header.e_shnum);
     printf("  Section header string table index: %d\n", header.e_shstrndx);
 }
-
