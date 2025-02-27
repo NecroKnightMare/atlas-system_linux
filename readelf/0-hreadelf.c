@@ -32,7 +32,8 @@ void print_elf_header(const char *filename) {
         exit(EXIT_FAILURE);
     }
     
-    // using to debug
+    // using to debug// can't figure out to test, says I don't have
+    // sortix32 in my directory? Don't even know how to go about that.
     printf("EI_OSABI: %x\n", header.e_ident[EI_OSABI]); 
     
     close(fd);
