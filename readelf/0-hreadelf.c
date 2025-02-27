@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <elf.h>
+
 void print_elf_header(const char *filename) {
     int fd;
     Elf32_Ehdr header;
@@ -15,6 +21,9 @@ void print_elf_header(const char *filename) {
     }
 
     close(fd);
+
+    // Debugging print statement for OS/ABI in hex and base 10
+    printf("Debug: OS/ABI value (hex): 0x%x, (decimal): %d\n", header.e_ident[EI_OSABI], header.e_ident[EI_OSABI]);
 
     // Validate ELF magic
     if (header.e_ident[EI_MAG0] != ELFMAG0 ||
@@ -50,7 +59,7 @@ void print_elf_header(const char *filename) {
         case ELFOSABI_LINUX: printf("  OS/ABI:                            UNIX - Linux\n"); break;
         case ELFOSABI_SOLARIS: printf("  OS/ABI:                            UNIX - Solaris\n"); break;
         case 0x53: printf("  OS/ABI:                            Sortix\n"); break;
-        default: printf("  OS/ABI:                            <unknown: 0x%x>\n", header.e_ident[EI_OSABI]);
+        default: printf("  OS/ABI:                            <unknown: %x>\n", header.e_ident[EI_OSABI]);
     }
 
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
@@ -84,4 +93,15 @@ void print_elf_header(const char *filename) {
     printf("  Size of section headers:           %d (bytes)\n", header.e_shentsize);
     printf("  Number of section headers:         %d\n", header.e_shnum);
     printf("  Section header string table index: %d\n", header.e_shstrndx);
+}
+
+// Main function
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <elf-file>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    print_elf_header(argv[1]);
+    return 0;
 }
