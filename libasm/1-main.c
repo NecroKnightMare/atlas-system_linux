@@ -9,7 +9,8 @@
 #define S2  ""
 #define S3  "Holberton Socool"
 
-extern int asm_strcmp(const char *s1, const char *s2)
+extern size_t asm_strlen(const char *str);
+extern int asm_strcmp(const char *s1, const char *s2);
 
 /**
  * main - Program entry point
@@ -18,9 +19,9 @@ extern int asm_strcmp(const char *s1, const char *s2)
  */
 int main(void)
 {
-    assert(strncmp(S1, S3) == asm_strncmp(S1, S3));
-    assert(strncmp(S1, S3) == asm_strncmp(S1, S3));
-    assert(strncmp(S1, S3) == asm_strncmp(S1, S3));
+    assert(strcmp(S1, S3) == asm_strcmp(S1, S3));
+    assert(strcmp(S1, S3) == asm_strcmp(S1, S3));
+    assert(strcmp(S1, S3) == asm_strcmp(S1, S3));
 
     printf("All good!\n");
     return (EXIT_SUCCESS);
