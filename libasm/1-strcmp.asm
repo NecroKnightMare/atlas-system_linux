@@ -14,7 +14,7 @@ global asm_strcmp
             jmp .next_character     ;increment/loop
         .diff:
             mov bl, byte [rsi]      ;Load value from memory into reg
-            sub rax, [rsi]          ;return difference
-            mov rax, rax            ;Move result to rax
+            sub al, bl              ;return difference of AL-BL
+            movsx rax, al           ;sign extend AL to RAX-mimics strcmp behavior
         .done:
-        ret
+            ret
