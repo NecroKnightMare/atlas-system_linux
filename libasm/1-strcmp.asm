@@ -1,3 +1,5 @@
+BITS 64                             ;For RSI and RDI- they hold 64 bits
+
 section .text
 global asm_strcmp
 
