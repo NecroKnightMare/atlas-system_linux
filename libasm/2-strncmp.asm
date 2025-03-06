@@ -6,7 +6,8 @@ global asm_strncmp
     asm_strncmp:
          xor rax, rax                ; set RAX to 0
         .next_character:
-            mov al, byte [rdi]      ;Load byte from first string
+            mov al, [esp + 4]       ;Load byte from first string
+            mov bl, [esl + 8]
             cmp al, byte [rsi]      ;Compare byte to second string
             jne .diff               ;IF NOT ==, jump to diff
             test al, al             ;Check if \0
