@@ -9,9 +9,9 @@ asm_strcmp:
 .next_character:
     mov al, byte [rdi]      ;Load byte from first string
     mov bl, byte [rsi]      ;Load byte to second string
-    cmp al, 0
+    cmp al, 0               ;successful
     jne .diff               ;IF NOT ==, jump to diff
-    cmp bl, 0
+    cmp bl, 0               ;unsuccessful
     jne .diff
     cmp al, bl
     test al, al             ;Check if \0
@@ -20,7 +20,7 @@ asm_strcmp:
     inc rsi
     jmp .next_character     ;increment/loop
 
-.diff:
+.diff:      ;change this logic
     mov bl, byte [rsi]      ;Load value from memory into reg
     sub al, bl              ;return difference of AL-BL
     movsx rax, al           ;sign extend AL to RAX-mimics strcmp behavior
