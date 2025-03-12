@@ -4,7 +4,7 @@ global asm_memcpy
 
 asm_memcpy:
    
-    mov rax, rdi        ;move data to reg
+    mov rax, rdi        ;move data index to accumulator reg
 
     test rdx, rdx       ;if rdx == rdx
     jz .exit
