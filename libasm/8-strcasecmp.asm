@@ -42,3 +42,4 @@ asm_strcasecmp:
     ret
 ;error in gdb ->__strcasecmp_l_avx () at ../sysdeps/x86_64/multiarch/strcmp-sse42.S:128
 ;128     in ../sysdeps/x86_64/multiarch/strcmp-sse42.S
+;
