@@ -4,26 +4,43 @@ section .text
     global asm_strcmp
 
 asm_strcmp:
-    xor rax, rax                ; set RAX to 0
+    xor rax, rax
 
 .next_character:
     mov al, byte [rdi]      ;Load byte from first string
     mov bl, byte [rsi]      ;Load byte to second string
-    cmp al, 0               ;successful
-    jne .diff               ;IF NOT ==, jump to diff
-    cmp bl, 0               ;unsuccessful
-    jne .diff
+    ;cmp al, 0
+    ;jne .done  ;IF NOT ==, jump to diff
+    ;cmp bl, 0
+    ;jne .done
     cmp al, bl
+    jne .done
     test al, al             ;Check if \0
-    je .done                ;IF \0 strings are ==
+    jne .equal                ;IF \0 strings are ==
     inc rdi                 ;advance pointers
     inc rsi
     jmp .next_character     ;increment/loop
 
-.diff:      ;change this logic
-    mov bl, byte [rsi]      ;Load value from memory into reg
-    sub al, bl              ;return difference of AL-BL
-    movsx rax, al           ;sign extend AL to RAX-mimics strcmp behavior
-
 .done:
+    cmp al, bl
+    jz .equal             ; If strings are equal, jump to equal
+    jg .greater           ; If first string is greater, jump to greater
+    jl .lesser            ; If first string is lesser, jump to lesser
+
+.equal:
+    xor rax, rax          ; Return 0
+    ret
+    ;jmp .function_end
+
+.greater:
+    mov rax, 1            ; Return pos value when >
+    jmp .function_end
+
+.lesser:
+    ;mov rax, -1           ; Return neg value like strcmp when <
+    ;movsx rax, al 
+    sub al, bl
+    jmp .function_end
+
+.function_end:
     ret

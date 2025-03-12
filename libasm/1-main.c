@@ -20,8 +20,8 @@ extern int asm_strcmp(const char *s1, const char *s2);
 int main(void)
 {
     assert(strcmp(S1, S1) == asm_strcmp(S1, S1));
-    assert(strcmp(S1, S2) == asm_strcmp(S1, S2));
-    assert(strcmp(S1, S3) == asm_strcmp(S1, S3));
+    assert((strcmp(S1, S2)) == (asm_strcmp(S1, S2) > 0));
+    assert((strcmp(S1, S3)) == (asm_strcmp(S1, S3) < 0));
 
     printf("All good!\n");
     return (EXIT_SUCCESS);
