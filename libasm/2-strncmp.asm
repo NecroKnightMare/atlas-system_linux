@@ -1,41 +1,48 @@
 BITS 64                             ;For RSI and RDI- they hold 64 bits
 
 section .text
-    global asm_strcmp
+    global asm_strncmp
 
-asm_strcmp:
-    ;xor rax, rax                ; set RAX to 0
-    push rbp
-    mov rbp, rsp
+asm_strncmp:
+    push rbp                ;base pointer - 8 bit
+    mov rbp, rsp            ;move stack* to base* - 8 bit
+    ;xor rax, rax
+    mov rdi, [rbp + 16]     ;address of s1 - 8 bit
+    mov rsi, [rbp + 24]     ;address of s2 - 8 bit
+    mov rcx, [rbp + 32]     ;counter of n or size_t - 8 bit
 
-    mov rdi, [rbp + 16]
-    mov rsi, [rbp + 24]
-
-    xor rax, rax
+    test rcx, rcx           ;if rcx == rcx
+    je .equal               ;jump to condition
 
 .next_character:
     mov al, byte [rdi]      ;Load byte from first string
     mov bl, byte [rsi]      ;Load byte to second string
-    cmp al, 0
-    jne .greater_than_zero  ;IF NOT ==, jump to diff
-    cmp bl, 0
-    jne .greater_than_zero
+    
     cmp al, bl
+    jne .difference
     test al, al             ;Check if \0
-    je .done                ;IF \0 strings are ==
+    jz .equal                ;IF \0 strings are ==
+
+    dec rcx                 ;decrement n
+    jz .equal               ;when n reaches 0
+
     inc rdi                 ;advance pointers
     inc rsi
     jmp .next_character     ;increment/loop
 
-.greater_than_zero:
-     ;Load value from memory into reg
-    sub al, bl              ;return difference of AL-BL
-    movsx rax, al           ;sign extend AL to RAX-mimics strcmp behavior
-    jmp .done
+.equal:
+    xor eax, eax          ; set to 0/return use 32 bit for efficiency
 
-.lesser_than_zero:
+.difference:
+    sub al, bl              ;difference of n
+    movzx eax, al           ;expand with zeros
+    jmp .function_end
 
-.done:
+.function_end:
     pop rbp
     ret
+
 ;add size_t logic
+;rcx for 64bit counter
+;decrement with rcx using dec rcx before cmp
+;

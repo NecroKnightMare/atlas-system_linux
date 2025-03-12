@@ -16,7 +16,7 @@ asm_strcmp:
     cmp al, bl
     jne .done
     test al, al             ;Check if \0
-    jne .equal                ;IF \0 strings are ==
+    jz .equal                ;IF \0 strings are ==
     inc rdi                 ;advance pointers
     inc rsi
     jmp .next_character     ;increment/loop
