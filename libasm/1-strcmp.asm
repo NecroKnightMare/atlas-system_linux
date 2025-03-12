@@ -9,10 +9,10 @@ asm_strcmp:
 .next_character:
     mov al, byte [rdi]      ;Load byte from first string
     mov bl, byte [rsi]      ;Load byte to second string
-    ;cmp al, 0
-    ;jne .done  ;IF NOT ==, jump to diff
-    ;cmp bl, 0
-    ;jne .done
+    cmp al, 0
+    jne .done  ;IF NOT ==, jump to diff
+    cmp bl, 0
+    jne .done
     cmp al, bl
     jne .done
     test al, al             ;Check if \0
@@ -30,7 +30,7 @@ asm_strcmp:
 .equal:
     xor rax, rax          ; Return 0
     ret
-    ;jmp .function_end
+    jmp .function_end
 
 .greater:
     mov rax, 1            ; Return pos value when >
@@ -39,7 +39,7 @@ asm_strcmp:
 .lesser:
     ;mov rax, -1           ; Return neg value like strcmp when <
     ;movsx rax, al 
-    sub al, bl
+    sub al, bl              ;this logic is not working
     jmp .function_end
 
 .function_end:
