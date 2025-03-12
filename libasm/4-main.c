@@ -14,7 +14,10 @@
  *
  * Return: EXIT_SUCCESS or EXIT_FAILURE
  */
-int main(void)
+
+extern char *asm_strstr(const char *haystack, const char *needle);
+
+ int main(void)
 {
     assert(strstr(S1, S2) == asm_strstr(S1, S2));
     assert(strstr(S1, S3) == asm_strstr(S1, S3));
