@@ -3,6 +3,8 @@ BITS 64                             ;For RSI and RDI- they hold 64 bits
 section .text
     global asm_strncmp
 
+;failing at s1, s3, 15
+
 asm_strncmp:
     push rbp                ;base pointer - 8 bit
     mov rbp, rsp            ;move stack* to base* - 8 bit
@@ -39,10 +41,10 @@ asm_strncmp:
     jmp .function_end
 
 .function_end:
+    mov rax, 0
     pop rbp
     ret
 
 ;add size_t logic
 ;rcx for 64bit counter
 ;decrement with rcx using dec rcx before cmp
-;
