@@ -11,7 +11,7 @@
  * Return: EXIT_SUCCESS or EXIT_FAILURE
  */
 
-extern int asm_puts(const char *str);
+extern size_t asm_puts(const char *str);
 
  int main(void)
 {
