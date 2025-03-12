@@ -6,7 +6,7 @@ section .text
 asm_strspn:
     xor rax, rax          ; Clear rax (to store the count)
 
-.next_char_s1:
+.next_character:
     mov dl, byte [rdi]    ; Load current character from s1 into dl
     test dl, dl           ; Check if it's null terminator
     jz .done              ; If null terminator, we're done
@@ -27,7 +27,7 @@ asm_strspn:
 .in_accept:
     inc rax               ; Increment count (rax) for matching character
     inc rdi               ; Move to the next character in s1
-    jmp .next_char_s1     ; Repeat for the next character in s1
+    jmp .next_character     ; Repeat for the next character in s1
 
 .not_in_accept:
     jmp .done
