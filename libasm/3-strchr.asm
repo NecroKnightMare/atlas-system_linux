@@ -5,6 +5,7 @@ section .text
 
 asm_strchr:
     xor rax, rax
+    mov al, sil              ;will add to load targeted character
     
 .next_character:
     movzx rdx, byte [rdi]    ; Load byte from string into rdx and zero-extend
