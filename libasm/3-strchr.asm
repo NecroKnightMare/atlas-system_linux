@@ -1,5 +1,7 @@
 BITS 64
 
+; segmentation fault when trying to find 'z'
+
 section .text
     global asm_strchr
 
