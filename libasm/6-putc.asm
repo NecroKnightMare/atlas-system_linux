@@ -7,8 +7,8 @@ asm_putc:
 
     mov rax, 1             ; Syscall number for write (1)
     mov rdi, 1             ; File descriptor for stdout (1)
-    mov rsi, rsp           ; rsi = pointer to buffer on the stack
-    mov [rsp], dil         ; Store the character on the stack
+    lea rsi, [rsp-1]           ; rsi = pointer to buffer on the stack
+    mov byte [rsp-1], dil         ; Store the character on the stack
     mov rdx, 1             ; Number of bytes to write
 
     syscall
