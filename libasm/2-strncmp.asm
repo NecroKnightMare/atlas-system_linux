@@ -18,20 +18,20 @@ asm_strncmp:
     jne .difference
 
 
-    test al, al             ;Check if \0
+    test al, al              ;Check if \0
     jz .equal                ;IF \0 strings are ==
 
     inc rcx                 ;increment n
     jmp .next_character     ;increment/loop
 
 .equal:
-    xor eax, eax          ; set to 0/return use 32 bit for efficiency
+    xor eax, eax            ; set to 0/return use 32 bit for efficiency
     ret
 
 .difference:
-    movzx eax, al
-    movzx ebx, bl
-    sub eax, ebx
+    movzx eax, al           ;zero extend
+    movzx ebx, bl           ;zero extend
+    sub eax, ebx            ;difference
     ret
 
 ;All good!
