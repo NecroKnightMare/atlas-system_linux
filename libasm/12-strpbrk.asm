@@ -21,7 +21,7 @@ charset_loop:
     je found                ; If match, jump to found
 
     inc r9                  ; Move to the next character in the charset
-    jmp charset_loop        ; Repeat the loop for charset
+    jmp charset_loop
 
 next_character:
     inc rdi                 ; Move to the next character in haystack
@@ -29,10 +29,8 @@ next_character:
 
 found:
     mov rax, rdi            ; Set RAX to the current position in haystack
-    ret                     ; Return
+    ret
 
 not_found:
     xor rax, rax            ; Set RAX to NULL 0
-    ret                     ; Return
-
-;play around
+    ret

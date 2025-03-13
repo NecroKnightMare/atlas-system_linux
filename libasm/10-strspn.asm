@@ -4,19 +4,19 @@ section .text
     global asm_strspn
 
 asm_strspn:
-    xor rax, rax          ; Clear rax (to store the count)
+    xor rax, rax          ; Clear RAX (to store the count)
 
 .next_character:
     mov dl, byte [rdi]    ; Load current character from s1 into dl
-    test dl, dl           ; Check if it's null terminator
-    jz .done              ; If null terminator, we're done
+    test dl, dl           ; Check if null
+    jz .done              ; If null, end
 
     mov rcx, rsi          ; Set up pointer to accept in rcx
 
 .check_accept:
     mov bl, byte [rcx]    ; Load current character from accept into bl
-    test bl, bl           ; Check if it's null terminator
-    jz .not_in_accept      ; If null terminator, character is not in accept
+    test bl, bl           ; Check if null
+    jz .not_in_accept      ; If null, character is not in accept
 
     cmp dl, bl            ; Compare s1's character (dl) with accept's (bl)
     je .in_accept         ; If match, character is in accept

@@ -32,13 +32,13 @@ asm_strncasecmp:
     test al, al            ; Check if al == 0
     jz .end                ; If null terminator, strings are equal so far
 
-    inc rdi                ; Advance s1 pointer
-    inc rsi                ; Advance s2 pointer
+    inc rdi                ; s1 pointer
+    inc rsi                ; s2 pointer
     dec rdx                ; Decrement max character count (n)
     jnz .compare_loop      ; Continue loop if n > 0
 
 .end:
-    xor rax, rax           ; Strings are equal, return 0
+    xor rax, rax           ; return 0
     ret
 
 .result:

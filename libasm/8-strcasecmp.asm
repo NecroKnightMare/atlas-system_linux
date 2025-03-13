@@ -8,7 +8,6 @@ asm_strcasecmp:
     mov al, byte [rdi]        ; Load current character of s1
     mov bl, byte [rsi]        ; Load current character of s2
 
-
     cmp al, 0x41               ; Check if al >= 'A'
     jb .skip_case_s1          ; Skip if less than 'A'
     cmp al, 0x7A               ; Check if al <= 'Z'
@@ -23,10 +22,10 @@ asm_strcasecmp:
     add bl, 32                ; Convert to lowercase by adding 32
 
 .skip_case_s2:
-    sub al, bl                ; Compare al and bl (al - bl)
+    sub al, bl                ; Compare al and bl
     jne .result               ; If not equal, return the result
 
-    test al, al               ; Is al (or bl) == 0 (null terminator)?
+    test al, al               ; Is al or bl == 0 null
     jz .equal                 ; If null, strings are equal so far
 
     inc rdi                   ; Increment pointer to s1
@@ -34,7 +33,7 @@ asm_strcasecmp:
     jmp .compare_loop         ; Continue the loop
 
 .equal:
-    xor rax, rax              ; Return 0 (strings are equal)
+    xor rax, rax              ; Return 0
     ret
 
 .result:
@@ -42,4 +41,3 @@ asm_strcasecmp:
     ret
 ;error in gdb ->__strcasecmp_l_avx () at ../sysdeps/x86_64/multiarch/strcmp-sse42.S:128
 ;128     in ../sysdeps/x86_64/multiarch/strcmp-sse42.S
-;

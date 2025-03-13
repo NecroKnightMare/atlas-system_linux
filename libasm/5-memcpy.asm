@@ -12,7 +12,7 @@ asm_memcpy:
 .increment:
     mov bl, [rsi]       ;load source index to byte
     mov [rdi], bl       ;send lower base byte to data index
-    inc rsi
+    inc rsi             ;increment
     inc rdi
     dec rdx
     jnz .increment      ;instead of jmp use jnz since its conditional

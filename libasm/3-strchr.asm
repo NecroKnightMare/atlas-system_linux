@@ -8,11 +8,11 @@ section .text
 asm_strchr:
     xor rax, rax
     mov al, sil              ;will add to load targeted character
-    
+
 .next_character:
     mov al, byte [rdi]    ; Load byte from string into rdx and zero-extend
-    test al, al              ; Test if the byte is null terminator
-    je .not_found            ; If null terminator, jump to not found
+    test al, al              ; Test if the byte is null
+    je .not_found            ; If null, jump to not found
 
     cmp al, sil               ; Compare the byte with the target character
     je .found                ; If match, jump to found
@@ -21,7 +21,7 @@ asm_strchr:
     jmp .next_character      ; Repeat the loop
 
 .not_found:
-    xor rax, rax             ; Clear rax to return NULL (0)
+    xor rax, rax             ; Clear rax to return NULL 0
     jmp .exit
 
 .found:

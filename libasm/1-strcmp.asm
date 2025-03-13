@@ -38,7 +38,7 @@ asm_strcmp:
 
 .lesser:
     ;mov rax, -1           ; Return neg value like strcmp when <
-    ;movsx rax, al 
+    ;movsx rax, al
     sub al, bl              ;this logic is not working
     jmp .function_end
 
