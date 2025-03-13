@@ -36,7 +36,7 @@ next_haystack:
     jmp next_character
 
 return_null:
-    xor rax, rax             ; Set RAX to NULL (0)
+    xor rax, rax             ; Set RAX to NULL 0
     ret
 
 match_found:

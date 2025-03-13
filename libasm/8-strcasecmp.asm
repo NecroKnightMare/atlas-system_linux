@@ -3,41 +3,49 @@ BITS 64
 global asm_strcasecmp
 
 asm_strcasecmp:
+    test rdi, rdi             ; Check if the first string pointer is NULL
+    jz .null                  ; Jump if NULL
+    test rsi, rsi             ; Check if the second string pointer is NULL
+    jz .null                  ; Jump if NULL
 
-.compare_loop:
-    mov al, byte [rdi]        ; Load current character of s1
-    mov bl, byte [rsi]        ; Load current character of s2
+.next_character:
+    mov al, byte [rdi]        ; Load the current character from the first string
+    mov bl, byte [rsi]        ; Load the current character from the second string
 
-    cmp al, 0x41               ; Check if al >= 'A'
-    jb .skip_case_s1          ; Skip if less than 'A'
-    cmp al, 0x7A               ; Check if al <= 'Z'
-    ja .skip_case_s1          ; Skip if greater than 'Z'
+    ; Convert AL to lowercase if it’s an uppercase letter
+    cmp al, 'A'               ; Is AL >= 'A'?
+    jb .check_second          ; If below, skip conversion
+    cmp al, 'Z'               ; Is AL <= 'Z'?
+    ja .check_second          ; If above, skip conversion
     add al, 32                ; Convert to lowercase by adding 32
 
-.skip_case_s1:
-    cmp bl, 0x41               ; Check if bl >= 'A'
-    jb .skip_case_s2          ; Skip if less than 'A'
-    cmp bl, 0x7A               ; Check if bl <= 'Z'
-    ja .skip_case_s2          ; Skip if greater than 'Z'
+.check_second:
+    ; Convert BL to lowercase if it’s an uppercase letter
+    cmp bl, 'A'               ; Is BL >= 'A'?
+    jb .compare               ; If below, skip conversion
+    cmp bl, 'Z'               ; Is BL <= 'Z'?
+    ja .compare               ; If above, skip conversion
     add bl, 32                ; Convert to lowercase by adding 32
 
-.skip_case_s2:
-    sub al, bl                ; Compare al and bl
-    jne .result               ; If not equal, return the result
+.compare:
+    cmp al, bl                ; Compare the two characters
+    jne .not_equal            ; If different, jump to not equal
 
-    test al, al               ; Is al or bl == 0 null
-    jz .equal                 ; If null, strings are equal so far
+    test al, al               ; Check if we’ve reached the null terminator
+    je .equal                 ; If null terminator, strings are equal
 
-    inc rdi                   ; Increment pointer to s1
-    inc rsi                   ; Increment pointer to s2
-    jmp .compare_loop         ; Continue the loop
+    inc rdi                   ; Move to the next character in the first string
+    inc rsi                   ; Move to the next character in the second string
+    jmp .next_character
+
+.not_equal:
+    sub eax, ebx              ; Calculate and return the difference
+    ret
 
 .equal:
-    xor rax, rax              ; Return 0
+    xor eax, eax              ; Return 0
     ret
 
-.result:
-    movsx rax, al             ; Sign-extend the result of al - bl into rax
+.null:
+    xor eax, eax              ; For NULL pointers, behave as if strings are equal
     ret
-;error in gdb ->__strcasecmp_l_avx () at ../sysdeps/x86_64/multiarch/strcmp-sse42.S:128
-;128     in ../sysdeps/x86_64/multiarch/strcmp-sse42.S
