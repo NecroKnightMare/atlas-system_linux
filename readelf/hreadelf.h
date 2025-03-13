@@ -7,8 +7,6 @@
 #include <unistd.h>
 #include <elf.h>
 
-// const char *get_type(uint16_t e_type);
-void print_error(const char *msg);
-void read_elf_header(const char *filename);
+void print_elf_header(const char *filename);
 
 #endif 
