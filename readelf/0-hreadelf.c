@@ -1,9 +1,27 @@
 #include "hreadelf.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <elf.h>
 
 void print_error(const char *msg)
 {
     fprintf(stderr, "%s\n", msg);
     exit(98);
+}
+
+const char *get_type(uint16_t e_type)
+{
+    switch (e_type)
+    {
+        case ET_NONE: return "NONE (No file type)";
+        case ET_REL:  return "REL (Relocatable file)";
+        case ET_EXEC: return "EXEC (Executable file)";
+        case ET_DYN:  return "DYN (Shared object file)";
+        case ET_CORE: return "CORE (Core file)";
+        default:      return "Unknown";
+    }
 }
 
 void read_elf_header(const char *filename)
