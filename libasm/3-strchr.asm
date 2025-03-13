@@ -7,6 +7,9 @@ asm_strchr:
     xor rax, rax
     mov al, sil              ;will add to load targeted character
 
+	test rdi, rdi            ; Check if the string pointer is NULL
+    jz .return               ; If NULL, return NULL
+
 .next_character:
     mov al, byte [rdi]    ; Load byte from string into rdx and zero-extend
     test al, al              ; Test if the byte is null
@@ -25,3 +28,7 @@ asm_strchr:
 .found:
     mov rax, rdi             ; Set rax to the address of the found character
 	ret
+
+.return:
+    xor rax, rax             ; Set RAX to NULL 0
+    ret
