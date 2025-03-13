@@ -11,18 +11,18 @@ void print_error(const char *msg)
     exit(98);
 }
 
-const char *get_type(uint16_t e_type)
-{
-    switch (e_type)
-    {
-        case ET_NONE: return "NONE (No file type)";
-        case ET_REL:  return "REL (Relocatable file)";
-        case ET_EXEC: return "EXEC (Executable file)";
-        case ET_DYN:  return "DYN (Shared object file)";
-        case ET_CORE: return "CORE (Core file)";
-        default:      return "Unknown";
-    }
-}
+// const char *get_type(uint16_t e_type)
+// {
+//     switch (e_type)
+//     {
+//         case ET_NONE: return "NONE (No file type)";
+//         case ET_REL:  return "REL (Relocatable file)";
+//         case ET_EXEC: return "EXEC (Executable file)";
+//         case ET_DYN:  return "DYN (Shared object file)";
+//         case ET_CORE: return "CORE (Core file)";
+//         default:      return "Unknown";
+//     }
+// }
 
 void read_elf_header(const char *filename)
 {
@@ -62,16 +62,43 @@ void read_elf_header(const char *filename)
 
     printf("  Version:                           %d (current)\n", header.e_ident[EI_VERSION]);
 
-    printf("  OS/ABI:                            %s\n",
-           header.e_ident[EI_OSABI] == ELFOSABI_SYSV ? "UNIX - System V" : "Other");
+    // OS/ABI handling
+    switch(header.e_ident[EI_OSABI]) {
+        case ELFOSABI_SYSV: printf("  OS/ABI:                            UNIX - System V\n"); break;
+        case ELFOSABI_HPUX: printf("  OS/ABI:                            UNIX - HP-UX\n"); break;
+        case ELFOSABI_NETBSD: printf("  OS/ABI:                            UNIX - NetBSD\n"); break;
+        case ELFOSABI_LINUX: printf("  OS/ABI:                            UNIX - Linux\n"); break;
+        case ELFOSABI_SOLARIS: printf("  OS/ABI:                            UNIX - Solaris\n"); break;
+        case ELFOSABI_AIX: printf("  OS/ABI:                            UNIX - AIX\n"); break;
+        case ELFOSABI_IRIX: printf("  OS/ABI:                            UNIX - IRIX\n"); break;
+        case ELFOSABI_FREEBSD: printf("  OS/ABI:                            UNIX - FreeBSD\n"); break;
+        case ELFOSABI_TRU64: printf("  OS/ABI:                            UNIX - TRU64\n"); break;
+        case ELFOSABI_MODESTO: printf("  OS/ABI:                            Novell - Modesto\n"); break;
+        case ELFOSABI_OPENBSD: printf("  OS/ABI:                            UNIX - OpenBSD\n"); break;
+        case ELFOSABI_ARM: printf("  OS/ABI:                            ARM\n"); break;
+        case ELFOSABI_STANDALONE: printf("  OS/ABI:                            Standalone (embedded)\n"); break;
+        default: printf("  OS/ABI:                            <unknown: %x>\n", header.e_ident[EI_OSABI]);
+    }
 
     printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
 
-    printf("  Type:                              %s\n",
-           header.e_type == ET_EXEC ? "EXEC (Executable file)" : "Other");
+    // File type handling
+    switch(header.e_type) {
+        case ET_NONE: printf("  Type:                              No file type\n"); break;
+        case ET_REL: printf("  Type:                              Relocatable file\n"); break;
+        case ET_EXEC: printf("  Type:                              EXEC (Executable file)\n"); break;
+        case ET_DYN: printf("  Type:                              Shared object file\n"); break;
+        case ET_CORE: printf("  Type:                              Core file\n"); break;
+        default: printf("  Type:                              <unknown: %u>\n", header.e_type);
+    }
 
-    printf("  Machine:                           %s\n",
-           header.e_machine == EM_SPARC ? "Sparc" : "Other");
+    // Machine type handling
+    switch(header.e_machine) {
+        case EM_386: printf("  Machine:                           Intel 80386\n"); break;
+        case EM_X86_64: printf("  Machine:                           Advanced Micro Devices X86-64\n"); break;
+        case EM_SPARC: printf("  Machine:                           Sparc\n"); break;
+        default: printf("  Machine:                           <unknown: %u>\n", header.e_machine);
+    }
 
     printf("  Version:                           0x%x\n", header.e_version);
     printf("  Entry point address:               0x%lx\n", header.e_entry);
