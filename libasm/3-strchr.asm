@@ -1,7 +1,5 @@
 BITS 64
 
-; segmentation fault when trying to find 'z'
-
 section .text
     global asm_strchr
 
@@ -18,7 +16,7 @@ asm_strchr:
     je .found                ; If match, jump to found
 
     inc rdi                  ; Move to the next byte in the string
-    jmp .next_character      ; Repeat the loop
+    jmp .next_character
 
 .not_found:
     xor rax, rax             ; Clear rax to return NULL 0
