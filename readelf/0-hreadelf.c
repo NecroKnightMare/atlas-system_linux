@@ -1,6 +1,9 @@
 #include "hreadelf.h"
+#include "elf_utility.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <elf.h>
@@ -13,7 +16,31 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
+    int fd = open(argv[1], O_RDONLY);
+    if (fd < 0) {
+        perror("Error: Can't open file");
+        exit(EXIT_FAILURE);
+    }
+
+    struct stat st;
+    if (fstat(fd, &st) < 0) {
+        perror("Error: Can't stat file");
+        close(fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    void *file_data = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    if (file_data == MAP_FAILED) {
+        perror("Error: mmap failed");
+        close(fd);
+        exit(EXIT_FAILURE);
+    }
+
+    // Call the function to print ELF header
     print_elf_header(argv[1]);
+
+    munmap(file_data, st.st_size);
+    close(fd);
     return 0;
 }
 

@@ -1,6 +1,6 @@
 .PHONY: all clean rebuild debug
 
-SRC = 0-hreadelf.c
+SRC = 0-hreadelf.c elf_utility.c
 OBJ = $(SRC:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -pedantic
