@@ -1,6 +1,6 @@
 .PHONY: all clean rebuild debug
 
-SRC = $(wildcard *.c)
+SRC = 0-hreadelf.c
 OBJ = $(SRC:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -pedantic
