@@ -1,4 +1,5 @@
 BITS 64
+;still not getting 0 return
 
 section .text
     global asm_strchr
