@@ -83,7 +83,7 @@ void print_elf_header(const char *filename) {
         default: printf("  OS/ABI:                            <unknown: %x>\n", header.e_ident[EI_OSABI]);
     }
 
-    printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
+    printf("  ABI Version:                       %u\n", header.e_ident[EI_ABIVERSION]);
 
     // File type handling
     switch(header.e_type) {
@@ -105,13 +105,13 @@ void print_elf_header(const char *filename) {
 
     printf("  Version:                           0x%x\n", header.e_version);
     printf("  Entry point address:               0x%lx\n", (unsigned long)header.e_entry);
-    printf("  Start of program headers:          %d (bytes into file)\n", header.e_phoff);
-    printf("  Start of section headers:          %d (bytes into file)\n", header.e_shoff);
+    printf("  Start of program headers:          %u (bytes into file)\n", header.e_phoff);
+    printf("  Start of section headers:          %u (bytes into file)\n", header.e_shoff);
     printf("  Flags:                             0x%x\n", header.e_flags);
-    printf("  Size of this header:               %d (bytes)\n", header.e_ehsize);
-    printf("  Size of program headers:           %d (bytes)\n", header.e_phentsize);
-    printf("  Number of program headers:         %d\n", header.e_phnum);
-    printf("  Size of section headers:           %d (bytes)\n", header.e_shentsize);
-    printf("  Number of section headers:         %d\n", header.e_shnum);
-    printf("  Section header string table index: %d\n", header.e_shstrndx);
+    printf("  Size of this header:               %u (bytes)\n", header.e_ehsize);
+    printf("  Size of program headers:           %u (bytes)\n", header.e_phentsize);
+    printf("  Number of program headers:         %u\n", header.e_phnum);
+    printf("  Size of section headers:           %u (bytes)\n", header.e_shentsize);
+    printf("  Number of section headers:         %u\n", header.e_shnum);
+    printf("  Section header string table index: %u\n", header.e_shstrndx);
 }
