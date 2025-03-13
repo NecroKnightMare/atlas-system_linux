@@ -22,12 +22,8 @@ asm_strchr:
 
 .not_found:
     xor rax, rax             ; Clear rax to return NULL 0
-    jmp .exit
+    ret
 
 .found:
     mov rax, rdi             ; Set rax to the address of the found character
-	ret
-
-.exit:
-    pop rdi					; restore
 	ret
