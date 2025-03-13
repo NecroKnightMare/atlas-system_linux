@@ -1,14 +1,23 @@
+.PHONY: all clean rebuild debug
+
+SRC = $(wildcard *.c)
+OBJ = $(SRC:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -pedantic
-TARGET = 0-hreadelf
+EXEC = 0-hreadelf
 
-all: $(TARGET)
+all: $(EXEC)
 
-$(TARGET): 0-hreadelf.o
-	$(CC) $(CFLAGS) -o $(TARGET) 0-hreadelf.o
+$(EXEC): $(OBJ)
+	$(CC) $(CFLAGS) -o $(EXEC) $(OBJ)
 
-0-hreadelf.o: 0-hreadelf.c
-	$(CC) $(CFLAGS) -c 0-hreadelf.c
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(TARGET)
+	rm -f $(EXEC) $(OBJ)
+
+rebuild: clean all
+
+debug: CFLAGS += -g
+debug: rebuild
