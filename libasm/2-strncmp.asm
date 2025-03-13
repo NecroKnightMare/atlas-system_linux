@@ -13,7 +13,7 @@ asm_strncmp:
 
     mov al, byte [rdi + rcx]      ;Load byte from first string
     mov bl, byte [rsi + rcx]      ;Load byte to second string
-    
+
     cmp al, bl
     jne .difference
 
