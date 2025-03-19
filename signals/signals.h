@@ -2,6 +2,10 @@
 #define _SIGNALS_H_
 
 #include <sys/types.h>
+#include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <strings.h>
 
 
 int handle_signal(void);
@@ -18,6 +22,8 @@ int pid_exist(pid_t pid);
 // signal_send <pid>;
 // signal_send.sh <pid>;
 int pid_exist(pid_t pid);
+
+/*error suggestions from compiling*/
 
 
 #endif

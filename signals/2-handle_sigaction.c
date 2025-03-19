@@ -1,4 +1,10 @@
 #include "signals.h"
+#include <signal.h>
+#include <stdio.h>
+#include <strings.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 /*Write a function that set a handler for the signal SIGINT
 
 Prototype: int handle_sigaction(void);
@@ -8,4 +14,26 @@ where <signum> must be replaced with the signal number that was caught
 signal(2) is not allowed
 */
 
+
+
+/*Same as file 0, changed syntax*/
+void sigint_handler(int signum)
+{
+    printf("Gotcha! [%d]\n", signum);
+}
+
 int handle_sigaction(void)
+{
+    struct sigaction sa;
+
+    sa.sa_handler = sigint_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0; /*Restart functions if interrupted by handler */
+
+    if (sigaction(SIGINT, &sa, NULL) == -1)
+    {
+        perror("Not found");
+        return -1;
+    }
+    return 0;
+}
