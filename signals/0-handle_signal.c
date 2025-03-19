@@ -26,14 +26,3 @@ int handle_signal(void) {
     }
     return 0;
 }
-
-int main(void) {
-    if (handle_signal() == -1) {
-        perror("Error setting up signal handler");
-        return 1;
-    }
-    while (1) {
-        pause(); /*wait for signals*/
-    }
-    return 0;
-}
