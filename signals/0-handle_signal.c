@@ -2,6 +2,9 @@
 #include <signal.h>
 #include <stdio.h>
 #include <strings.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 
 /*Write a function that set a handler for the signal SIGINT
 
