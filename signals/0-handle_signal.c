@@ -1,9 +1,36 @@
 #include "signals.h"
+#include <signal.h>
+#include <stdio.h>
+#include <strings.h>
 
-// Prototype: void (*current_handler_signal(void))(int);
-// Your function returns a pointer to the current handler of SIGINT, or NULL on failure
-// You are not allowed to use sigaction(2)
-// The handler must be unchanged after calling your function
+/*Write a function that set a handler for the signal SIGINT
 
+Prototype: int handle_signal(void);
+Your function must return 0 on success, or -1 on error
+The program should print Gotcha! [<signum>] followed by a new line, every time Control-C is pressed (See example below)
+where <signum> must be replaced with the signal number that was caught
+sigaction(2) is not allowed
+*/
 
-void (*current_handler_signal(void))(int)
+/*made function for print call*/
+void sigint_handler(int signum) {
+    printf("Gotcha! [%d]\n", signum);
+}
+
+int handle_signal(void) {
+    if (signal(SIGINT, sigint_handler) == SIG_ERR) {
+        return -1;
+    }
+    return 0;
+}
+
+int main(void) {
+    if (handle_signal() == -1) {
+        perror("Error setting up signal handler");
+        return 1;
+    }
+    while (1) {
+        pause(); /*wait for signals*/
+    }
+    return 0;
+}

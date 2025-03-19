@@ -2,6 +2,7 @@
 #define _SIGNALS_H_
 
 int handle_signal(void);
+void sigint_handler(int signum);
 void (*current_handler_signal(void))(int);
 int handle_sigaction(void);
 void (*current_handler_sigaction(void))(int);
