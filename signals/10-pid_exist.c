@@ -1,4 +1,5 @@
-#include "signals.h"
+#include <signal.h>
+#include <sys/types.h>
 
 /*Write a function that tests if a process exists, given its PID
 
@@ -12,3 +13,6 @@ You’re not allowed to use the function getpgid
 */
 
 int pid_exist(pid_t pid)
+{
+    return kill(pid, 1) == 0 ? 1 : 0;
+}
