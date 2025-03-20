@@ -14,5 +14,5 @@ You’re not allowed to use the function getpgid
 
 int pid_exist(pid_t pid)
 {
-    return kill(pid, 1) == 0 ? 1 : 0;
+    return kill(pid, 1) == 0;
 }
