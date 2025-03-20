@@ -11,8 +11,7 @@ if [ "$#" -ne 1 ];
     then
     echo "Usage: $0 <pid>";
     exit 1;
-else
-pkill -3 $1
 fi
+pkill -3 $1
 
 echo "SIGQUIT signal sent to process <pid>"
