@@ -6,12 +6,14 @@
 # Where <pid> is the PID of the process to send a signal to
 # If the number of arguments is not correct, your program must print Usage: %s <pid> (where %s is argv[0]), followed by a new line, and exit with 1
 
-# makes sure there's only one argument; exits otherwise
-if [ "$#" -ne 1 ]; 
-    then
-    echo "Usage: $0 <pid>";
-    exit 1;
+# Check if the number of arguments is correct
+if [ "$#" -ne 1 ]; then
+    printf "Usage: %s <pid>\n" "$0"
+    exit 1
 fi
-pkill -3 $1
 
-echo "SIGQUIT signal sent to process <pid>"
+# grab pid from the first argument
+pid=$!
+
+# Send SIGQUIT to the given pid
+kill -SIGQUIT "$pid"
