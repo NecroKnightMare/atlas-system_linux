@@ -14,11 +14,11 @@ Your program must return EXIT_SUCCESS on success, or EXIT_FAILURE
 You’re not allowed to have more than 1 function in your file
 */
 
-void sigint_handler(int signum)
-{
-    printf("Waiting ... %d\n", signum);
-    printf("PID: %d\n", (int)getpid());
-}
+// void sigint_handler(int signum)
+// {
+//     printf("Waiting ... %d\n", signum);
+//     printf("PID: %d\n", (int)getpid());
+// }
 
 int main (int argc, char *argv[])
 {
