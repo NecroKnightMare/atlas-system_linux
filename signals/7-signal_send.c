@@ -20,7 +20,7 @@ void sigint_handler(int signum)
     printf("PID: %d\n", (int)getpid());
 }
 
-int main (void)
+int main (int argc, char *argv[])
 {
     if (argc != 2)
     {
@@ -29,7 +29,7 @@ int main (void)
     }
 
     int pid = atoi(argv[1]);
-    
+
     if (kill(pid, SIGINT) == -1)
     {
         perror("kill failed");
