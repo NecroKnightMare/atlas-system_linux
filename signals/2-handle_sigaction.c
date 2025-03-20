@@ -1,3 +1,6 @@
+/*Needs to interrupt signal after the third time. Works as intended otherwise.
+*/
+
 #include "signals.h"
 #include <signal.h>
 #include <stdio.h>
@@ -20,6 +23,7 @@ signal(2) is not allowed
 void sigint_handler(int signum)
 {
     printf("Gotcha! [%d]\n", signum);
+    /*use fflush here */
 }
 
 int handle_sigaction(void)
@@ -28,7 +32,7 @@ int handle_sigaction(void)
 
     sa.sa_handler = sigint_handler;
     sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0; /*Restart functions if interrupted by handler */
+    sa.sa_flags = 0;
 
     if (sigaction(SIGINT, &sa, NULL) == -1)
     {

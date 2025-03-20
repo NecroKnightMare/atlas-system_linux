@@ -1,3 +1,5 @@
+/*Works as intended*/
+
 #include "signals.h"
 #include <signal.h>
 #include <stdio.h>
