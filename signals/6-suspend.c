@@ -1,4 +1,8 @@
 #include "signals.h"
+#include <stdio.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 /*
 Write a program that sets a handler for the signal SIGINT, and exits right after the signal is received and handled
@@ -13,8 +17,25 @@ You are not allowed to use the functions exit, sleep or _exit
 You are not allowed to use any kind of loop (while, for, do/while)
 */
 
-void handler(int signum)
+void sigint_handler(int signum)
 {
     printf("Caught %d\n", signum);
     signal(SIGINT, SIG_DFL);
+}
+
+int main(void) {
+    struct sigaction sa;
+
+    sa.sa_handler = sigint_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+
+    if (sigaction(SIGINT, &sa, NULL) == -1) {
+        perror("sigaction failed");
+        return EXIT_FAILURE;
+    }
+
+    pause();
+
+    return EXIT_SUCCESS;
 }
