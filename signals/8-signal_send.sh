@@ -26,6 +26,7 @@ kill -SIGQUIT "$pid"
 if [ $? -ne 0 ]; then
     echo "Failed to send SIGQUIT to process $pid"
     exit 1
+#  saying permissions denied here in error
 fi
 
 echo "SIGQUIT signal sent to process $pid"
