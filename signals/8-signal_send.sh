@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Gotta clean this up
+
 # Write a sh script that sends the signal SIGQUIT to a process, given its PID
 
 # Usage: signal_send.sh <pid>
