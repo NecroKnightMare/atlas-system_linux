@@ -32,7 +32,7 @@ int main (int argc, char *argv[])
     int pid = atoi(argv[1]);
 
     if (kill(pid, SIGINT) == -1)
-     {
+    {
         perror("kill failed");
         return (EXIT_FAILURE);
     }
