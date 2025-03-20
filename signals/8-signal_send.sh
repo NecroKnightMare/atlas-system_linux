@@ -15,18 +15,14 @@ if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <pid>"
     exit 1
 fi
-
 # saves the first argument as the pid
 pid=$1
-
 # sends the SIGQUIT signal to the process with the given pid
-kill -SIGQUIT "$pid"
-
+# kill -3 "$pid"
 # checks if the last signal was sent successfully
-if [ $? -ne 0 ]; then
+if ! kill -SIGQUIT <PID>; then
     echo "Failed to send SIGQUIT to process $pid"
     exit 1
 #  saying permissions denied here in error
 fi
-
 echo "SIGQUIT signal sent to process $pid"
