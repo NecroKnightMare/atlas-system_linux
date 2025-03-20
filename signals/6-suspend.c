@@ -20,6 +20,7 @@ You are not allowed to use any kind of loop (while, for, do/while)
 void sigint_handler(int signum)
 {
     printf("Caught %d\n", signum);
+    printf("Signal received\n");
     signal(SIGINT, SIG_DFL);
 }
 
