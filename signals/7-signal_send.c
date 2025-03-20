@@ -20,6 +20,7 @@ You’re not allowed to have more than 1 function in your file
 //     printf("PID: %d\n", (int)getpid());
 // }
 
+
 int main (int argc, char *argv[])
 {
     if (argc != 2)
@@ -31,7 +32,7 @@ int main (int argc, char *argv[])
     int pid = atoi(argv[1]);
 
     if (kill(pid, SIGINT) == -1)
-    {
+     {
         perror("kill failed");
         return (EXIT_FAILURE);
     }
