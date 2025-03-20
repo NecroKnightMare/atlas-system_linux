@@ -1,7 +1,31 @@
+#!/bin/bash
+
 # Write a sh script that sends the signal SIGQUIT to a process, given its PID
 
 # Usage: signal_send.sh <pid>
 # Where <pid> is the PID of the process to send a signal to
 # If the number of arguments is not correct, your program must print Usage: %s <pid> (where %s is argv[0]), followed by a new line, and exit with 1
 
-signal_send.sh <pid>
+
+
+
+
+# makes sure there's only one argument; exits otherwise
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <pid>"
+    exit 1
+fi
+
+# saves the first argument as the pid
+pid=$1
+
+# sends the SIGQUIT signal to the process with the given pid
+kill -SIGQUIT "$pid"
+
+# checks if the last signal was sent successfully
+if [ $? -ne 0 ]; then
+    echo "Failed to send SIGQUIT to process $pid"
+    exit 1
+fi
+
+echo "SIGQUIT signal sent to process $pid"
