@@ -43,7 +43,7 @@
 - You’re not allowed to use system(3)
 -You’re not allowed to use exec*(2 and 3)
 
-##Tests
+## Tests
 
 * Your program must be able to handle both 32-bit and 64-bit ELF files
 * Your program must be able to handle both little and big endian ELF files
@@ -51,3 +51,5 @@
 
 ### More Info
 - See also /usr/include/elf.h
+
+![alt text](ELF_Executable_and_Linkable_Format_diagram_by_Ange_Albertini.png)
