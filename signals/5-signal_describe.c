@@ -20,7 +20,7 @@ int main (int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    /*convert string to integer*/
+    /*string to integer*/
     int signum = atoi(argv[1]);
     char *signal_name = strsignal(signum);
 

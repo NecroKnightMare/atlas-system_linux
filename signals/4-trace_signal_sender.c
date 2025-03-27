@@ -16,7 +16,7 @@ Your function must return 0 on success, or -1 on error
 void sigint_handler(int signum)
 {
     printf("SIGQUIT sent by [%d]\n", signum);
-    /*use fflush here */
+    /*fflush(stdout); haven't tested yet*/
 }
 
 int trace_signal_sender(void) {

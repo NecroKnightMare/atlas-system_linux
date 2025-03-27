@@ -16,7 +16,7 @@ The handler must be unchanged after calling your function
 void sigint_handler(int signum)
 {
     printf("Hello :) [%d]\n", signum);
-    /*use fflush here */
+    /*fflush(stdout); haven't tested yet*/
 }
 
 void (*current_handler_sigaction(void))(int)
