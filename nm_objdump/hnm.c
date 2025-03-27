@@ -52,7 +52,7 @@ void print_symbols(const char *filename) {
 
 int main(int argc, char **argv) {
     if (argc == 1) {
-        // Assume "a.out" as the default file
+        // Assume a.out as the default file
         print_symbols("a.out");
     } else {
         for (int i = 1; i < argc; ++i) {
