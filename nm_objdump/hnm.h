@@ -1,7 +1,8 @@
-#ifndef _NM_OBJDUMP_H
-#define _NM_OBJDUMP_H
+#ifndef _HNM_H
+#define _HNM_H
 
 void print_symbols(const char *filename);
+
 
 
 

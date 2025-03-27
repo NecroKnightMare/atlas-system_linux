@@ -1,18 +1,18 @@
 CC=gcc
 CFLAGS=-Wall -g
 LDFLAGS=-lelf
-RULE=hnm
+TARGET=hnm
 
 SRCS=hnm.c
 OBJS=$(SRCS:.c=.o)
 
-all: $(RULE
+all: $(TARGET)
 
-$(RULE): $(OBJS)
-    $(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS)
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS)
 
 %.o: %.c
-    $(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-    rm -f $(OBJS) $(RULE)
+	rm -f $(OBJS) $(TARGET)
