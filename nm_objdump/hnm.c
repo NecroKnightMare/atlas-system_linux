@@ -4,7 +4,6 @@
 #include <fcntl.h>
 #include <libelf.h>
 #include <gelf.h>
-#include "hnm.c"
 
 
 void print_symbols(const char *filename) {
