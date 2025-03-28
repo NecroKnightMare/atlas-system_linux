@@ -41,11 +41,11 @@ void print_python_list(PyObject *p)
         printf("[*] Allocated = %zd\n", ((PyListObject *)p)->allocated);
         printf("Element %zd: ", i);
 
-        PyList_Append(p, item);
-        if (item == NULL)
-        {
-            fprintf(stderr, "Error: Item %zd is -1\n", i);
-            continue;
-        }
+        // PyList_Append(p, item);
+        // if (item == NULL)
+        // {
+        //     fprintf(stderr, "Error: Item %zd is -1\n", i);
+        //     continue;
+        // }
     }
 }
