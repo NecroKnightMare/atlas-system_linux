@@ -19,9 +19,9 @@ void print_python_list(PyObject *p)
     Py_ssize_t size = PyList_Size(p);
     // Py_ssize_t allocated = ((PyListObject *)p)->allocated;
 
-    // printf("[*] Python list info\n");
-    // printf("[*] Size of the Python List = %zd\n", size);
-    // printf("[*] Allocated = %zd\n", ((PyListObject *)p)->allocated);
+    printf("[*] Python list info\n");
+    printf("[*] Size of the Python List = %zd\n", size);
+    printf("[*] Allocated = %zd\n", ((PyListObject *)p)->allocated);
     
     for (Py_ssize_t i = 0; i < size; i++) 
     {
@@ -48,9 +48,9 @@ void print_python_list(PyObject *p)
             printf("Element %zd: unknown\n", i);
         }
         
-        printf("[*] Python list info\n");
-        printf("[*] Size of the Python List = %zd\n", size);
-        printf("[*] Allocated = %zd\n", ((PyListObject *)p)->allocated);
+        // printf("[*] Python list info\n");
+        // printf("[*] Size of the Python List = %zd\n", size);
+        // printf("[*] Allocated = %zd\n", ((PyListObject *)p)->allocated);
             
             // output statement is wrong-should be:
             // Element 0: str
