@@ -40,7 +40,7 @@ void print_python_list(PyObject *p)
             printf("Element %zd: tuple\n", i);
         } else if (PyList_Check(item))
         {
-            printf("list\n");
+            printf("Element %zd: list\n", i);
         } else if (item == Py_None)
         {
             printf("Element %zd: NoneType\n", i);
@@ -48,21 +48,5 @@ void print_python_list(PyObject *p)
             printf("Element %zd: unknown\n", i);
         }
         
-        // printf("[*] Python list info\n");
-        // printf("[*] Size of the Python List = %zd\n", size);
-        // printf("[*] Allocated = %zd\n", ((PyListObject *)p)->allocated);
-            
-            // output statement is wrong-should be:
-            // Element 0: str
-            // not : Element 0: [*] Python list info
-            // Not i or size, logic may be missing
-            // printf("Element %zd: ", i);
-
-            // PyList_Append(p, item);
-            // if (item == NULL)
-            // {
-            //     fprintf(stderr, "Error: Item %zd is -1\n", i);
-            //     continue;
-            // }
     }
 }
