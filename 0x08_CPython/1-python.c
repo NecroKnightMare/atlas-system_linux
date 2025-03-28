@@ -28,26 +28,25 @@ void print_python_list(PyObject *p)
         PyObject *item = PyList_GetItem(p, i);
         if (PyUnicode_Check(item))
         {
-            printf("str\n");
+            printf("Element %zd: str\n", i);
         } else if (PyLong_Check(item))
         {
-            printf("int\n");
+            printf("Element %zd: int\n", i);
         } else if (PyFloat_Check(item))
         {
-            printf("float\n");
+            printf("Element %zd: float\n", i);
         } else if (PyTuple_Check(item))
         {
-            printf("tuple\n");
+            printf("Element %zd: tuple\n", i);
         } else if (PyList_Check(item))
         {
             printf("list\n");
         } else if (item == Py_None)
         {
-            printf("NoneType\n");
+            printf("Element %zd: NoneType\n", i);
         } else {
-            printf("unknown\n");
+            printf("Element %zd: unknown\n", i);
         }
-        printf("Element %lc: ", p);
         
         printf("[*] Python list info\n");
         printf("[*] Size of the Python List = %zd\n", size);
