@@ -43,7 +43,7 @@ void print_python_list(PyObject *p)
         // Element 0: str
         // not : Element 0: [*] Python list info
         // Not i or size, logic may be missing
-        printf("Element %zd: ", );
+        printf("Element %zd: ", i);
 
         // PyList_Append(p, item);
         // if (item == NULL)
