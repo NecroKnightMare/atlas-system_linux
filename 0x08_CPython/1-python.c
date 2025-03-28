@@ -35,6 +35,12 @@ void print_python_list(PyObject *p)
         } else if (PyFloat_Check(item))
         {
             printf("float\n");
+        } else if (PyTuple_Check(item))
+        {
+            printf("tuple\n");
+        } else if (PyList_Check(item))
+        {
+            printf("list\n");
         } else if (item == Py_None)
         {
             printf("NoneType\n");
