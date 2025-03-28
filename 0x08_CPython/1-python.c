@@ -39,7 +39,11 @@ void print_python_list(PyObject *p)
         printf("[*] Python list info\n");
         printf("[*] Size of the Python List = %zd\n", size);
         printf("[*] Allocated = %zd\n", ((PyListObject *)p)->allocated);
-        printf("Element %zd: ", i);
+        // output statement is wrong-should be:
+        // Element 0: str
+        // not : Element 0: [*] Python list info
+        // Not i or size, logic may be missing
+        printf("Element %zd: ", );
 
         // PyList_Append(p, item);
         // if (item == NULL)
