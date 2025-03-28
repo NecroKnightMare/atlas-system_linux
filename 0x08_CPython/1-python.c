@@ -41,7 +41,7 @@ void print_python_list(PyObject *p)
         } else {
             printf("unknown\n");
         }
-        printf("Element %zd: ", i);
+        printf("Element %lc: ", p);
         
         printf("[*] Python list info\n");
         printf("[*] Size of the Python List = %zd\n", size);
