@@ -15,9 +15,8 @@ void print_python_list(PyObject *p)
         return;
     }
 
-
     Py_ssize_t size = PyList_Size(p);
-    printf("[*] Python list info\n");
+    
     for (Py_ssize_t i = 0; i < size; i++) 
     {
     PyObject *item = PyList_GetItem(p, i);
@@ -26,6 +25,22 @@ void print_python_list(PyObject *p)
             fprintf(stderr, "Error: Item %zd is NULL\n", i);
             continue;
         }
+        if (item == Py_None) 
+        {
+            fprintf(stderr, "Error: Item %zd is None\n", i);
+            continue;
+        }
+        if (item == Py_False) 
+        {
+            fprintf(stderr, "Error: Item %zd is False\n", i);
+            continue;
+        }
+       
+        printf("[*] Python list info\n");
+        printf("[*] Size of the Python List = %zd\n", size);
+        printf("[*] Allocated = %zd\n", ((PyListObject *)p)->allocated);
+        printf("Element %zd: ", i);
+
         PyList_Append(p, item);
         if (item == NULL)
         {
