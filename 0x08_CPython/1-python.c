@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <float.h>
-#include <time.h>
 #include "list_object.h"
 
 
@@ -25,7 +24,9 @@ void print_python_list(PyObject *p)
     
     for (Py_ssize_t i = 0; i < size; i++) 
     {
-        PyObject *item = PyList_GetItem(p, i);
+        // Task 1 PyObject *item = PyList_GetItem(p, i);
+        // Task 2 line 29
+        PyObject *item = ((PyListObject *)p)->ob_item[i];
         if (PyUnicode_Check(item))
         {
             printf("Element %zd: str\n", i);
