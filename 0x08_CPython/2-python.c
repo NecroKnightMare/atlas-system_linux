@@ -58,8 +58,8 @@ void print_python_bytes(PyObject *p)
        return;
    }
 
-    Py_ssize_t size = PyBytes_Size(p);
-    char *bytes = PyBytes_AsString(p);
+    Py_ssize_t size = ((PyVarObject *)p)->ob_size;
+    char *bytes = ((PyBytesObject *)p)->ob_sval;
 
     printf("[*] bytes object info\n");
     printf(" size: %zd\n" , size);
