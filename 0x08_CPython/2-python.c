@@ -62,10 +62,10 @@ void print_python_bytes(PyObject *p)
     char *bytes = PyBytes_AsString(p);
 
     printf("[.] Python bytes info\n");
-    printf(" size: %zd bytes:" , size);
-    printf(": trying string: %s\n", bytes);
+    printf(" size: " , size);
+    printf(" trying string: %s\n", bytes);
 
-    printf(" first %zd bytes:", size > 10 ? 10 : size);
+    printf(" first %zd bytes:", bytes > 10 ? 10 : bytes);
     for (Py_ssize_t i = 0; i < size && i < 10; i++) 
     {
         printf("%02x ", (unsigned char)bytes[i]);
