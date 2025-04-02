@@ -61,7 +61,7 @@ void print_python_bytes(PyObject *p)
     Py_ssize_t size = PyBytes_Size(p);
     char *bytes = PyBytes_AsString(p);
 
-    printf("[.] Python bytes info\n");
+    printf("[.] bytes info\n");
     printf(" size: %zd\n" , size);
     printf(" trying string: %s\n", bytes);
 
