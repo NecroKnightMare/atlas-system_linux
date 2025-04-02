@@ -61,12 +61,12 @@ void print_python_bytes(PyObject *p)
     Py_ssize_t size = ((PyVarObject *)p)->ob_size;
     char *bytes = ((PyBytesObject *)p)->ob_sval;
 
-    printf("[*] bytes object info\n");
-    printf(" size: %zd\n" , size);
-    printf(" trying string: %s\n", bytes);
+    printf("[.] bytes object info\n");
+    printf("  size: %zd\n" , size);
+    printf("  trying string: %s\n", bytes);
 
     Py_ssize_t print_size = (size > 10) ? 10 : size;
-    printf(" first %zd bytes: ", print_size + 1);
+    printf("  first %zd bytes: ", print_size + 1);
     for (Py_ssize_t i = 0; i < size && i < 10; i++) 
     {
         printf("%02x ", (unsigned char)bytes[i]);
