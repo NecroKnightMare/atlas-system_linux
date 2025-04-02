@@ -73,7 +73,7 @@ void print_python_bytes(PyObject *p)
     }
     if (size < 10)
     {
-        printf("%02x\n", 0);
+        printf("%02x", 0);
     }
     printf("\n");
 }
