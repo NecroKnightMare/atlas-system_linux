@@ -26,13 +26,17 @@ void print_python_int(PyObject *p)
             printf("C unsigned long int overflow\n");
             return;
         }
-        result += long_obj->ob_digit[i] << (i * PyLong_SHIFT);
+        result = long_obj->ob_digit[i] + (i << PyLong_SHIFT);
     }
 
     if (((PyVarObject *)p)->ob_size < 0)
+    {
         printf("-%lu\n", result);
+    
+    }
     else
+    {
         printf("%lu\n", result);
-
+    }
     fflush(stdout);
 }
