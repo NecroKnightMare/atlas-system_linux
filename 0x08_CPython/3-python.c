@@ -48,12 +48,13 @@ void print_python_bytes(PyObject *p)
     printf("  trying string: %s\n", bytes);
 
     Py_ssize_t print_size = (size > 10) ? 10 : size;
-    printf("  first %zd bytes:", print_size + 1);
+    printf("  first %zd bytes:", print_size);
 
     for (Py_ssize_t i = 0; i < print_size; i++)
     {
         printf(" %02x", (unsigned char)bytes[i]);
     }
+    printf("\n");
 
     if (size <= 10)
     {
