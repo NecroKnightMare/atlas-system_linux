@@ -13,19 +13,22 @@ void print_python_int(PyObject *p)
     PyLongObject *long_obj = (PyLongObject *)p;
     Py_ssize_t size = ((PyVarObject *)p)->ob_size;
     unsigned long int result = 0;
+    
+    if (size < 0)
+    {
+        size = -size;
+    }
 
-  
     for (Py_ssize_t i = 0; i < size; i++)
     {
-        if (i > (Py_ssize_t)sizeof(unsigned long int) * 8 / PyLong_SHIFT)
+        if (i > (Py_ssize_t)(sizeof(unsigned long int) * 8 / PyLong_SHIFT))
         {
             printf("C unsigned long int overflow\n");
             return;
         }
-        result += (unsigned long int)long_obj->ob_digit[i] << (i * PyLong_SHIFT);
+        result += long_obj->ob_digit[i] << (i * PyLong_SHIFT);
     }
 
-    // Neg values
     if (((PyVarObject *)p)->ob_size < 0)
         printf("-%lu\n", result);
     else
