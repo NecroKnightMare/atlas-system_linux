@@ -28,19 +28,3 @@ i = 18446744073709551616
 lib.print_python_int(i)
 i = "1"
 lib.print_python_int(i)
-julien@ubuntu:~/Python Integers$ 
-julien@ubuntu:~/Python Integers$ gcc -Wall -Wextra -pedantic -Werror -std=c99 -shared -Wl,-soname,libPython.so -o libPython.so -fPIC -I/usr/include/python3.9 5-python.c
-julien@ubuntu:~/Python Integers$ python3 5-tests.py 
--1
-0
-1
-123456789
--123456789
-12345678901
-10304719833506056896
--9223372036854775808
-9223372036854775807
-18446744073709551615
--18446744073709551615
-C unsigned long int overflow
-Invalid Int Object
