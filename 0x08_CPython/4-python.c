@@ -5,9 +5,11 @@
 
 void print_python_string(PyObject *p)
 {
+    // Somewhere in this logic its printing an extra line...
     if (!PyUnicode_Check(p))
     {
-        fprintf(stderr, "[ERROR] Invalid String Object\n");
+        printf("[ERROR] Invalid String Object\n");
+        fflush(stderr);
         return;
     }
 
