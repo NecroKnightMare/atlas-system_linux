@@ -35,7 +35,7 @@ void print_python_bytes(PyObject *p)
 {
     if (!PyBytes_Check(p))
     {
-        fprintf(stderr, "[ERROR] Invalid Bytes Object\n");
+        fprintf(stderr, "Invalid Bytes Object\n");
         return;
     }
 
@@ -54,7 +54,7 @@ void print_python_bytes(PyObject *p)
     {
         printf(" %02x", (unsigned char)bytes[i]);
     }
-    printf("\n");
+    // printf("\n"); goes back and forth on points in intranet
 
     if (size <= 10)
     {
