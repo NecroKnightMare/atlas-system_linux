@@ -66,8 +66,8 @@ void print_python_bytes(PyObject *p)
     printf("  size: %zd\n" , size);
     printf("  trying string: %s\n", bytes);
 
-    Py_ssize_t print_size = size + 1;
-    printf("  first %zd bytes: ", print_size);
+    Py_ssize_t print_size = (size > 10) ? 10 : size;
+    printf("  first %zd bytes: ", print_size + 1);
     // This logic has been changed
     for (Py_ssize_t i = 0; i < print_size; i++) 
     {
