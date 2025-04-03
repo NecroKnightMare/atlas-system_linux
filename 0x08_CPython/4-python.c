@@ -1,5 +1,6 @@
 #include <Python.h>
 #include <stdio.h>
+#include <unicodeobject.h>
 #include "list_object.h"
 
 void print_python_string(PyObject *p)
@@ -19,7 +20,7 @@ void print_python_string(PyObject *p)
         fprintf(stderr, "[ERROR] Failed to convert string to UTF-8\n");
         return;
     }
-    
+
     printf("[.] string object info\n");
     printf("  type: %s\n", type);
     printf("  length: %zd\n", length);
