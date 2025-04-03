@@ -3,6 +3,32 @@
 #include <unicodeobject.h>
 #include "list_object.h"
 
+// Tried removing fflush and isolating print 
+// statements still get wrong output for checker
+
+// Correct output - case: s = b"There is no spoon"
+
+// [copy_files] Filed copied: main_2.py
+// [copy_files] Filed copied: output_2
+// [exec_bash] Command to run:
+// cat output_2
+// su student_jail -c 'timeout 30 bash -c '"'"'cat output_2'"'"''
+// [exec_bash] Return code: 0
+// [exec_bash] Student stdout:
+// [.] string object info
+//   [ERROR] Invalid String Object
+// [exec_bash] Student stdout length: 55
+// [exec_bash] Student stderr:
+// [exec_bash] Student stderr length: 0
+// [exec_bash] Command to run:
+// LANG=C.UTF-8 timeout 10s ./main_2.py
+// su student_jail -c 'timeout 30 bash -c '"'"'LANG=C.UTF-8 timeout 10s ./main_2.py'"'"''
+// [exec_bash] Return code: 0
+// [exec_bash] Student stdout:
+// [ERROR] Invalid String Object
+// [exec_bash] Student stdout length: 30
+// [exec_bash] Student stderr:
+// [exec_bash] Student stderr length: 0
 void print_python_string(PyObject *p)
 {
     // Somewhere in this logic its printing an extra line...
