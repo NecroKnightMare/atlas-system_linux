@@ -57,7 +57,7 @@ void print_python_bytes(PyObject *p)
         printf(" %02x", (unsigned char)bytes[i]);
     }
     // printf("\n"); goes back and forth on points in intranet
-
+//  for bytes situation
     if (size <= 10)
     {
         printf(" %02x", 0);

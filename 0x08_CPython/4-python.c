@@ -32,10 +32,14 @@
 void print_python_string(PyObject *p)
 {
     // Somewhere in this logic its printing an extra line...
+
+    printf("[.] string object info\n");
+    fflush(stdout);
+
     if (!PyUnicode_Check(p))
     {
         printf("[ERROR] Invalid String Object\n");
-        // fflush(stderr);
+        // fflush(stdout);
         return;
     }
 
@@ -50,7 +54,7 @@ void print_python_string(PyObject *p)
     }
     else
     {
-    printf("[.] string object info\n");
+    //printf("[.] string object info\n");
     printf("  type: %s\n", type);
     printf("  length: %zd\n", length);
     printf("  value: %s\n", value);
