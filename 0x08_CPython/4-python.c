@@ -27,6 +27,4 @@ void print_python_string(PyObject *p)
     printf("  type: %s\n", type);
     printf("  length: %zd\n", length);
     printf("  value: %s\n", value);
-
-     fflush(stdout);
 }
