@@ -13,6 +13,12 @@ void print_python_string(PyObject *p)
     Py_ssize_t length = ((PyASCIIObject *)p)->length;
     const char *type = ((PyASCIIObject *)p)->state.ascii ? "compact ascii" : "compact unicode object";
     const char *value = PyUnicode_AsUTF8(p);
+    
+    if (value == NULL)
+    {
+        fprintf(stderr, "[ERROR] Could not convert string to UTF-8\n");
+        return;
+    }
 
     printf("[.] string object info\n");
     printf("  type: %s\n", type);
