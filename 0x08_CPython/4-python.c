@@ -8,7 +8,6 @@
 void print_python_string(PyObject *p)
 {
 
-
     printf("[.] string object info\n");
     fflush(stdout);
 
