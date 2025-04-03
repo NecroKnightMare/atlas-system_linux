@@ -19,7 +19,7 @@ void print_python_string(PyObject *p)
 
     if (value == NULL)
     {
-        fprintf(stderr, "[ERROR] Failed to convert string to UTF-8\n");
+        printf("[ERROR] Failed to convert string to UTF-8\n");
         return;
     }
 
