@@ -51,11 +51,14 @@ void print_python_bytes(PyObject *p)
     printf("  first %zd bytes:", print_size + 1);
 
     for (Py_ssize_t i = 0; i < print_size; i++)
+    {
         printf(" %02x", (unsigned char)bytes[i]);
+    }
 
     if (size > print_size)
+    {
         printf(" %02x", 0);
-
+    }
     printf("\n");
     fflush(stdout);
 }
