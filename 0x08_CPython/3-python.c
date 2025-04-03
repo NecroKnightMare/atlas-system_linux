@@ -55,7 +55,7 @@ void print_python_bytes(PyObject *p)
         printf(" %02x", (unsigned char)bytes[i]);
     }
 
-    if (size > print_size)
+    if (size <= 10)
     {
         printf(" %02x", 0);
     }
