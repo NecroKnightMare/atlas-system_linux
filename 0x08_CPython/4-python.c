@@ -19,5 +19,5 @@ void print_python_string(PyObject *p)
     printf("  length: %zd\n", length);
     printf("  value: %s\n", value);
 
-    fflush(stdout);
+    // fflush(stdout);
 }
