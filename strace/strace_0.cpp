@@ -3,6 +3,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/user.h> // For user_regs_struct
 #include "syscall.h"
 
 // Usage: ./strace_0 command [args...]
@@ -44,14 +45,26 @@ int main(int argc, char* argv[]) {
     if (child == 0) {
         // Child process: request tracing and execute command
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
+        fflush(stdout); // Ensure the output is flushed before execvp
         execvp(argv[1], &argv[1]);
+        perror("execvp failed");
+        return 1; // execvp failed
     } else {
         // Parent process: trace system calls
         int status;
+        struct user_regs_struct regs;
+
         waitpid(child, &status, 0);
         while (!WIFEXITED(status)) {
             ptrace(PTRACE_SYSCALL, child, NULL, NULL);
             waitpid(child, &status, 0);
+
+            ptrace(PTRACE_GETREGS, child, NULL, &regs);
+            printf("%lld\n", regs.orig_rax); // Print syscall number
+            fflush(stdout); // Ensure syscall output is printed immediately
+
+            ptrace(PTRACE_SYSCALL, child, NULL, NULL);
+
         }
     }
     return 0;
