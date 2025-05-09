@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
         // Child process: request tracing and execute command
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
         fflush(stdout); // Ensure the output is flushed before execvp
-        // execvp(argv[1], &argv[1]);
+        execvp(argv[1], &argv[1]);
         perror("execvp failed");
         return 1; // execvp failed
     } else {
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
             waitpid(child, &status, 0);
 
             ptrace(PTRACE_GETREGS, child, NULL, &regs);
-            printf("%lld\n", regs.orig_rax); // Print syscall number
+            // printf("%lld\n", regs.orig_rax); // Print syscall number
             fflush(stdout); // Ensure syscall output is printed immediately
 
             ptrace(PTRACE_SYSCALL, child, NULL, NULL);
