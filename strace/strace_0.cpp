@@ -12,14 +12,13 @@ int main(int argc, char* argv[])
 {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <program> [args...]\n", argv[0]);
-        return 1;
+        return 0;
     }
-
     // child process will be traced
     pid_t child = fork();
     if (child == 0) {
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-        execvp(argv[1], argv);
+        execve(argv[1], argv, NULL);
     } else {
         // Parent process
         int status;
@@ -32,8 +31,5 @@ int main(int argc, char* argv[])
             ptrace(PTRACE_CONT, child, NULL, NULL);
         }
     }
-
-    return 0;
+    return (0);
 }
-
-
