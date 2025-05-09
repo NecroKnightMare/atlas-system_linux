@@ -8,28 +8,51 @@
 // Usage: ./strace_0 command [args...]
 // Each time a syscall is intercepted, you must print its number, followed by a new line
 
-int main(int argc, char* argv[])
-{
+// int main(int argc, char* argv[])
+// {
+//     if (argc < 2) {
+//         fprintf(stderr, "Usage: %s <program> [args...]\n", argv[0]);
+//         return 0;
+//     }
+//     // child process will be traced
+//     pid_t child = fork();
+//     if (child == 0) {
+//         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
+//         execve(argv[1], argv, NULL);
+//     } else {
+//         // Parent process
+//         int status;
+//         while (1) {
+//             wait(&status);
+//             if (WIFEXITED(status)) {
+//                 break;
+//             }
+//             // Here you can add code to inspect the child's registers or memory
+//             ptrace(PTRACE_CONT, child, NULL, NULL);
+//         }
+//     }
+//     return (0);
+// }
+
+int main(int argc, char* argv[]) {
     if (argc < 2) {
-        fprintf(stderr, "Usage: %s <program> [args...]\n", argv[0]);
-        return 0;
+        printf("Usage: %s command [args...]\n", argv[0]);
+        return 1;
     }
-    // child process will be traced
+
     pid_t child = fork();
     if (child == 0) {
+        // Child process: request tracing and execute command
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-        execve(argv[1], argv, NULL);
+        execvp(argv[1], &argv[1]);
     } else {
-        // Parent process
+        // Parent process: trace system calls
         int status;
-        while (1) {
-            wait(&status);
-            if (WIFEXITED(status)) {
-                break;
-            }
-            // Here you can add code to inspect the child's registers or memory
-            ptrace(PTRACE_CONT, child, NULL, NULL);
+        waitpid(child, &status, 0);
+        while (!WIFEXITED(status)) {
+            ptrace(PTRACE_SYSCALL, child, NULL, NULL);
+            waitpid(child, &status, 0);
         }
     }
-    return (0);
+    return 0;
 }
