@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     pid_t child = fork();
     if (child == 0) {
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-        execvp(argv[1], &argv[1]);
+        execvp(argv[1], argv + 1);
     } else {
         // Parent process
         int status;
