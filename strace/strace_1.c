@@ -67,7 +67,7 @@ int trace(pid_t child)
         // task 2
         int syscall = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * ORIG_RAX);
         retval = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * RAX);
-        fprintf(stderr, "%c\n", syscall);
+        fprintf(stderr, "%d\n", syscall);
         
         if (wait_syscall(child) != 0) break;
 
@@ -76,7 +76,7 @@ int trace(pid_t child)
             fprintf(stderr, "Warning: Invalid syscall return (-38). Possible GETREGS failure.\n");
             fflush(stderr);
         }
-        printf("syscall(%lld) = %lld\n", (long long)syscall, (long long)retval);
+        printf("(%d\n", syscall);
         fflush(stdout);
     }
     return 0;
