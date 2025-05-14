@@ -58,8 +58,7 @@ int wait_syscall(pid_t child);
 
 int trace(pid_t child)
 {
-    int status;
-    struct user_regs_struct regs;
+    int status, retval;
 
     waitpid(child, &status, 0);
     ptrace(PTRACE_SETOPTIONS, child, NULL, PTRACE_O_TRACESYSGOOD);
@@ -77,18 +76,17 @@ int trace(pid_t child)
 
         // task 2
         int syscall = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * ORIG_RAX);
-        // retval = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * RAX);
+        retval = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * RAX);
         // fprintf(stderr, "syscall(%d) = ", syscall);
         
         if (wait_syscall(child) != 0) break;
 
         // DEBUGGING 38
-        // if (retval == -38) {
-        //     fprintf(stderr, "Warning: Invalid syscall return (-38). Possible GETREGS failure.\n");
-        //     fflush(stderr);
-        // }
-        // printf("syscall(%lld) = %lld\n", (long long)syscall, (long long)retval);
-        printf("syscall(%lld)\n", (long long)syscall);
+        if (retval == -38) {
+            fprintf(stderr, "Warning: Invalid syscall return (-38). Possible GETREGS failure.\n");
+            fflush(stderr);
+        }
+        printf("syscall(%lld) = %lld\n", (long long)syscall, (long long)retval);
         fflush(stdout);
     }
     return 0;
