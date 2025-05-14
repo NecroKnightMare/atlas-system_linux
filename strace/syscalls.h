@@ -5,6 +5,7 @@
 
 /* Normally, MAX_PARAMS is always 6 */
 # define MAX_PARAMS	6
+// #define SYSCOUNT (sizeof(syscalls_64_g) / sizeof(syscall_t))
 
 /**
  * enum type_e - Enumerates the different types present in the different

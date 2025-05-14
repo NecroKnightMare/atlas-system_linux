@@ -50,8 +50,7 @@ int main(int argc, char *argv[]) {
                     perror("ptrace GETREGS failed");
                     return EXIT_FAILURE;
                 }
-                // here is where new code block for print statement and hexadecimal
-                // printf("%s = %x\n", syscalls_64_g[syscall].name);
+                // here is
                 printf("%lld\n", syscall_t);
             }
         }
