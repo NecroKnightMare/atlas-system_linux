@@ -10,17 +10,6 @@
 #include <sys/user.h> // For user_regs_struct
 #include "syscalls.h"
 
-// extern char **environ;
-
-// const syscall_t *get_syscall(size_t nr) {
-//     // Assuming syscalls_64_g is defined and populated with syscall information
-//     for (size_t i = 0; syscalls_64_g[i].name != NULL; i++) {
-//         if (syscalls_64_g[i].nr == nr) {
-//             return &syscalls_64_g[i];
-//         }
-//     }
-//     return NULL;
-// }
 
 int trace_child(int argc, char **argv);
 int trace(pid_t child);
@@ -110,70 +99,3 @@ int wait_syscall(pid_t child)
         }
     }
 }
-
-// int main(int argc, char *argv[]) {
-//     if (argc < 2) {
-//         fprintf(stderr, "Usage: %s command [args...]\n", argv[0]);
-//         exit(1);
-//     }
-
-//     pid_t child = fork();
-//     if (child == -1){
-//         perror("fork failed");
-//         return EXIT_FAILURE;
-//     }
-//     if (child == 0) {
-//         // Child process: request tracing and execute command
-//         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-//         kill(getpid(), SIGSTOP);
-//         execve(argv[1], argv + 1, environ);
-//         perror("execv failed");
-//         return EXIT_FAILURE;
-//     } else {
-//         // Parent process: trace system calls
-//         int status = 0;
-//         struct user_regs_struct regs;
-//         int syscall_entry = 1; //Tracks entry
-
-//         waitpid(child, &status, 0);
-//         // this ptrace was the infinite loop problem(dont put syscall here)
-//         ptrace(PTRACE_SETOPTIONS, child, NULL, PTRACE_O_TRACESYSGOOD);
-
-//         while (1) {
-//             if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1) {
-//                 if (errno == ESRCH) break; // Child exited
-//                 perror("ptrace SYSCALL failed");
-//                 return EXIT_FAILURE;
-//             }
-
-//             waitpid(child, &status, 0);
-
-//             if (WIFEXITED(status)) break;
-
-//             if (WIFSTOPPED(status) && WSTOPSIG(status) == SIGTRAP)
-//             {
-//                 if (syscall_entry)
-//                 {
-//                     if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
-//                     {
-//                         perror("ptrace GETREGS failed");
-//                         return EXIT_FAILURE;
-//                     }
-
-//                     const syscall_t *syscall = get_syscall(regs.orig_rax);
-                    
-//                     if (syscall)
-//                     {
-//                         printf("%s (%lld)\n", syscall->name, regs.orig_rax);
-//                     } else {
-//                         printf("Syscall not found: %lld\n", regs.orig_rax);
-//                     }
-//                     fflush(stdout);
-//                     // printf("%lld\n", regs.orig_rax);
-//                 }
-//                 syscall_entry = !syscall_entry; // entry/exit
-//             }
-//         }
-//     }
-//     return EXIT_SUCCESS;
-// }
