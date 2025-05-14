@@ -1,207 +1,113 @@
-// #define _GNU_SOURCE
-// #include <sys/ptrace.h>
-// #include <sys/wait.h>
-// #include <unistd.h>
-// #include <stdio.h>
-// #include <sys/reg.h>
-// #include <string.h>
-// #include <errno.h>
-// #include <stdlib.h>
-// #include <sys/user.h> // For user_regs_struct
-// #include "syscalls.h"
-
-
-// int trace_child(int argc, char **argv);
-// int trace(pid_t child);
-
-// // const syscall_t *sys = get_syscall(size_t nr) {
-// //     for (size_t i = 0; i < SYSCOUNT; i++) {
-// //         if (syscalls_64_g[i].nr == nr)
-// //             return &syscalls_64_g[i];
-// //     }
-// //     return NULL;
-// // }
-
-
-
-// int main(int argc, char *argv[]) {
-//     if (argc < 2) {
-//         fprintf(stderr, "Usage: %s command [args...]\n", argv[0]);
-//         exit(1);
-//     }
-
-//     pid_t child = fork();
-//     if (child == -1){
-//         perror("fork failed");
-//         return EXIT_FAILURE;
-//     }
-//     if (child == 0) {
-//         return trace_child(argc-1, argv+1);
-//     } else {
-//         return trace(child);
-//     }
-// }
-
-// int trace_child(int argc, char **argv) 
-// {
-//     char *args [argc+1];
-//     memcpy(args, argv, argc * sizeof(char *));
-//     args[argc] = NULL;
-
-//     ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-//     kill(getpid(), SIGSTOP);
-//     return execvp(args[0], args);
-// }
-
-// int wait_syscall(pid_t child);
-
-// int trace(pid_t child)
-// {
-//     int status;
-//     struct user_regs_struct regs;
-
-//     waitpid(child, &status, 0);
-//     ptrace(PTRACE_SETOPTIONS, child, NULL, PTRACE_O_TRACESYSGOOD);
-
-//     while(1)
-//     {
-//         if (wait_syscall(child) != 0) break;
-
-//         if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
-//         {
-//             perror("ptrace GETREGS failed");
-//             return EXIT_FAILURE;
-//         }
-
-//         int syscall = regs.orig_rax;
-//         int retval = regs.rax;
-//         // int syscall = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * ORIG_RAX);
-//         // retval = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * RAX);
-        
-//         if (wait_syscall(child) != 0) break;
-
-//         // printf("%s (%lld)\n", get_syscall(syscall)->name, (long long)syscall);
-//         printf("syscall(%lld) = %lld\n", (long long)syscall, (long long)retval);
-//         fflush(stdout);
-
-
-//         // //DEBUGGING 38
-//         // if (retval == -38) {
-//         //     fprintf(stderr, "Warning: Invalid syscall return (-38). Possible GETREGS failure.\n");
-//         //     fflush(stderr);
-//         // }
-//     }
-//     return 0;
-// }
-
-// int wait_syscall(pid_t child)
-// {
-//     int status;
-//     while(1)
-//     {
-//         ptrace(PTRACE_SYSCALL, child, 0, 0);
-//         waitpid(child, &status, 0);
-//         if (WIFSTOPPED(status) && WSTOPSIG(status) & 0x80)
-//         {
-//             return 0;
-//         }
-//         if (WIFEXITED(status))
-//         {
-//             return 1;
-//         }
-//     }
-// }
 #define _GNU_SOURCE
 #include <sys/ptrace.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <sys/user.h>
-#include <stdlib.h>
+#include <sys/reg.h>
+#include <string.h>
 #include <errno.h>
-#include <signal.h>
+#include <stdlib.h>
+#include <sys/user.h> // For user_regs_struct
 #include "syscalls.h"
 
-const syscall_t *find_syscall_entry(long syscall_num)
-{
-    for (size_t i = 0; syscalls_64_g[i].name; i++)
-    {
-        if (syscalls_64_g[i].nr == (size_t)syscall_num)
-            return (&syscalls_64_g[i]);
-    }
-    return (NULL);
-}
 
-int main(int argc, char *argv[])
-{
-    pid_t child_pid;
-    int status;
-    struct user_regs_struct regs;
-    int is_syscall_entry = 1;
+int trace_child(int argc, char **argv);
+int trace(pid_t child);
 
-    if (argc < 2)
-    {
+// const syscall_t *sys = get_syscall(size_t nr) {
+//     for (size_t i = 0; i < SYSCOUNT; i++) {
+//         if (syscalls_64_g[i].nr == nr)
+//             return &syscalls_64_g[i];
+//     }
+//     return NULL;
+// }
+
+
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
         fprintf(stderr, "Usage: %s command [args...]\n", argv[0]);
-        return EXIT_FAILURE;
+        exit(1);
     }
 
-    child_pid = fork();
-    if (child_pid == -1)
-    {
+    pid_t child = fork();
+    if (child == -1){
         perror("fork failed");
         return EXIT_FAILURE;
     }
-
-    if (child_pid == 0) // Child process
-    {
-        ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-        kill(getpid(), SIGSTOP);
-        execvp(argv[1], argv + 1);
-        perror("execvp failed");
-        return EXIT_FAILURE;
+    if (child == 0) {
+        return trace_child(argc-1, argv+1);
+    } else {
+        return trace(child);
     }
-    else // Parent process (tracer)
+}
+
+int trace_child(int argc, char **argv) 
+{
+    char *args [argc+1];
+    memcpy(args, argv, argc * sizeof(char *));
+    args[argc] = NULL;
+
+    ptrace(PTRACE_TRACEME, 0, NULL, NULL);
+    kill(getpid(), SIGSTOP);
+    return execvp(args[0], args);
+}
+
+int wait_syscall(pid_t child);
+
+int trace(pid_t child)
+{
+    int status;
+    struct user_regs_struct regs;
+
+    waitpid(child, &status, 0);
+    ptrace(PTRACE_SETOPTIONS, child, NULL, PTRACE_O_TRACESYSGOOD);
+
+    while(1)
     {
-        waitpid(child_pid, &status, 0);
-        if (WIFEXITED(status))
-            return EXIT_SUCCESS;
+        if (wait_syscall(child) != 0) break;
 
-        while (1)
+        if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
         {
-            if (ptrace(PTRACE_SYSCALL, child_pid, NULL, NULL) == -1)
-            {
-                if (errno == ESRCH) // Process exited
-                    break;
-                perror("ptrace(SYSCALL) failed");
-                return EXIT_FAILURE;
-            }
-            waitpid(child_pid, &status, 0);
-            if (WIFEXITED(status))
-                break;
+            perror("ptrace GETREGS failed");
+            return EXIT_FAILURE;
+        }
 
-            if (WIFSTOPPED(status) && WSTOPSIG(status) == SIGTRAP)
-            {
-                if (ptrace(PTRACE_GETREGS, child_pid, NULL, &regs) == -1)
-                {
-                    perror("ptrace(GETREGS) failed");
-                    return EXIT_FAILURE;
-                }
-                long syscall_num = regs.orig_rax;
-                const syscall_t *sys_info = find_syscall_entry(syscall_num);
+        int syscall = regs.orig_rax;
+        int retval = regs.rax;
+        // int syscall = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * ORIG_RAX);
+        // retval = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * RAX);
+        
+        if (wait_syscall(child) != 0) break;
 
-                if (is_syscall_entry)
-                {
-                    if (sys_info)
-                        printf("%s\n", sys_info->name);
-                    else
-                        printf("syscall_%ld\n", syscall_num);
-                    fflush(stdout);
-                    is_syscall_entry = 0; // Next stop is syscall exit
-                }
-                else
-                    is_syscall_entry = 1; // Reset for next syscall
-            }
+        // printf("%s (%lld)\n", get_syscall(syscall)->name, (long long)syscall);
+        printf("syscall(%lld) = %lld\n", (long long)syscall, (long long)retval);
+        fflush(stdout);
+
+
+        // //DEBUGGING 38
+        // if (retval == -38) {
+        //     fprintf(stderr, "Warning: Invalid syscall return (-38). Possible GETREGS failure.\n");
+        //     fflush(stderr);
+        // }
+    }
+    return 0;
+}
+
+int wait_syscall(pid_t child)
+{
+    int status;
+    while(1)
+    {
+        ptrace(PTRACE_SYSCALL, child, 0, 0);
+        waitpid(child, &status, 0);
+        if (WIFSTOPPED(status) && WSTOPSIG(status) & 0x80)
+        {
+            return 0;
+        }
+        if (WIFEXITED(status))
+        {
+            return 1;
         }
     }
-    return EXIT_SUCCESS;
 }
