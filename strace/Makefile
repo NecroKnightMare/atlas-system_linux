@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g
-LDFLAGS =
+LDFLAGS = -g
 OBJS = strace_0.o
 
 .PHONY: all clean
@@ -10,8 +10,8 @@ all: strace_0
 strace_0: $(OBJS)
 	$(CC) $(CFLAGS) -o strace_0 $(OBJS) $(LDFLAGS)
 
-strace_0.o: strace_0.cpp syscalls.h
-	$(CC) $(CFLAGS) -c strace_0.cpp
+strace_0.o: strace_0.c syscalls.h
+	$(CC) $(CFLAGS) -c strace_0.c
 
 clean:
 	rm -f strace_0 $(OBJS) *~ core* *.core *.dSYM
