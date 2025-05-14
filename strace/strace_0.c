@@ -5,12 +5,11 @@
 #include <stdio.h>
 #include <sys/reg.h>
 #include <string.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <sys/user.h> // For user_regs_struct
 #include "syscalls.h"
 
-#include <errno.h>
-#include <signal.h>
 
 const syscall_t *get_syscall(size_t nr) {
     // Assuming syscalls_64_g is defined and populated with syscall information
@@ -97,123 +96,69 @@ const syscall_t *get_syscall(size_t nr) {
 //     }
 // }
 
-// int main(int argc, char *argv[]) {
-//     if (argc < 2) {
-//         fprintf(stderr, "Usage: %s command [args...]\n", argv[0]);
-//         exit(1  );
-//     }
-
-//     pid_t child = fork();
-//     if (child == -1){
-//         perror("fork failed");
-//         return EXIT_FAILURE;
-//     }
-//     if (child == 0) {
-//         // Child process: request tracing and execute command
-//         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-//         execv(argv[1], &argv[1]);
-//         perror("execv failed");
-//         return EXIT_FAILURE;
-//     } else {
-//         // Parent process: trace system calls
-//         int status = 0;
-//         struct user_regs_struct regs;
-
-//         waitpid(child, &status, 0);
-//         // this ptrace was the infinite loop problem(dont put syscall here)
-//         ptrace(PTRACE_SETOPTIONS, child, NULL, PTRACE_O_TRACESYSGOOD);
-
-//         while (!WIFEXITED(status)) {
-//             ptrace(PTRACE_SYSCALL, child, NULL, NULL);
-//             waitpid(child, &status, 0);
-
-//             if (WIFEXITED(status)) break;
-
-//             if (WIFSTOPPED(status))
-//             {
-//                 if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
-//                 {
-//                     perror("ptrace GETREGS failed");
-//                     return EXIT_FAILURE;
-//                 }
-
-//                 const syscall_t *syscall = get_syscall(regs.orig_rax);
-                
-//                 if (syscall)
-//                 {
-//                     printf("%s (%lld)\n", syscall->name, regs.orig_rax);
-//                 } else {
-//                     printf("Syscall not found: %lld\n", regs.orig_rax);
-//                 }
-//                 // printf("%lld\n", regs.orig_rax);
-//             }
-//         }
-//     }
-//     return EXIT_SUCCESS;
-// }
-
-int main(int argc, char *argv[], char *envp[]) {
-    pid_t child_pid;
-    int status;
-    struct user_regs_struct regs;
-    int syscall_entry = 1; /* True for first entry */
-
+int main(int argc, char *argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s command [args...]\n", argv[0]);
-        return (EXIT_FAILURE);
+        exit(1);
     }
 
-    child_pid = fork();
-    if (child_pid == -1) {
-        perror("fork");
-        return (EXIT_FAILURE);
+    pid_t child = fork();
+    if (child == -1){
+        perror("fork failed");
+        return EXIT_FAILURE;
     }
+    if (child == 0) {
+        // Child process: request tracing and execute command
+        ptrace(PTRACE_TRACEME, 0, NULL, NULL);
+        kill(getpid(), SIGSTOP);
+        execv(argv[1], &argv[1]);
+        perror("execv failed");
+        return EXIT_FAILURE;
+    } else {
+        // Parent process: trace system calls
+        int status = 0;
+        struct user_regs_struct regs;
+        int syscall_entry = 1; //Tracks entry
 
-    if (child_pid == 0) { /* Child process */
-        if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) == -1) {
-            perror("ptrace(TRACEME)");
-            exit(EXIT_FAILURE);
-        }
-        if (kill(getpid(), SIGSTOP) == -1) {
-            perror("kill(SIGSTOP)");
-            exit(EXIT_FAILURE);
-        }
-        if (execve(argv[1], argv + 1, envp) == -1) {
-            perror("execve");
-            exit(EXIT_FAILURE);
-        }
-    } else { /* Parent process */
-        waitpid(child_pid, &status, 0);
-        if (WIFEXITED(status)) {
-            return (EXIT_SUCCESS);
-        }
+        waitpid(child, &status, 0);
+        // this ptrace was the infinite loop problem(dont put syscall here)
+        ptrace(PTRACE_SETOPTIONS, child, NULL, PTRACE_O_TRACESYSGOOD);
 
         while (1) {
-            if (ptrace(PTRACE_SYSCALL, child_pid, NULL, NULL) == -1) {
-                if (errno == ESRCH) {
-                    break;
-                }
-                perror("ptrace(SYSCALL) continue");
-                return (EXIT_FAILURE);
-            }
-            waitpid(child_pid, &status, 0);
-
-            if (WIFEXITED(status)) {
-                break;
+            if (ptrace(PTRACE_SYSCALL, child, NULL, NULL) == -1) {
+                if (errno == ESRCH) break; // Child exited
+                perror("ptrace SYSCALL failed");
+                return EXIT_FAILURE;
             }
 
-            if (WIFSTOPPED(status) && WSTOPSIG(status) == SIGTRAP) {
-                if (syscall_entry) {
-                    if (ptrace(PTRACE_GETREGS, child_pid, NULL, &regs) == -1) {
-                        perror("ptrace(GETREGS)");
-                        return (EXIT_FAILURE);
+            waitpid(child, &status, 0);
+
+            if (WIFEXITED(status)) break;
+
+            if (WIFSTOPPED(status) && WSTOPSIG(status) == SIGTRAP)
+            {
+                if(syscall_entry)
+                {
+                    if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
+                    {
+                        perror("ptrace GETREGS failed");
+                        return EXIT_FAILURE;
                     }
-                    fprintf(stdout, "%lld\n", regs.orig_rax);
+
+                    const syscall_t *syscall = get_syscall(regs.orig_rax);
+                    
+                    if (syscall)
+                    {
+                        printf("%s (%lld)\n", syscall->name, regs.orig_rax);
+                    } else {
+                        printf("Syscall not found: %lld\n", regs.orig_rax);
+                    }
                     fflush(stdout);
+                    // printf("%lld\n", regs.orig_rax);
                 }
-                syscall_entry = !syscall_entry;
+                syscall_entry = !syscall_entry; // entry/exit
             }
         }
     }
-    return (EXIT_SUCCESS);
+    return EXIT_SUCCESS;
 }
