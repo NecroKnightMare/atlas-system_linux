@@ -14,6 +14,16 @@
 int trace_child(int argc, char **argv);
 int trace(pid_t child);
 
+// const syscall_t *sys = get_syscall(size_t nr) {
+//     for (size_t i = 0; i < SYSCOUNT; i++) {
+//         if (syscalls_64_g[i].nr == nr)
+//             return &syscalls_64_g[i];
+//     }
+//     return NULL;
+// }
+
+
+
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s command [args...]\n", argv[0]);
@@ -70,6 +80,7 @@ int trace(pid_t child)
         
         if (wait_syscall(child) != 0) break;
 
+        // printf("%s (%lld)\n", get_syscall(syscall)->name, (long long)syscall);
         printf("syscall(%lld) = %lld\n", (long long)syscall, (long long)retval);
         fflush(stdout);
 

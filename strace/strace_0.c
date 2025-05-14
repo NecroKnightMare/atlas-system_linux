@@ -14,6 +14,7 @@
 int trace_child(int argc, char **argv);
 int trace(pid_t child);
 
+
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s command [args...]\n", argv[0]);
@@ -76,6 +77,7 @@ int trace(pid_t child)
             fprintf(stderr, "Warning: Invalid syscall return (-38). Possible GETREGS failure.\n");
             fflush(stderr);
         }
+
         printf("syscall(%lld) = %lld\n", (long long)syscall, (long long)retval);
         fflush(stdout);
     }
