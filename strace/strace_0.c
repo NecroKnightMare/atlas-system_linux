@@ -10,6 +10,7 @@
 #include <sys/user.h> // For user_regs_struct
 #include "syscalls.h"
 
+extern char **environ;
 
 const syscall_t *get_syscall(size_t nr) {
     // Assuming syscalls_64_g is defined and populated with syscall information
@@ -111,7 +112,7 @@ int main(int argc, char *argv[]) {
         // Child process: request tracing and execute command
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
         kill(getpid(), SIGSTOP);
-        execv(argv[1], &argv[1]);
+        execve(argv[1], argv + 1, environ);
         perror("execv failed");
         return EXIT_FAILURE;
     } else {
@@ -137,7 +138,7 @@ int main(int argc, char *argv[]) {
 
             if (WIFSTOPPED(status) && WSTOPSIG(status) == SIGTRAP)
             {
-                if(syscall_entry)
+                if (syscall_entry)
                 {
                     if (ptrace(PTRACE_GETREGS, child, NULL, &regs) == -1)
                     {
