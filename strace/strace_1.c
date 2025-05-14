@@ -67,7 +67,7 @@ int trace(pid_t child)
         // task 2
         int syscall = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * ORIG_RAX);
         retval = ptrace(PTRACE_PEEKUSER, child, sizeof(long) * RAX);
-        fprintf(stderr, "syscall(%d) = ", syscall);
+        fprintf(stderr, "%c\n", syscall);
         
         if (wait_syscall(child) != 0) break;
 
