@@ -1,3 +1,7 @@
+#ifndef MULTITHREADING_H
+#define MULTITHREADING_H
+
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -62,3 +66,10 @@ typedef struct blur_portion_s
     size_t h;
     kernel_t const *kernel;
 } blur_portion_t;
+
+void *thread_entry(void *arg);
+// int tprintf(char const *format, ...);
+// list_t *prime_factors(char const *s);
+// task_t *create_task(task_entry_t entry, void *param);
+
+#endif /* MULTITHREADING_H */
