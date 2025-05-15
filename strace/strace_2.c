@@ -9,7 +9,7 @@
 
 /*Print both string = hexadecimal*/
 
-syscall_t ;
+syscall_t;
 
 /**
  * main - Entry point for the tracer program

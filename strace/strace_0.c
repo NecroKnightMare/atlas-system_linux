@@ -7,7 +7,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
-#include <sys/user.h> // For user_regs_struct
+#include <sys/user.h>
 #include "syscalls.h"
 
 
@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     }
 
     pid_t child = fork();
+    
     if (child == -1){
         perror("fork failed");
         return EXIT_FAILURE;
