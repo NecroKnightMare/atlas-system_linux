@@ -11,17 +11,16 @@
  */
 int tprintf(char const *format, ...)
 {
-    va_list args;
-    int ret;
+	va_list args;
+	int ret;
 
-    // Print thread ID before formatted output
-    printf("[%lu] ", pthread_self());
+	/* Print thread ID before formatted output
+	printf("[%lu] ", pthread_self());
 
-    // Process variable arguments
-    va_start(args, format);
-    ret = vprintf(format, args);
-    va_end(args);
+	/* Process variable arguments*/
+	va_start(args, format);
+	ret = vprintf(format, args);
+	va_end(args);
 
-    return ret;
+	return (ret);
 }
-
