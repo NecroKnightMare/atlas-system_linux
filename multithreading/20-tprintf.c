@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <pthread.h>
+// Works -- needed to add to commits
 
 // Global thread safe printing
 // Will help print one at a time instead of simultaneously
