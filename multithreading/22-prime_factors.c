@@ -78,7 +78,7 @@ void *exec_tasks(list_t const *tasks)
         task = (task_t *)node->content;
 
         /* Ensure only one thread executes each task */
-        pthread_mutex_lock(&task->lock);
+        pthread_mutex_lock(&print_lock);
         if (task->status == PENDING)
         {
             task->status = STARTED;
@@ -90,7 +90,7 @@ void *exec_tasks(list_t const *tasks)
 
             tprintf("[Task Completed]\n");
         }
-        pthread_mutex_unlock(&task->lock);
+        pthread_mutex_unlock(print_lock);
     }
     return (NULL);
 }
