@@ -13,8 +13,19 @@
 
 int trace_child(int argc, char **argv);
 int trace(pid_t child);
+int wait_syscall(pid_t child);
 
-
+/**
+ * main - Entry point for the tracer program
+ * @argc: Number of arguments passed
+ * @argv: Array of arguments
+ *
+ * Description:
+ * This function forks a new process and traces the system calls
+ * executed by the child process.
+ *
+ * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure
+ */
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s command [args...]\n", argv[0]);
@@ -33,6 +44,17 @@ int main(int argc, char *argv[]) {
     }
 }
 
+/**
+ * trace_child - Sets up the child process for tracing
+ * @argc: Number of arguments
+ * @argv: Command and its arguments
+ *
+ * Description:
+ * This function configures the child process to be traced
+ * by the parent using ptrace.
+ *
+ * Return: Result of execvp call, or failure if execution doesn't start
+ */
 int trace_child(int argc, char **argv) 
 {
     char *args [argc+1];
@@ -44,8 +66,16 @@ int trace_child(int argc, char **argv)
     return execvp(args[0], args);
 }
 
-int wait_syscall(pid_t child);
-
+/**
+ * trace - Traces system calls in the child process
+ * @child: Process ID of the child
+ *
+ * Description:
+ * This function waits for system calls in the child process
+ * and retrieves register data using ptrace.
+ *
+ * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure
+ */
 int trace(pid_t child)
 {
     int status, retval;
@@ -83,7 +113,16 @@ int trace(pid_t child)
     }
     return 0;
 }
-
+/**
+ * wait_syscall - Waits for the next system call in the child process
+ * @child: Process ID of the child
+ *
+ * Description:
+ * This function uses ptrace to synchronize with the system calls
+ * executed by the child process.
+ *
+ * Return: 0 when a syscall occurs, 1 when the process exits
+ */
 int wait_syscall(pid_t child)
 {
     int status;

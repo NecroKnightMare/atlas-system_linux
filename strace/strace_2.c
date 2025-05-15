@@ -7,10 +7,21 @@
 #include <sys/user.h>
 #include "syscalls.h"
 
-// Print both string = hexadecimal
+/*Print both string = hexadecimal*/
 
 syscall_t ;
 
+/**
+ * main - Entry point for the tracer program
+ * @argc: Number of arguments passed
+ * @argv: Array of arguments
+ *
+ * Description:
+ * This function forks a new process and traces the system calls
+ * executed by the child process.
+ *
+ * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure
+ */
 int main(int argc, char *argv[]) {
     syscall_t const syscalls_64_g;
 
@@ -25,17 +36,18 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
     if (child == 0) {
-        // Child process: request tracing and execute command
+        /*Child process: request tracing and execute command*/
         ptrace(PTRACE_TRACEME, 0, NULL, NULL);
         execv(argv[1], &argv[1]);
         perror("execv failed");
         return EXIT_FAILURE;
     } else {
-        // Parent process: trace system calls
+        /*Parent process: trace system calls*/
         int status;
 
         waitpid(child, &status, 0);
-        // this ptrace was the infinite loop problem (dont put syscall here)
+        /*this ptrace was the infinite loop problem (dont put syscall here)*/
+        /*Good like it is*/
         ptrace(PTRACE_SETOPTIONS, child, NULL, PTRACE_O_TRACESYSGOOD);
 
         while (!WIFEXITED(status)) {
