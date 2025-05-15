@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <pthread.h>
-// Works -- needed to add to commits
+/* Works -- needed to add to commits */
 
-// Global thread safe printing
-// Will help print one at a time instead of simultaneously
+/* Global thread safe printing*/
+/* Will help print one at a time instead of simultaneously /
 static pthread_mutex_t print_mutex;
 
 /**
@@ -13,7 +13,7 @@ static pthread_mutex_t print_mutex;
 __attribute__((constructor))
 void init_mutex(void)
 {
-    pthread_mutex_init(&print_mutex, NULL);
+	pthread_mutex_init(&print_mutex, NULL);
 }
 
 /**
@@ -22,7 +22,7 @@ void init_mutex(void)
 __attribute__((destructor))
 void destroy_mutex(void)
 {
-    pthread_mutex_destroy(&print_mutex);
+	pthread_mutex_destroy(&print_mutex);
 }
 
 /**
@@ -32,17 +32,17 @@ void destroy_mutex(void)
  */
 int tprintf(char const *format, ...)
 {
-    va_list args;
-    int ret;
+	va_list args;
+	int ret;
 
-    pthread_mutex_lock(&print_mutex);  // Locks
-    printf("[%lu] ", pthread_self());
+	pthread_mutex_lock(&print_mutex);  /*Locks*/
+	printf("[%lu] ", pthread_self());
 
-    va_start(args, format);
-    ret = vprintf(format, args);
-    va_end(args);
+	va_start(args, format);
+	ret = vprintf(format, args);
+	va_end(args);
 
-    pthread_mutex_unlock(&print_mutex);  // Unlocks
+	pthread_mutex_unlock(&print_mutex);  /*Unlocks*/
 
-    return ret;
+	return ret;
 }
