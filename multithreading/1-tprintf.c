@@ -14,7 +14,7 @@ int tprintf(char const *format, ...)
 	va_list args;
 	int ret;
 
-	/* Print thread ID before formatted output
+	/* Print thread ID before formatted output*/*
 	printf("[%lu] ", pthread_self());
 
 	/* Process variable arguments*/
