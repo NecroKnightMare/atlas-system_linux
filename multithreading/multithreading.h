@@ -71,7 +71,7 @@ void *thread_entry(void *arg);
 int tprintf(char const *format, ...);
 void init_mutex(void);
 void destroy_mutex(void);
-list_t *prime_factors(char const *s);
+// list_t *prime_factors(char const *s); put in list header
 // task_t *create_task(task_entry_t entry, void *param);
 
 #endif /* MULTITHREADING_H */
