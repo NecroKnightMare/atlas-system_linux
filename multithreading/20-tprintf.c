@@ -9,8 +9,11 @@
 static pthread_mutex_t print_mutex;
 
 /**
- * __attribute__((constructor)) init_mutex -
- * Initializes the mutex before any thread runs
+ * init_mutex - Initializes a global mutex for thread synchronization
+ *
+ * Description:
+ * This function sets up a mutex to ensure safe access to shared resources
+ * in a multithreaded environment.
  */
 __attribute__((constructor))
 void init_mutex(void)
@@ -19,8 +22,10 @@ void init_mutex(void)
 }
 
 /**
- * __attribute__((destructor)) destroy_mutex -
- * Cleans up the mutex after execution
+ * destroy_mutex - Cleans up and destroys the global mutex
+ *
+ * Description:
+ * Ensures proper resource cleanup by destroying the mutex after use.
  */
 __attribute__((destructor))
 void destroy_mutex(void)
@@ -29,8 +34,13 @@ void destroy_mutex(void)
 }
 
 /**
- * tprintf - Thread-safe printf with mutex protection
- * @format: Formatted string to print
+ * tprintf - Thread-safe printf with timestamp
+ * @format: Format string for output
+ *
+ * Description:
+ * Prints formatted output with a timestamp in a multithreaded environment.
+ * Ensures output consistency by synchronizing threads.
+ *
  * Return: Number of characters printed
  */
 int tprintf(char const *format, ...)
