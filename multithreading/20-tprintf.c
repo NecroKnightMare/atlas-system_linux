@@ -9,7 +9,8 @@
 static pthread_mutex_t print_mutex;
 
 /**
- * __attribute__((constructor)) init_mutex - Initializes the mutex before any thread runs
+ * __attribute__((constructor)) init_mutex -
+ * Initializes the mutex before any thread runs
  */
 __attribute__((constructor))
 void init_mutex(void)
@@ -18,7 +19,8 @@ void init_mutex(void)
 }
 
 /**
- * __attribute__((destructor)) destroy_mutex - Cleans up the mutex after execution
+ * __attribute__((destructor)) destroy_mutex -
+ * Cleans up the mutex after execution
  */
 __attribute__((destructor))
 void destroy_mutex(void)
