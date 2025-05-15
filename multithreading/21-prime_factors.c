@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 #include <math.h>
 #include "list.h"
 #include "multithreading.h"
@@ -25,8 +26,22 @@ list_t *prime_factors(char const *s)
 	{       
 		return (NULL);
 	}
+
+	errno = 0;
 	n = strtoul(s, NULL, 10);
+	if (errno != 0)
+	{
+		free(factors);
+		return (NULL);
+	}
+
 	if (n < 2) /* No need to factorize 0 or 1 */
+	{
+		free(factors);
+		return (NULL);
+	}
+
+		if (n == 1)
 	{
 		free(factors);
 		return (NULL);
