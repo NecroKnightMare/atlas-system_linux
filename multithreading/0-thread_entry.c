@@ -4,9 +4,10 @@
 
 void *thread_entry(void *arg)
 {
+	
 	char *str = (char *)arg;
 	printf("%s\n", str);
-	// terminates the thread
+	/* terminates the thread*/
 	pthread_exit(NULL);
 	return (NULL);
 }
