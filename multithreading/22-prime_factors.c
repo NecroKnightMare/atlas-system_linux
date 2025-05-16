@@ -3,6 +3,8 @@
 #include <pthread.h>
 #include "multithreading.h"
 
+//add mut from 20.
+
 /**
  * create_task - Creates a new task structure
  * @entry: Pointer to the function that will be executed by the task
