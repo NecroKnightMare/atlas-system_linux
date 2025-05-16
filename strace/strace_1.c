@@ -142,7 +142,7 @@ int wait_for_syscall(pid_t child);
 int main(int argc, char **argv) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s prog args\n", argv[0]);
-        fflush(stdout);
+        fflush(stderr);
         exit(1);
     }
 
@@ -204,13 +204,13 @@ int do_trace(pid_t child) {
 
         syscall = ptrace(PTRACE_GETREGS, child, sizeof(long)*ORIG_RAX);
         fprintf(stderr, "syscall(%d) = ", syscall);
-        fflush(stdout);
+        fflush(stderr);
 
         if (wait_for_syscall(child) != 0) break;
 
         retval = ptrace(PTRACE_GETREGS, child, sizeof(long)*RAX);
         fprintf(stderr, "%d\n", retval);
-        fflush(stdout);
+        fflush(stderr);
     }
     return 0;
 }

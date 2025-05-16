@@ -35,33 +35,33 @@ list_t *prime_factors(char const *s)
 		return (NULL);
 	}
 
-	if (n < 2) /* No need to factorize 0 or 1 */
-	{
-		free(factors);
-		return (NULL);
-	}
+	// if (n < 2)
+	// {
+	// 	free(factors);
+	// 	return (NULL);
+	// }
 
-		if (n == 1)
-	{
-		free(factors);
-		return (NULL);
-	}
+	// 	if (n == 1)
+	// {
+	// 	free(factors);
+	// 	return (NULL);
+	// }
 
-	if (n == 2) /* Handle edge case for 2 */
-	{
-		unsigned long *factor = malloc(sizeof(unsigned long));
-		if (!factor)
-		{
-			list_destroy(factors, free);
-			free(factors);
-			return (NULL);
-		}
-		*factor = 2;
-		list_add(factors, factor);
-		return (factors);
-	}
+	// if (n == 2)
+	// {
+	// 	unsigned long *factor = malloc(sizeof(unsigned long));
+	// 	if (!factor)
+	// 	{
+	// 		list_destroy(factors, free);
+	// 		free(factors);
+	// 		return (NULL);
+	// 	}
+	// 	*factor = 2;
+	// 	list_add(factors, factor);
+	// 	return (factors);
+	// }
 
-	/* Handle factorization by 2 separately */
+	
 	while (n % 2 == 0)
 	{
 		unsigned long *factor = malloc(sizeof(unsigned long));

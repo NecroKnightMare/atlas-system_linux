@@ -1,0 +1,18 @@
+Give memory by 8 if user has memory not of 8.
+size_t align_size(size_t n)
+{
+    return (n + 7) >>3 <<3;
+}
+
+typedef
+struct memblock_s
+{
+    size_t size_t;
+    size_ in_use;
+} memblock_t;
+
+Need Global variables.
+
+Advanced tasks:
+Calloc
+Realloc

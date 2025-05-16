@@ -10,6 +10,8 @@
 #include <sys/user.h>
 #include "syscalls.h"
 
+// Remove nested loops, look for a way to simplify logic
+
 
 int trace_child(int argc, char **argv);
 int trace(pid_t child);
@@ -83,7 +85,7 @@ int trace(pid_t child)
     struct user_regs_struct regs;
 
     waitpid(child, &status, 0);
-    ptrace(PTRACE_SETOPTIONS, child, NULL, PTRACE_O_TRACESYSGOOD);
+    // ptrace(PTRACE_SETOPTIONS, child, NULL, PTRACE_O_TRACESYSGOOD);
 
     while(1)
     {
@@ -110,7 +112,7 @@ int trace(pid_t child)
         }
 
         printf("syscall(%lld) = %lld\n", (long long)syscall, (long long)retval);
-        fflush(stdout);
+        fflush(stderr);
     }
     return 0;
 }
@@ -129,7 +131,7 @@ int wait_syscall(pid_t child)
     int status;
     while(1)
     {
-        ptrace(PTRACE_SYSCALL, child, 0, 0);
+        // ptrace(PTRACE_SYSCALL, child, 0, 0);
         waitpid(child, &status, 0);
         if (WIFSTOPPED(status) && WSTOPSIG(status) & 0x80)
         {
