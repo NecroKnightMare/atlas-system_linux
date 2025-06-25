@@ -7,8 +7,6 @@
 
 #define PORT 12345
 
-int main(void)
-{
 /*
  * main - Entry point of the server program
  *
@@ -16,6 +14,8 @@ int main(void)
  * listens for incoming connections, and blocks
  * Return: Always 0 success, exits on failure
 */
+int main(void)
+{
 	int server_fd;
 	struct sockaddr_in address;
 
