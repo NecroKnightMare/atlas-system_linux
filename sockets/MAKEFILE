@@ -1,0 +1,10 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -pedantic
+SRC = todo_api_0.c
+TARGET = todo_api_0
+
+todo_api_0: $(SRC)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
+
+clean:
+	rm -f $(TARGET)
