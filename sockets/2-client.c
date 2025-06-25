@@ -54,6 +54,5 @@ int main(int argc, char *argv[])
 
 	printf("Connected to %s:%d\n", argv[1], port);
 	close(sockfd);
-	return 0;
+	return (0);
 }
-
