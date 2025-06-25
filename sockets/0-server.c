@@ -10,7 +10,7 @@
 /*
  * main - Entry point of the server program
  *
- * Creates IPv4 TCP socket, binds it to port 12345,
+ * Description: Creates IPv4 TCP socket, binds it to port 12345,
  * listens for incoming connections, and blocks
  *
  * Return: Always 0 success, exits on failure
