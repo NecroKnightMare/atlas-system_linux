@@ -20,7 +20,7 @@ int main(void)
 	}
 
 	int opt = 1;
-	
+
 	setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
 	memset(&address, 0, sizeof(address));
