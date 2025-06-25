@@ -13,6 +13,7 @@ int main(void)
 	struct sockaddr_in server_addr, client_addr;
 	socklen_t client_len = sizeof(client_addr);
 
+	/* Create socket */
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (server_fd < 0)
 	{
@@ -20,8 +21,8 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
+    /* Allow immediate reuse of the address*/
 	int opt = 1;
-
 	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
 	{
 		perror("setsockopt");
@@ -29,6 +30,7 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
+	/* Bind socket to any address and port 12345 */
 	memset(&server_addr, 0, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_addr.s_addr = INADDR_ANY;
@@ -41,6 +43,7 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
+	/* Listen for incoming connections */
 	if (listen(server_fd, 1) < 0)
 	{
 		perror("listen");
@@ -50,6 +53,7 @@ int main(void)
 
 	printf("Server listening on port %d\n", PORT);
 
+	/* Accept one connection */
 	client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
 	if (client_fd < 0)
 	{
@@ -60,6 +64,7 @@ int main(void)
 
 	printf("Client connected: %s\n", inet_ntoa(client_addr.sin_addr));
 
+	/* Clean up */
 	close(client_fd);
 	close(server_fd);
 
