@@ -63,5 +63,5 @@ int main(void)
 	close(client_fd);
 	close(server_fd);
 
-	return 0;
+	return (0);
 }

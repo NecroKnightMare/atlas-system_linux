@@ -26,6 +26,7 @@ int main(void)
 
 	/* Allow address reuse */
 	int opt = 1;
+	
 	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
 	{
 		perror("setsockopt");
@@ -79,5 +80,5 @@ int main(void)
 
 	close(client_fd);
 	close(server_fd);
-	return 0;
+	return (0);
 }
