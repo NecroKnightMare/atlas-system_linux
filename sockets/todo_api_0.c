@@ -61,6 +61,7 @@ int main(void)
 	}
 
 	printf("Server listening on port %d\n", PORT);
+	fflush(stdout);
 
 	while (1)
 	{
@@ -68,11 +69,12 @@ int main(void)
 		client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
 		if (client_fd < 0)
 		{
-			perror("accept");
+			perror("accept");/*maybe an fflush here too*/
 			continue;
 		}
 
 		printf("Client connected: %s\n", inet_ntoa(client_addr.sin_addr));
+		fflush(stdout);
 
 		/* Receive HTTP request */
 		bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0);
@@ -86,13 +88,17 @@ int main(void)
 
 		/* Print the raw HTTP request */
 		printf("Raw request: \"%s\"\n", buffer);
+		fflush(stdout);
 
 		/*Parse the first line of the HTTP request*/
 		char method[16], path[256], version[32];
 		sscanf(buffer, "%15s %255s %31s", method, path, version);
 		printf("Method: %s\n", method);
+		fflush(stdout);
 		printf("Path: %s\n", path);
+		fflush(stdout);
 		printf("Version: %s\n", version);
+		fflush(stdout);
 
 		/* Send HTTP response */
 		const char *response = "HTTP/1.1 200 OK\r\n\r\n";
